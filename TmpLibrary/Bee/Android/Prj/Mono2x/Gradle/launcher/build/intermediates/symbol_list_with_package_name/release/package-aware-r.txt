@@ -1,0 +1,23 @@
+com.reboot.land
+id unitySurfaceView
+mipmap app_icon
+mipmap app_icon_round
+mipmap ic_launcher_background
+mipmap ic_launcher_foreground
+string FreeformWindowOrientation_landscape
+string FreeformWindowOrientation_portrait
+string FreeformWindowSize_maximize
+string FreeformWindowSize_phone
+string FreeformWindowSize_tablet
+string app_name
+string default_web_client_id
+string game_view_content_description
+string gcm_defaultSenderId
+string google_api_key
+string google_app_id
+string google_crash_reporting_api_key
+string google_storage_bucket
+string project_id
+style BaseUnityTheme
+style UnityThemeSelector
+style UnityThemeSelector_Translucent

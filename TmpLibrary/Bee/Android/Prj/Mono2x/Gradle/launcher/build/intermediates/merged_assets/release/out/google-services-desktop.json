@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1098306921307",
+    "project_id": "landbuilding-5644c",
+    "storage_bucket": "landbuilding-5644c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098306921307:android:b72e9e8a0d16a89e23f07e",
+        "android_client_info": {
+          "package_name": "com.reboot.land"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1098306921307-68si9usvs5l1oreh1qmbbaen7qk9qbm1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTiTf3wNmpWYMBfAAUNw6ZWgK1FHNh9fI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1098306921307-68si9usvs5l1oreh1qmbbaen7qk9qbm1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

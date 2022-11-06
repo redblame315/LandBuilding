@@ -1,0 +1,4 @@
+#Sat Nov 05 08:33:21 EDT 2022
+base.0=D\:\\KSH\\Unity\\Firebase\\LandBuilding\\Library\\Bee\\Android\\Prj\\Mono2x\\Gradle\\launcher\\build\\intermediates\\dex\\release\\mergeDexRelease\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
