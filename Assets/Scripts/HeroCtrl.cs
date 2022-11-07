@@ -15,6 +15,9 @@ public class HeroCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (TransformDialog.instance.GetVisible())
+            return;
+
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
         Vector3 direction = horizontal * transform.right + vertical * transform.forward;
