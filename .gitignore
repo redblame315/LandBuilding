@@ -4,6 +4,7 @@
 /Assets/Editor Default Resources
 /Assets/ExternalDependencyManager
 /Assets/StreamingAssets
+/Assets/*.json
 #*.png
 /Library
 /Logs
