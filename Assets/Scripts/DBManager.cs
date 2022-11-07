@@ -97,6 +97,7 @@ public class DBManager
         mDatabase = mFireBaseDatabase.RootReference;
     }
 
+    //Check user login with usre id and password in the firestore database
     public void LoginUserByFireStore(string userId, string password)
     {
         mFirebaseFireStore.Collection("Users")
@@ -114,6 +115,7 @@ public class DBManager
             });
     }
 
+    //Check user login with usre id and password in the realtime database
     public void LoginUser(string userId, string password)
     {
         mFireBaseDatabase
@@ -141,6 +143,7 @@ public class DBManager
             });
     }
 
+    //Create a user document in realtime
     public void SinupUser(string userId, string userName, string password)
     {
         UserInfo user = new UserInfo(userId, userName, password);
@@ -153,6 +156,7 @@ public class DBManager
         UIManager.instance.loginScreen.Focus();
     }
 
+    //Create a user document in firestore
     public void SinupUserByFireStore(string userId, string userName, string password)
     {
         UserInfo user = new UserInfo(userId, userName, password);
@@ -165,6 +169,7 @@ public class DBManager
         UIManager.instance.loginScreen.Focus();
     }
 
+    //Save object info on realtime database
     public void SaveObject(string objectId, string prefabName, string position, string rotation, string scale)
     {
         Dictionary<string, Object> entryValues = new Dictionary<string, Object>();
@@ -179,6 +184,7 @@ public class DBManager
         mDatabase.UpdateChildrenAsync(childUpdates);
     }
 
+    //Save object info in firestore
     public void SaveObjectByFireStore(ObjectInfo objectInfo)
     {
         Dictionary<string, Object> entryValues = new Dictionary<string, Object>();
@@ -213,24 +219,12 @@ public class DBManager
             .SetAsync(entryValues);
 
     }
+
+    //Load All Objects related to user in firestore
     public void LoadObjectsByFirestore()
     {
         List<ObjectInfo> objectList = new List<ObjectInfo>();
-        /*mFirebaseFireStore.Collection("Objects")
-            .WhereEqualTo("user_id", userInfo.userId)
-            .GetSnapshotAsync().ContinueWithOnMainThread(task =>
-            {
-                QuerySnapshot querySnapShot = task.Result;
-                foreach(DocumentSnapshot documentSnapshot in querySnapShot.Documents)
-                {
-                    Dictionary<string, Object> objData = documentSnapshot.ToDictionary();
-                    ObjectInfo objectInfo = new ObjectInfo(objData["object_id"].ToString(), objData["prefab_name"].ToString(), objData["position"].ToString(), objData["rotation"].ToString(), objData["scale"].ToString());
-                    objectList.Add(objectInfo);
-                }
-
-                MainScreen.instance.InitObjects(objectList);
-            });*/
-
+        
         mFirebaseFireStore.Collection("Users")
             .Document(userInfo.userId)
             .Collection("Objects")
@@ -281,6 +275,7 @@ public class DBManager
             });
     }
 
+    //Load All Objects related to user in realtime
     public void LoadObjects()
     {
         List<ObjectInfo> objectList = new List<ObjectInfo>();

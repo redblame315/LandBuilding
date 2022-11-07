@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Image Info Dialog
 public class ImageDialog : MonoBehaviour
 {
     public UIInput nameInput;
@@ -23,6 +24,7 @@ public class ImageDialog : MonoBehaviour
         
     }
 
+    //Init input fields with image object info 
     public void Init(ImageObject _imageObject)
     {
         imageObject = _imageObject;
@@ -33,6 +35,7 @@ public class ImageDialog : MonoBehaviour
         imageInput.value = _imageObject.imageUrl;
     }
 
+    //Save and apply the settings into image object
     public void Apply()
     {
         ImageObjectInfo imageObjectInfo = new ImageObjectInfo();

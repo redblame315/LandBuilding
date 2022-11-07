@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Transfrom Dialog related to the object transform
 public class TransformDialog : MonoBehaviour
 {
     public static TransformDialog instance = null;
@@ -39,6 +40,7 @@ public class TransformDialog : MonoBehaviour
         
     }
 
+    //Init all input with the target object info
     public void SetTarget(Transform _target, string _prefabName)
     {
         isBusy = true;
@@ -86,6 +88,8 @@ public class TransformDialog : MonoBehaviour
     {
         return transform.localScale.x == 1;
     }
+
+    //save button action; apply settings to the object in the scene and save info into firestore
     public void SaveButtonClicked()
     {
         string tag = targetTransform.tag;
@@ -99,6 +103,7 @@ public class TransformDialog : MonoBehaviour
         else if (tag == "ImageObject")
         {
             ImageDialog imageDialog = gameObject.GetComponent<ImageDialog>();
+            //apply settings to the object in the scene
             imageDialog.Apply();
 
             objectInfo = new ImageObjectInfo();            
@@ -115,6 +120,7 @@ public class TransformDialog : MonoBehaviour
         else 
         {
             VideoDialog videoDialog = gameObject.GetComponent<VideoDialog>();
+            //apply settings to the object in the scene
             videoDialog.Apply();
 
             objectInfo = new VideoObjectInfo();
@@ -134,6 +140,8 @@ public class TransformDialog : MonoBehaviour
         objectInfo.position = JsonUtility.ToJson(targetTransform.localPosition);
         objectInfo.rotation = JsonUtility.ToJson(targetTransform.localEulerAngles);
         objectInfo.scale = JsonUtility.ToJson(targetTransform.localScale);
+
+        //save setting info into firestore
         DBManager.Instance().SaveObjectByFireStore(objectInfo);
         SetVisible(false);
     }

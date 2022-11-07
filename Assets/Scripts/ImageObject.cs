@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+//Image Object
 public class ImageObject : MonoBehaviour
 {
     public MeshRenderer imageRenderer;
@@ -24,6 +25,7 @@ public class ImageObject : MonoBehaviour
         
     }
 
+    //Apply image object settings to the object.
     public void InitImageObject(ImageObjectInfo _imageObjectInfo)
     {
         name = _imageObjectInfo.name;
@@ -34,6 +36,7 @@ public class ImageObject : MonoBehaviour
         StartCoroutine(DownloadImage(imageUrl));
     }
 
+    //Download and show image from url
     IEnumerator DownloadImage(string MediaUrl)
     {
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(MediaUrl);

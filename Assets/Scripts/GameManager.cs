@@ -20,14 +20,16 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        if(Input.GetMouseButtonDown(0) && !NGUIMousePoint.bGrabMouse)
+        //Check the mouse click on object on the scene and open info dialog
+        if (Input.GetMouseButtonDown(0) && !NGUIMousePoint.bGrabMouse)
         {
             if (TransformDialog.instance == null || TransformDialog.instance.GetVisible())
                 return;
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            //if(Physics.Raycast(ray, out hit, float.PositiveInfinity, 1 << LayerMask.NameToLayer("Object")))
+
+            
             if (Physics.Raycast(ray, out hit, float.PositiveInfinity))
             {
                 if (!hit.collider.tag.Contains("Object"))

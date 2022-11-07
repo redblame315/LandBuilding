@@ -122,7 +122,8 @@ public class HeroCamera : MonoBehaviour
 		}
 		
 	}
-	//=================================================================================================================o
+
+	//FPS Camera of Hero
 	void FirstPerson ()
 	{
 		if (Input.GetMouseButton(1))

@@ -23,6 +23,7 @@ public class VideoObject : MonoBehaviour
         
     }
 
+    //Apply settings to the video object; show the video on the material of the object.
     public void InitVideoObject(VideoObjectInfo _videoObjectInfo)
     {
         name = _videoObjectInfo.name;

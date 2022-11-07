@@ -16,10 +16,15 @@ public class MainScreen : UIScreen
     {
         instance = this;
     }
+
+    //Init actions when the mainscreen is loaded
     public override void Init()
     {
+        //Show the ground and Activate fps
         landObj.SetActive(true);
+        //Show the user's info
         landTitleLabel.text = DBManager.Instance().userInfo.username + "'s Land";
+        //Load objects from firestore databse
         DBManager.Instance().LoadObjectsByFirestore();
         GameManager.instance.bStart = true;
     }
@@ -36,6 +41,7 @@ public class MainScreen : UIScreen
         
     }
 
+    //Load all objects with objectlist info from firestore.
     public void InitObjects(List<ObjectInfo> objectInfoList)
     {
         for(int i = 0; i < objectInfoList.Count; i++)

@@ -23,6 +23,7 @@ public class VideoDialog : MonoBehaviour
         
     }
 
+    //init all inputs with video object info
     public void Init(VideoObject _videoObject)
     {
         videoObject = _videoObject;
@@ -33,6 +34,7 @@ public class VideoDialog : MonoBehaviour
         videoInput.value = _videoObject.videoUrl;
     }
 
+    //appy and save settings to the object in the scene
     public void Apply()
     {
         VideoObjectInfo videoObjectInfo = new VideoObjectInfo();
