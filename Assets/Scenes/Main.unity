@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  m_AmbientSkyColor: {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 1}
   m_AmbientEquatorColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_AmbientGroundColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_AmbientIntensity: 1
@@ -796,7 +796,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.5
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -1371,7 +1371,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restriction: 1
-  cloneOnDrag: 0
+  cloneOnDrag: 1
   prefab: {fileID: 100000, guid: 8d847f26b6745fb4d9076f59a3cf0151, type: 3}
 --- !u!114 &133
 MonoBehaviour:
@@ -1787,7 +1787,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restriction: 1
-  cloneOnDrag: 0
+  cloneOnDrag: 1
   prefab: {fileID: 100000, guid: d6b1ee5e07651d74fa5f4b8f8adfbc9b, type: 3}
 --- !u!65 &46447531
 BoxCollider:
@@ -2128,7 +2128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restriction: 1
-  cloneOnDrag: 0
+  cloneOnDrag: 1
   prefab: {fileID: 100000, guid: d6b1ee5e07651d74fa5f4b8f8adfbc9b, type: 3}
 --- !u!65 &52420511
 BoxCollider:
@@ -6359,7 +6359,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restriction: 1
-  cloneOnDrag: 0
+  cloneOnDrag: 1
   prefab: {fileID: 100000, guid: 8d847f26b6745fb4d9076f59a3cf0151, type: 3}
 --- !u!114 &297538264
 MonoBehaviour:
@@ -12947,7 +12947,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restriction: 1
-  cloneOnDrag: 0
+  cloneOnDrag: 1
   prefab: {fileID: 100000, guid: d6b1ee5e07651d74fa5f4b8f8adfbc9b, type: 3}
 --- !u!114 &722266127
 MonoBehaviour:
@@ -15774,7 +15774,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restriction: 1
-  cloneOnDrag: 0
+  cloneOnDrag: 1
   prefab: {fileID: 100000, guid: d6b1ee5e07651d74fa5f4b8f8adfbc9b, type: 3}
 --- !u!65 &912028235
 BoxCollider:
@@ -16676,7 +16676,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restriction: 1
-  cloneOnDrag: 0
+  cloneOnDrag: 1
   prefab: {fileID: 100000, guid: d6b1ee5e07651d74fa5f4b8f8adfbc9b, type: 3}
 --- !u!65 &937812705
 BoxCollider:
@@ -21423,7 +21423,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restriction: 1
-  cloneOnDrag: 0
+  cloneOnDrag: 1
   prefab: {fileID: 8365541005812597319, guid: 7feb68cd579a6be4cb7a38e56dc708cf, type: 3}
 --- !u!65 &1270782122
 BoxCollider:
@@ -21807,7 +21807,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restriction: 1
-  cloneOnDrag: 0
+  cloneOnDrag: 1
   prefab: {fileID: 100000, guid: d6b1ee5e07651d74fa5f4b8f8adfbc9b, type: 3}
 --- !u!114 &1325024852
 MonoBehaviour:
@@ -22130,7 +22130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restriction: 1
-  cloneOnDrag: 0
+  cloneOnDrag: 1
   prefab: {fileID: 100000, guid: d6b1ee5e07651d74fa5f4b8f8adfbc9b, type: 3}
 --- !u!114 &1327411870
 MonoBehaviour:
@@ -22889,7 +22889,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restriction: 1
-  cloneOnDrag: 0
+  cloneOnDrag: 1
   prefab: {fileID: 100000, guid: d6b1ee5e07651d74fa5f4b8f8adfbc9b, type: 3}
 --- !u!65 &1353434300
 BoxCollider:
@@ -25455,7 +25455,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restriction: 1
-  cloneOnDrag: 0
+  cloneOnDrag: 1
   prefab: {fileID: 100000, guid: d6b1ee5e07651d74fa5f4b8f8adfbc9b, type: 3}
 --- !u!65 &1534728398
 BoxCollider:
@@ -27834,7 +27834,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restriction: 1
-  cloneOnDrag: 0
+  cloneOnDrag: 1
   prefab: {fileID: 100000, guid: d6b1ee5e07651d74fa5f4b8f8adfbc9b, type: 3}
 --- !u!65 &1769121008
 BoxCollider:
@@ -27975,7 +27975,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restriction: 1
-  cloneOnDrag: 0
+  cloneOnDrag: 1
   prefab: {fileID: 100000, guid: 8d847f26b6745fb4d9076f59a3cf0151, type: 3}
 --- !u!114 &1771743974
 MonoBehaviour:
@@ -30240,7 +30240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restriction: 1
-  cloneOnDrag: 0
+  cloneOnDrag: 1
   prefab: {fileID: 100000, guid: d6b1ee5e07651d74fa5f4b8f8adfbc9b, type: 3}
 --- !u!65 &1896068572
 BoxCollider:
@@ -30696,7 +30696,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restriction: 1
-  cloneOnDrag: 0
+  cloneOnDrag: 1
   prefab: {fileID: 100000, guid: d6b1ee5e07651d74fa5f4b8f8adfbc9b, type: 3}
 --- !u!65 &1953394443
 BoxCollider:
@@ -33045,7 +33045,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restriction: 1
-  cloneOnDrag: 0
+  cloneOnDrag: 1
   prefab: {fileID: 3388581531915485237, guid: aba2323575cc96a4c889a1bac626d66c, type: 3}
 --- !u!65 &2141145195
 BoxCollider:
