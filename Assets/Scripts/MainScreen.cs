@@ -8,6 +8,10 @@ public class MainScreen : UIScreen
     public static MainScreen instance = null;
     public GameObject landObj;
     public UILabel landTitleLabel;
+    public TransformDialog normalObjectInfoDialog;
+    public TransformDialog imageObjectInfoDialog;
+    public TransformDialog videoObjectInfoDialog;
+
     private void Awake()
     {
         instance = this;
@@ -17,6 +21,7 @@ public class MainScreen : UIScreen
         landObj.SetActive(true);
         landTitleLabel.text = DBManager.Instance().userInfo.username + "'s Land";
         DBManager.Instance().LoadObjectsByFirestore();
+        GameManager.instance.bStart = true;
     }
 
     // Start is called before the first frame update
@@ -45,6 +50,15 @@ public class MainScreen : UIScreen
             obj.transform.localEulerAngles = JsonUtility.FromJson<Vector3>(objectInfo.rotation);
             obj.transform.localScale = JsonUtility.FromJson<Vector3>(objectInfo.scale);
             
+            if(obj.tag == "ImageObject")
+            {
+                ImageObject imageObject = obj.GetComponent<ImageObject>();
+                imageObject.InitImageObject((ImageObjectInfo)objectInfo);
+            }else if(obj.tag == "VideoObject")
+            {
+                VideoObject videoObject = obj.GetComponent<VideoObject>();
+                videoObject.InitVideoObject((VideoObjectInfo)objectInfo);
+            }
         }
     }
 

@@ -6,6 +6,7 @@ using Firebase.Database;
 using Firebase.Firestore;
 using Firebase.Extensions;
 
+public enum ObjectType { Normal, Image, Video }
 public class UserInfo {
     public string userId;
     public string username;
@@ -35,20 +36,44 @@ public class UserInfo {
 public class ObjectInfo
 {
     public string objectId;
+    public ObjectType objectType = ObjectType.Normal;
     public string prefabName;
     public string position;
     public string rotation;
     public string scale;
 
-    public ObjectInfo(string objectId, string prefabName, string position, string rotation, string scale)
+    public ObjectInfo()
+    { 
+    }
+    
+}
+
+public class ImageObjectInfo : ObjectInfo
+{
+    public string name;
+    public string description;
+    public float price = 0;
+    public string webSiteUrl;
+    public string imageUrl;
+    public ImageObjectInfo()
     {
-        this.objectId = objectId;
-        this.prefabName = prefabName;
-        this.position = position;
-        this.rotation = rotation;
-        this.scale = scale;
+
     }
 }
+
+public class VideoObjectInfo : ObjectInfo
+{
+    public string name;
+    public string description;
+    public float price = 0;
+    public string webSiteUrl;
+    public string videoUrl;
+    public VideoObjectInfo()
+    {
+
+    }
+}
+
 public class DBManager
 {
     static DBManager dbManager = null;
@@ -154,35 +179,40 @@ public class DBManager
         mDatabase.UpdateChildrenAsync(childUpdates);
     }
 
-    public void SaveObjectByFireStore(string objectId, string prefabName, string position, string rotation, string scale)
+    public void SaveObjectByFireStore(ObjectInfo objectInfo)
     {
-        /*Dictionary<string, Object> entryValues = new Dictionary<string, Object>();
-        entryValues["user_id"] = userInfo.userId;
-        entryValues["object_id"] = objectId;
-        entryValues["prefab_name"] = prefabName;
-        entryValues["position"] = position;
-        entryValues["rotation"] = rotation;
-        entryValues["scale"] = scale;
-
-
-        mFirebaseFireStore.Collection("Objects")
-            .Document(userInfo.userId + "_" + objectId)
-            .SetAsync(entryValues);*/
-
         Dictionary<string, Object> entryValues = new Dictionary<string, Object>();
-        entryValues["prefab_name"] = prefabName;
-        entryValues["position"] = position;
-        entryValues["rotation"] = rotation;
-        entryValues["scale"] = scale;
+        entryValues["prefab_name"] = objectInfo.prefabName;
+        entryValues["object_type"] = objectInfo.objectType;
+        entryValues["position"] = objectInfo.position;
+        entryValues["rotation"] = objectInfo.rotation;
+        entryValues["scale"] = objectInfo.scale;
 
+        if(objectInfo.objectType == ObjectType.Image)
+        {
+            ImageObjectInfo imageObjectInfo = (ImageObjectInfo)objectInfo;
+            entryValues["name"] = imageObjectInfo.name;
+            entryValues["description"] = imageObjectInfo.description;
+            entryValues["price"] = imageObjectInfo.price;
+            entryValues["website_url"] = imageObjectInfo.webSiteUrl;
+            entryValues["image_url"] = imageObjectInfo.imageUrl;
+        }else if(objectInfo.objectType == ObjectType.Video)
+        {
+            VideoObjectInfo videoObjectInfo = (VideoObjectInfo)objectInfo;
+            entryValues["name"] = videoObjectInfo.name;
+            entryValues["description"] = videoObjectInfo.description;
+            entryValues["price"] = videoObjectInfo.price;
+            entryValues["website_url"] = videoObjectInfo.webSiteUrl;
+            entryValues["video_url"] = videoObjectInfo.videoUrl;
+        }
 
         mFirebaseFireStore.Collection("Users")
             .Document(userInfo.userId)
             .Collection("Objects")
-            .Document(objectId)
+            .Document(objectInfo.objectId)
             .SetAsync(entryValues);
-    }
 
+    }
     public void LoadObjectsByFirestore()
     {
         List<ObjectInfo> objectList = new List<ObjectInfo>();
@@ -210,7 +240,39 @@ public class DBManager
                 foreach (DocumentSnapshot documentSnapshot in querySnapShot.Documents)
                 {
                     Dictionary<string, Object> objData = documentSnapshot.ToDictionary();
-                    ObjectInfo objectInfo = new ObjectInfo(documentSnapshot.Id, objData["prefab_name"].ToString(), objData["position"].ToString(), objData["rotation"].ToString(), objData["scale"].ToString());
+                    ObjectType objectType = (ObjectType)int.Parse(objData["object_type"].ToString());
+                    ObjectInfo objectInfo;
+                    switch(objectType)
+                    {                        
+                        case ObjectType.Image:
+                            objectInfo = new ImageObjectInfo();
+                            ImageObjectInfo imageObjectInfo = (ImageObjectInfo)objectInfo;
+                            imageObjectInfo.name = objData["name"].ToString();
+                            imageObjectInfo.description = objData["description"].ToString();
+                            imageObjectInfo.price = float.Parse(objData["price"].ToString());
+                            imageObjectInfo.webSiteUrl = objData["website_url"].ToString();
+                            imageObjectInfo.imageUrl = objData["image_url"].ToString();
+                            break;
+                        case ObjectType.Video:
+                            objectInfo = new VideoObjectInfo();
+                            VideoObjectInfo vidoObjectInfo = (VideoObjectInfo)objectInfo;
+                            vidoObjectInfo.name = objData["name"].ToString();
+                            vidoObjectInfo.description = objData["description"].ToString();
+                            vidoObjectInfo.price = float.Parse(objData["price"].ToString());
+                            vidoObjectInfo.webSiteUrl = objData["website_url"].ToString();
+                            vidoObjectInfo.videoUrl = objData["video_url"].ToString();
+                            break;
+                        default:
+                            objectInfo = new ObjectInfo();
+                            break;
+                    }
+                    objectInfo.objectId = documentSnapshot.Id;
+                    objectInfo.objectType = (ObjectType)int.Parse(objData["object_type"].ToString());
+                    objectInfo.prefabName = objData["prefab_name"].ToString();
+                    objectInfo.position = objData["position"].ToString();
+                    objectInfo.rotation = objData["rotation"].ToString();
+                    objectInfo.scale = objData["scale"].ToString();                  
+
                     objectList.Add(objectInfo);
                 }
 
@@ -236,8 +298,8 @@ public class DBManager
                     foreach (var obj in objectsData)
                     {
                         Dictionary<string, Object> objData = (Dictionary<string, Object>)obj.Value;
-                        ObjectInfo objectInfo = new ObjectInfo(obj.Key, objData["prefab_name"].ToString(), objData["position"].ToString(), objData["rotation"].ToString(), objData["scale"].ToString());
-                        objectList.Add(objectInfo);
+                        //ObjectInfo objectInfo = new ObjectInfo(obj.Key, objData["prefab_name"].ToString(), objData["position"].ToString(), objData["rotation"].ToString(), objData["scale"].ToString());
+                        //objectList.Add(objectInfo);
                     }
 
                     UIManager.instance.EnqueueAction(() => {

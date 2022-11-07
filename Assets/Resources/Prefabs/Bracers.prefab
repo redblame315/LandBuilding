@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6221316793434890367}
   m_Layer: 6
   m_Name: Bracers
-  m_TagString: Untagged
+  m_TagString: NormalObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

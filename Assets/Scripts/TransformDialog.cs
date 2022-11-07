@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,6 +57,20 @@ public class TransformDialog : MonoBehaviour
         scaleYInput.text = targetTransform.localScale.y.ToString();
         scaleZInput.text = targetTransform.localScale.z.ToString();
 
+        ImageObject imageObject = targetTransform.GetComponent<ImageObject>();        
+        if (imageObject)
+        {
+            ImageDialog imageDialog = gameObject.GetComponent<ImageDialog>();
+            imageDialog.Init(imageObject);
+        }
+
+        VideoObject videoObject = targetTransform.GetComponent<VideoObject>();        
+        if (videoObject)
+        {
+            VideoDialog videoDialog = gameObject.GetComponent<VideoDialog>();
+            videoDialog.Init(videoObject);
+        }
+
         SetVisible(true);
 
         isBusy = false;
@@ -63,6 +78,7 @@ public class TransformDialog : MonoBehaviour
 
     public void SetVisible(bool visible)
     {
+        instance = this;
         transform.localScale = visible ? Vector3.one : Vector3.zero;
     }
 
@@ -72,7 +88,53 @@ public class TransformDialog : MonoBehaviour
     }
     public void SaveButtonClicked()
     {
-        DBManager.Instance().SaveObjectByFireStore(targetTransform.name, prefabName, JsonUtility.ToJson(targetTransform.localPosition), JsonUtility.ToJson(targetTransform.localEulerAngles), JsonUtility.ToJson(targetTransform.localScale));
+        string tag = targetTransform.tag;
+        ObjectInfo objectInfo;
+        if (tag == "NormalObject")
+        {
+            objectInfo = new ObjectInfo();
+
+            objectInfo.objectType = ObjectType.Normal;
+        }
+        else if (tag == "ImageObject")
+        {
+            ImageDialog imageDialog = gameObject.GetComponent<ImageDialog>();
+            imageDialog.Apply();
+
+            objectInfo = new ImageObjectInfo();            
+            ImageObjectInfo imageObjectInfo = (ImageObjectInfo)objectInfo;
+            ImageObject imageObject = targetTransform.GetComponent<ImageObject>();
+            imageObjectInfo.name = imageObject.name;
+            imageObjectInfo.description = imageObject.description;
+            imageObjectInfo.price = imageObject.price;
+            imageObjectInfo.webSiteUrl = imageObject.webSiteUrl;
+            imageObjectInfo.imageUrl = imageObject.imageUrl;
+
+            objectInfo.objectType = ObjectType.Image;
+        }
+        else 
+        {
+            VideoDialog videoDialog = gameObject.GetComponent<VideoDialog>();
+            videoDialog.Apply();
+
+            objectInfo = new VideoObjectInfo();
+            VideoObjectInfo videoObjectInfo = (VideoObjectInfo)objectInfo;
+            VideoObject videoObject = targetTransform.GetComponent<VideoObject>();
+            videoObjectInfo.name = videoObject.name;
+            videoObjectInfo.description = videoObject.description;
+            videoObjectInfo.price = videoObject.price;
+            videoObjectInfo.webSiteUrl = videoObject.webSiteUrl;
+            videoObjectInfo.videoUrl = videoObject.videoUrl;
+
+            objectInfo.objectType = ObjectType.Video;
+        }
+
+        objectInfo.objectId = targetTransform.name;
+        objectInfo.prefabName = prefabName;        
+        objectInfo.position = JsonUtility.ToJson(targetTransform.localPosition);
+        objectInfo.rotation = JsonUtility.ToJson(targetTransform.localEulerAngles);
+        objectInfo.scale = JsonUtility.ToJson(targetTransform.localScale);
+        DBManager.Instance().SaveObjectByFireStore(objectInfo);
         SetVisible(false);
     }
 
@@ -92,10 +154,18 @@ public class TransformDialog : MonoBehaviour
         if (isBusy)
             return;
 
-        float x = float.Parse(rotationXInput.value);
-        float y = float.Parse(rotationYInput.value);
-        float z = float.Parse(rotationZInput.value);
-        targetTransform.localEulerAngles = new Vector3(x, y, z);
+        try
+        {
+            float x = float.Parse(rotationXInput.value);
+            float y = float.Parse(rotationYInput.value);
+            float z = float.Parse(rotationZInput.value);
+            targetTransform.localEulerAngles = new Vector3(x, y, z);
+        }
+        catch(Exception e)
+        {
+
+        }
+        
     }
 
     public void ScaleValueChanged()

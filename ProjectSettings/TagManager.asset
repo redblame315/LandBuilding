@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Drag and Drop Root
+  - NormalObject
+  - ImageObject
+  - VideoObject
   layers:
   - Default
   - TransparentFX
