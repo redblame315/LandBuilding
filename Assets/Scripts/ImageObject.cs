@@ -26,13 +26,13 @@ public class ImageObject : MonoBehaviour
     }
 
     //Apply image object settings to the object.
-    public void InitImageObject(ImageObjectInfo _imageObjectInfo)
+    public void InitImageObject(ObjectInfo _imageObjectInfo)
     {
         name = _imageObjectInfo.name;
         description = _imageObjectInfo.description;
         price = _imageObjectInfo.price;
         webSiteUrl = _imageObjectInfo.webSiteUrl;
-        imageUrl = _imageObjectInfo.imageUrl;
+        imageUrl = _imageObjectInfo.dataUrl;
         StartCoroutine(DownloadImage(imageUrl));
     }
 

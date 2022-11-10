@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null;
     DBManager dbManager = null;
     public bool bStart = false;
+    public GameObject curPrefabObject = null;
     private void Awake()
     {
         dbManager = new DBManager();
@@ -20,8 +21,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        //Check the mouse click on object on the scene and open info dialog
-        if (Input.GetMouseButtonDown(0) && !NGUIMousePoint.bGrabMouse)
+        if(Input.GetMouseButtonDown(0) && !NGUIMousePoint.bGrabMouse)
         {
             if (TransformDialog.instance == null || TransformDialog.instance.GetVisible())
                 return;
@@ -29,11 +29,31 @@ public class GameManager : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            
+
             if (Physics.Raycast(ray, out hit, float.PositiveInfinity))
             {
                 if (!hit.collider.tag.Contains("Object"))
                     return;
+
+                curPrefabObject = hit.collider.gameObject;
+            }
+        }
+            //Check the mouse click on object on the scene and open info dialog
+        if (Input.GetMouseButtonUp(0))
+        {
+            NGUIMousePoint.bGrabMouse = false;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            
+            if (Physics.Raycast(ray, out hit, float.PositiveInfinity))
+            {
+                if (!hit.collider.tag.Contains("Object") || hit.collider.gameObject != curPrefabObject)
+                {
+                    curPrefabObject = null;
+                    return;
+                }
+                    
 
                 GameObject hitObj = hit.collider.gameObject;
                 string objName = hitObj.name;
@@ -48,9 +68,7 @@ public class GameManager : MonoBehaviour
                 else if(hitObj.tag == "VideoObject")
                     MainScreen.instance.videoObjectInfoDialog.SetTarget(hitObj.transform, prefabName);
             }
+            curPrefabObject = null;
         }
-
-        if (Input.GetMouseButtonUp(0))
-            NGUIMousePoint.bGrabMouse = false;
     }
 }

@@ -5,6 +5,8 @@
 /Assets/ExternalDependencyManager
 /Assets/StreamingAssets
 /Assets/*.json
+/Assets/FirebaseWebGL
+/Assets/RestClient
 #*.png
 /Library
 /Logs

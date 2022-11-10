@@ -40,8 +40,11 @@ public class HeroCamera : MonoBehaviour
     float curDist;
     float desDist;
     float finalDist;
-	
+
+	public VariableJoystick joystick;
 	public CamInput camInput;
+	float fHeadBoneInitHeight = 0;
+	bool bCanRotate = false;
 	[System.Serializable]
 	public class CamInput
 	{
@@ -64,13 +67,14 @@ public class HeroCamera : MonoBehaviour
     {
 		cam = Camera.main.transform;
 		Vector3 angls = cam.eulerAngles;
-    	xAngl = angls.x;
-    	yAngl = angls.y;
+    	xAngl = angls.y;
+    	yAngl = angls.x;
 
 		curDist = heroDistance;
     	desDist = heroDistance;
     	finalDist = heroDistance;
-				
+
+		fHeadBoneInitHeight = headBone.localPosition.y;
 
     }
 	//=================================================================================================================o
@@ -106,7 +110,18 @@ public class HeroCamera : MonoBehaviour
 			cam.GetComponent<Camera>().fieldOfView = 70.0f;
     		camState = CameraState.ThirdPerson;
     	}		*/
-		
+
+		bCanRotate = false;
+		if (Input.GetMouseButton(1) || joystick.Horizontal != 0 || joystick.Vertical != 0)
+		{
+			if (joystick.Horizontal != 0)
+				camInput.mX = joystick.Horizontal;
+
+			if (joystick.Vertical != 0)
+				camInput.mY = joystick.Vertical;
+
+			bCanRotate = true;
+		}
 		// Camera states
 		switch (camState)
 		{
@@ -126,30 +141,39 @@ public class HeroCamera : MonoBehaviour
 	//FPS Camera of Hero
 	void FirstPerson ()
 	{
-		if (Input.GetMouseButton(1))
-		{
+		if(bCanRotate)
+        {
 			// Horizontal
 			xAngl += camInput.mX * xSpeed * Time.deltaTime;
 			// Vertical
 			yAngl = ClampAngle(yAngl, minAngleY, maxAngleY);
-
-			// Apply Y-mouse axis
-			if (invertMouseY)
-				yAngl += Input.GetAxis("Mouse Y") * ySpeed * Time.deltaTime;
-			else
-				yAngl -= Input.GetAxis("Mouse Y") * ySpeed * Time.deltaTime;
 		}
+		// Apply Y-mouse axis
 
 		// Desired distance
 		desDist = fpsCamDist;
 		// Camera rotation
     	Quaternion camRot = Quaternion.Euler (yAngl, xAngl, 0);
-    	// Camera position
-		Vector3 camPos = headBone.position - (cam.forward * desDist) - (cam.up * -heroHeight /4);
+		// Camera position
+		//Vector3 camPos = headBone.position - (cam.forward * desDist) - (cam.up * -heroHeight /4);
+		Vector3 camPos = headBone.position - (cam.up * -heroHeight / 4);
+
+		if(bCanRotate)
+        {
+			if (invertMouseY)
+				yAngl += Input.GetAxis("Mouse Y") * ySpeed * Time.deltaTime;
+			else
+				yAngl -= Input.GetAxis("Mouse Y") * ySpeed * Time.deltaTime;
+
+			cam.rotation = camRot;
+		}
 		
+
+
 		// Apply position and rotation
-		cam.rotation = Quaternion.Lerp(cam.rotation, camRot, rotationDampening * Time.deltaTime);		
-		cam.position = Vector3.Lerp(cam.position, camPos, positionDampening * Time.deltaTime);
+		//cam.rotation = Quaternion.Lerp(cam.rotation, camRot, rotationDampening * Time.deltaTime);		
+		//cam.position = Vector3.Lerp(cam.position, camPos, positionDampening * Time.deltaTime);
+		cam.position = camPos;
 		hero.eulerAngles = new Vector3(hero.eulerAngles.x, xAngl, hero.eulerAngles.z);
 	}
 	//=================================================================================================================o
@@ -288,6 +312,11 @@ public class HeroCamera : MonoBehaviour
 				break;
         }
 	}
+
+	public void ChangeHeadBonePosition(float height)
+    {
+		headBone.localPosition = new Vector3(headBone.localPosition.x, fHeadBoneInitHeight + height * 2, headBone.localPosition.z);
+    }
 	// Clamp angle at 360deg
 	static float ClampAngle ( float angle, float min, float max )
 	{
@@ -296,6 +325,17 @@ public class HeroCamera : MonoBehaviour
 		if (angle > 360)
 			angle -= 360;
 		return Mathf.Clamp (angle, min, max);
+	}
+
+	public void InitHeroCam()
+    {
+		cam = Camera.main.transform;
+		Vector3 camPos = headBone.position - (cam.up * -heroHeight / 4);
+		cam.rotation = transform.rotation;
+		cam.position = camPos;
+
+		yAngl = cam.eulerAngles.x;
+		xAngl = transform.rotation.eulerAngles.y;
 	}
 	//=================================================================================================================o
 }

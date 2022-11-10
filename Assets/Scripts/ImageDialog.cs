@@ -38,12 +38,12 @@ public class ImageDialog : MonoBehaviour
     //Save and apply the settings into image object
     public void Apply()
     {
-        ImageObjectInfo imageObjectInfo = new ImageObjectInfo();
+        ObjectInfo imageObjectInfo = new ObjectInfo();
         imageObjectInfo.name = nameInput.value;
         imageObjectInfo.description = descriptionInput.value;
         imageObjectInfo.price = float.Parse(priceInput.value);
         imageObjectInfo.webSiteUrl = webSiteInput.value;
-        imageObjectInfo.imageUrl = imageInput.value;
+        imageObjectInfo.dataUrl = imageInput.value;
         imageObject.InitImageObject(imageObjectInfo);
     }
 }

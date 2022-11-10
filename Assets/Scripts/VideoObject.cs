@@ -24,13 +24,13 @@ public class VideoObject : MonoBehaviour
     }
 
     //Apply settings to the video object; show the video on the material of the object.
-    public void InitVideoObject(VideoObjectInfo _videoObjectInfo)
+    public void InitVideoObject(ObjectInfo _videoObjectInfo)
     {
         name = _videoObjectInfo.name;
         description = _videoObjectInfo.description;
         price = _videoObjectInfo.price;
         webSiteUrl = _videoObjectInfo.webSiteUrl;
-        videoUrl = _videoObjectInfo.videoUrl;
+        videoUrl = _videoObjectInfo.dataUrl;
         videoPlayer.url = videoUrl;
     }
 }

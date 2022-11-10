@@ -93,11 +93,9 @@ public class TransformDialog : MonoBehaviour
     public void SaveButtonClicked()
     {
         string tag = targetTransform.tag;
-        ObjectInfo objectInfo;
+        ObjectInfo objectInfo = new ObjectInfo();
         if (tag == "NormalObject")
         {
-            objectInfo = new ObjectInfo();
-
             objectInfo.objectType = ObjectType.Normal;
         }
         else if (tag == "ImageObject")
@@ -106,14 +104,12 @@ public class TransformDialog : MonoBehaviour
             //apply settings to the object in the scene
             imageDialog.Apply();
 
-            objectInfo = new ImageObjectInfo();            
-            ImageObjectInfo imageObjectInfo = (ImageObjectInfo)objectInfo;
             ImageObject imageObject = targetTransform.GetComponent<ImageObject>();
-            imageObjectInfo.name = imageObject.name;
-            imageObjectInfo.description = imageObject.description;
-            imageObjectInfo.price = imageObject.price;
-            imageObjectInfo.webSiteUrl = imageObject.webSiteUrl;
-            imageObjectInfo.imageUrl = imageObject.imageUrl;
+            objectInfo.name = imageObject.name;
+            objectInfo.description = imageObject.description;
+            objectInfo.price = imageObject.price;
+            objectInfo.webSiteUrl = imageObject.webSiteUrl;
+            objectInfo.dataUrl = imageObject.imageUrl;
 
             objectInfo.objectType = ObjectType.Image;
         }
@@ -123,14 +119,12 @@ public class TransformDialog : MonoBehaviour
             //apply settings to the object in the scene
             videoDialog.Apply();
 
-            objectInfo = new VideoObjectInfo();
-            VideoObjectInfo videoObjectInfo = (VideoObjectInfo)objectInfo;
             VideoObject videoObject = targetTransform.GetComponent<VideoObject>();
-            videoObjectInfo.name = videoObject.name;
-            videoObjectInfo.description = videoObject.description;
-            videoObjectInfo.price = videoObject.price;
-            videoObjectInfo.webSiteUrl = videoObject.webSiteUrl;
-            videoObjectInfo.videoUrl = videoObject.videoUrl;
+            objectInfo.name = videoObject.name;
+            objectInfo.description = videoObject.description;
+            objectInfo.price = videoObject.price;
+            objectInfo.webSiteUrl = videoObject.webSiteUrl;
+            objectInfo.dataUrl = videoObject.videoUrl;
 
             objectInfo.objectType = ObjectType.Video;
         }

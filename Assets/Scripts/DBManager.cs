@@ -1,10 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine;
+using Newtonsoft.Json;
+#if !UNITY_WEBGL || UNITY_EDITOR
 using Firebase;
 using Firebase.Database;
 using Firebase.Firestore;
 using Firebase.Extensions;
+#else
+using FirebaseWebGL.Scripts;
+#endif
 
 public enum ObjectType { Normal, Image, Video }
 public class UserInfo {
@@ -24,9 +30,9 @@ public class UserInfo {
         this.password = password;
     }
 
-    public Dictionary<string, Object> ToDictionary()
+    public Dictionary<string, System.Object> ToDictionary()
     {
-        Dictionary<string, Object> result = new Dictionary<string, Object>();
+        Dictionary<string, System.Object> result = new Dictionary<string, System.Object>();
         result["username"] = username;
         result["password"] = password;
         return result;
@@ -42,189 +48,184 @@ public class ObjectInfo
     public string rotation;
     public string scale;
 
+    public string name = "";
+    public string description = "";
+    public float price = 0;
+    public string webSiteUrl = "";
+    public string dataUrl = "";
+
     public ObjectInfo()
     { 
     }
     
 }
 
-public class ImageObjectInfo : ObjectInfo
+public class CSettingInfo
 {
-    public string name;
-    public string description;
-    public float price = 0;
-    public string webSiteUrl;
-    public string imageUrl;
-    public ImageObjectInfo()
+    public string bgsong = "";
+    public string sfront = "";
+    public string sinterior = "";
+
+    public CSettingInfo()
     {
 
     }
 }
 
-public class VideoObjectInfo : ObjectInfo
-{
-    public string name;
-    public string description;
-    public float price = 0;
-    public string webSiteUrl;
-    public string videoUrl;
-    public VideoObjectInfo()
-    {
-
-    }
-}
-
-public class DBManager
+public class DBManager : MonoBehaviour
 {
     static DBManager dbManager = null;
+#if !UNITY_WEBGL || UNITY_EDITOR
     DatabaseReference mDatabase;
     FirebaseDatabase mFireBaseDatabase;
     FirebaseFirestore mFirebaseFireStore;
+#endif
     public UserInfo userInfo = new UserInfo();
 
-    public static DBManager Instance()
+    string curUserId;
+    private void Awake()
     {
-        if (dbManager == null)
-            dbManager = new DBManager();
+        dbManager = this;
 
-        return dbManager;
-    }
-    // Start is called before the first frame update
-    public DBManager()
-    {
+#if !UNITY_WEBGL || UNITY_EDITOR
         mFireBaseDatabase = FirebaseDatabase.GetInstance("https://landbuilding-5644c-default-rtdb.firebaseio.com");
         mFirebaseFireStore = FirebaseFirestore.DefaultInstance;
         mDatabase = mFireBaseDatabase.RootReference;
+#endif
+    }
+
+    public static DBManager Instance()
+    {
+        //if (dbManager == null)
+        //    dbManager = new DBManager();
+
+        return dbManager;
     }
 
     //Check user login with usre id and password in the firestore database
     public void LoginUserByFireStore(string userId, string password)
     {
+        userInfo.userId = userId;
+        userInfo.password = password;
+#if !UNITY_WEBGL || UNITY_EDITOR
         mFirebaseFireStore.Collection("Users")
             .Document(userId)
             .GetSnapshotAsync()
             .ContinueWithOnMainThread(task => {
                 DocumentSnapshot snapshot = task.Result;
-                Dictionary<string, object> userData = snapshot.ToDictionary();
-                if(password == userData["password"].ToString())
+                Dictionary<string, object> userData = snapshot.ToDictionary();                
+                if (password == userData["password"].ToString())
                 {
-                    userInfo.userId = userId;
                     userInfo.username = userData["username"].ToString();
                     UIManager.instance.mainUIScreen.Focus();
                 }
             });
+#else
+        FirebaseWebGL.Scripts.FirebaseBridge.FirebaseFirestore.GetDocument("Users", userId, gameObject.name, "OnLoginRequestSuccess", "");        
+#endif
+
     }
 
-    //Check user login with usre id and password in the realtime database
-    public void LoginUser(string userId, string password)
+    void OnLoginRequestSuccess(string jsonData)
     {
-        mFireBaseDatabase
-            .GetReference("Users").Child(userId)
-            .GetValueAsync().ContinueWith(task => {
-                if (task.IsFaulted)
-                {
-
-                }
-                else if (task.IsCompleted)
-                {
-                    DataSnapshot snapshot = task.Result;
-                    Dictionary<string, Object> userData = (Dictionary<string, Object>)snapshot.GetValue(true);
-                    if(password == userData["password"].ToString())
-                    {
-                        userInfo.userId = userId;
-                        userInfo.username = userData["username"].ToString();
-                        UIManager.instance.EnqueueAction(() => {
-                            UIManager.instance.mainUIScreen.Focus();
-                        });
-                        
-                    }
-                }
-
-            });
-    }
-
-    //Create a user document in realtime
-    public void SinupUser(string userId, string userName, string password)
-    {
-        UserInfo user = new UserInfo(userId, userName, password);
-
-        Dictionary<string, Object> entryValues = user.ToDictionary();
-        Dictionary<string, Object> childUpdates = new Dictionary<string, Object>();
-        childUpdates["Users/" + userId] = entryValues;
-        mDatabase.UpdateChildrenAsync(childUpdates);
-
-        UIManager.instance.loginScreen.Focus();
+        Debug.LogError("LoginSuccess : " + jsonData);
+        UserInfo respUserInfo = JsonUtility.FromJson<UserInfo>(jsonData);
+        if(userInfo.password == respUserInfo.password)
+        {
+            userInfo.username = respUserInfo.username;
+            UIManager.instance.mainUIScreen.Focus();
+        }
     }
 
     //Create a user document in firestore
     public void SinupUserByFireStore(string userId, string userName, string password)
     {
-        UserInfo user = new UserInfo(userId, userName, password);
 
-        Dictionary<string, Object> entryValues = user.ToDictionary();
+        UserInfo user = new UserInfo(userId, userName, password);
+        
+        Dictionary<string, System.Object> entryValues = user.ToDictionary();
+#if !UNITY_WEBGL || UNITY_EDITOR
         mFirebaseFireStore.Collection("Users")
             .Document(userId)
             .SetAsync(entryValues);
-
         UIManager.instance.loginScreen.Focus();
+#else
+        string jsonData = UnityEngine.JsonUtility.ToJson(user);
+        FirebaseWebGL.Scripts.FirebaseBridge.FirebaseFirestore.SetDocument("Users", userId, jsonData , gameObject.name, "SignUpSuccess", "");        
+#endif
     }
 
-    //Save object info on realtime database
-    public void SaveObject(string objectId, string prefabName, string position, string rotation, string scale)
+    public void SignUpSuccess(string output)
     {
-        Dictionary<string, Object> entryValues = new Dictionary<string, Object>();
-        entryValues["prefab_name"] = prefabName;
-        entryValues["position"] = position;
-        entryValues["rotation"] = rotation;
-        entryValues["scale"] = scale;
-
-        Dictionary<string, Object> childUpdates = new Dictionary<string, Object>();
-        string key = "/Objects/" + userInfo.userId + "/" + objectId;
-        childUpdates[key] = entryValues;
-        mDatabase.UpdateChildrenAsync(childUpdates);
+        Debug.LogError("SignUpSuccess : " + output);
+        UIManager.instance.loginScreen.Focus();       
     }
 
     //Save object info in firestore
     public void SaveObjectByFireStore(ObjectInfo objectInfo)
-    {
-        Dictionary<string, Object> entryValues = new Dictionary<string, Object>();
-        entryValues["prefab_name"] = objectInfo.prefabName;
-        entryValues["object_type"] = objectInfo.objectType;
+    {        
+        Dictionary<string, System.Object> entryValues = new Dictionary<string, System.Object>();
+        entryValues["prefabName"] = objectInfo.prefabName;
+        entryValues["objectType"] = objectInfo.objectType;
         entryValues["position"] = objectInfo.position;
         entryValues["rotation"] = objectInfo.rotation;
         entryValues["scale"] = objectInfo.scale;
-
-        if(objectInfo.objectType == ObjectType.Image)
-        {
-            ImageObjectInfo imageObjectInfo = (ImageObjectInfo)objectInfo;
-            entryValues["name"] = imageObjectInfo.name;
-            entryValues["description"] = imageObjectInfo.description;
-            entryValues["price"] = imageObjectInfo.price;
-            entryValues["website_url"] = imageObjectInfo.webSiteUrl;
-            entryValues["image_url"] = imageObjectInfo.imageUrl;
-        }else if(objectInfo.objectType == ObjectType.Video)
-        {
-            VideoObjectInfo videoObjectInfo = (VideoObjectInfo)objectInfo;
-            entryValues["name"] = videoObjectInfo.name;
-            entryValues["description"] = videoObjectInfo.description;
-            entryValues["price"] = videoObjectInfo.price;
-            entryValues["website_url"] = videoObjectInfo.webSiteUrl;
-            entryValues["video_url"] = videoObjectInfo.videoUrl;
-        }
-
+        entryValues["name"] = objectInfo.name;
+        entryValues["description"] = objectInfo.description;
+        entryValues["price"] = objectInfo.price;
+        entryValues["webSiteUrl"] = objectInfo.webSiteUrl;
+        entryValues["dataUrl"] = objectInfo.dataUrl;
+        
+#if !UNITY_WEBGL || UNITY_EDITOR
         mFirebaseFireStore.Collection("Users")
             .Document(userInfo.userId)
             .Collection("Objects")
             .Document(objectInfo.objectId)
             .SetAsync(entryValues);
+#else
+        string jsonData = UnityEngine.JsonUtility.ToJson(objectInfo);
+        FirebaseWebGL.Scripts.FirebaseBridge.FirebaseFirestore.SetDocument("Users/" + userInfo.userId + "/Objects", objectInfo.objectId, jsonData, gameObject.name, "", "");        
+#endif
 
+    }
+
+    //Load csettings obj
+    public void LoadCSettingInfo()
+    {    
+
+#if !UNITY_WEBGL || UNITY_EDITOR
+    mFirebaseFireStore.Collection("Users")
+            .Document(userInfo.userId)
+            .Collection("csettings")
+            .Document("csettings_doc")
+            .GetSnapshotAsync().ContinueWithOnMainThread(task => {
+                CSettingInfo cSettingInfo = new CSettingInfo();
+                DocumentSnapshot documentSnapshot = task.Result;
+                Dictionary<string, System.Object> csettingsDocument = documentSnapshot.ToDictionary();
+                cSettingInfo.bgsong = csettingsDocument["bgsong"].ToString();
+                cSettingInfo.sfront = csettingsDocument["sfront"].ToString();
+                cSettingInfo.sinterior = csettingsDocument["sinterior"].ToString();
+
+                MainScreen.instance.InitCSettingObjects(cSettingInfo);
+
+            });
+#else
+        FirebaseWebGL.Scripts.FirebaseBridge.FirebaseFirestore.GetDocument("Users/" + userInfo.userId + "/csettings", "csettings_doc", gameObject.name, "OnLoadCSettingInfoRequestSuccess", "");
+#endif
+
+    }
+
+    public void OnLoadCSettingInfoRequestSuccess(string jsonData)
+    {
+        CSettingInfo cSettingInfo = JsonConvert.DeserializeObject<CSettingInfo>(jsonData);
+        MainScreen.instance.InitCSettingObjects(cSettingInfo);
     }
 
     //Load All Objects related to user in firestore
     public void LoadObjectsByFirestore()
     {
         List<ObjectInfo> objectList = new List<ObjectInfo>();
-        
+#if !UNITY_WEBGL || UNITY_EDITOR
         mFirebaseFireStore.Collection("Users")
             .Document(userInfo.userId)
             .Collection("Objects")
@@ -233,39 +234,19 @@ public class DBManager
 
                 foreach (DocumentSnapshot documentSnapshot in querySnapShot.Documents)
                 {
-                    Dictionary<string, Object> objData = documentSnapshot.ToDictionary();
-                    ObjectType objectType = (ObjectType)int.Parse(objData["object_type"].ToString());
-                    ObjectInfo objectInfo;
-                    switch(objectType)
-                    {                        
-                        case ObjectType.Image:
-                            objectInfo = new ImageObjectInfo();
-                            ImageObjectInfo imageObjectInfo = (ImageObjectInfo)objectInfo;
-                            imageObjectInfo.name = objData["name"].ToString();
-                            imageObjectInfo.description = objData["description"].ToString();
-                            imageObjectInfo.price = float.Parse(objData["price"].ToString());
-                            imageObjectInfo.webSiteUrl = objData["website_url"].ToString();
-                            imageObjectInfo.imageUrl = objData["image_url"].ToString();
-                            break;
-                        case ObjectType.Video:
-                            objectInfo = new VideoObjectInfo();
-                            VideoObjectInfo vidoObjectInfo = (VideoObjectInfo)objectInfo;
-                            vidoObjectInfo.name = objData["name"].ToString();
-                            vidoObjectInfo.description = objData["description"].ToString();
-                            vidoObjectInfo.price = float.Parse(objData["price"].ToString());
-                            vidoObjectInfo.webSiteUrl = objData["website_url"].ToString();
-                            vidoObjectInfo.videoUrl = objData["video_url"].ToString();
-                            break;
-                        default:
-                            objectInfo = new ObjectInfo();
-                            break;
-                    }
+                    Dictionary<string, System.Object> objData = documentSnapshot.ToDictionary();
+                    ObjectInfo objectInfo = new ObjectInfo();
+                    objectInfo.name = objData["name"].ToString();
+                    objectInfo.description = objData["description"].ToString();
+                    objectInfo.price = float.Parse(objData["price"].ToString());
+                    objectInfo.webSiteUrl = objData["webSiteUrl"].ToString();
+                    objectInfo.dataUrl = objData["dataUrl"].ToString();                    
                     objectInfo.objectId = documentSnapshot.Id;
-                    objectInfo.objectType = (ObjectType)int.Parse(objData["object_type"].ToString());
-                    objectInfo.prefabName = objData["prefab_name"].ToString();
+                    objectInfo.objectType = (ObjectType)int.Parse(objData["objectType"].ToString());
+                    objectInfo.prefabName = objData["prefabName"].ToString();
                     objectInfo.position = objData["position"].ToString();
                     objectInfo.rotation = objData["rotation"].ToString();
-                    objectInfo.scale = objData["scale"].ToString();                  
+                    objectInfo.scale = objData["scale"].ToString();
 
                     objectList.Add(objectInfo);
                 }
@@ -273,69 +254,15 @@ public class DBManager
                 MainScreen.instance.InitObjects(objectList);
 
             });
+#else
+        FirebaseWebGL.Scripts.FirebaseBridge.FirebaseFirestore.GetDocumentsInCollection("Users/" + userInfo.userId + "/Objects", gameObject.name, "OnLoadObjectRequestSuccess", "");        
+#endif
+
     }
 
-    //Load All Objects related to user in realtime
-    public void LoadObjects()
+    public void OnLoadObjectRequestSuccess(string jsonData)
     {
-        List<ObjectInfo> objectList = new List<ObjectInfo>();
-        mFireBaseDatabase
-            .GetReference("Objects/" + userInfo.userId)
-            .GetValueAsync().ContinueWith(task => {
-                if (task.IsFaulted)
-                {
-
-                }
-                else if (task.IsCompleted)
-                {
-                    DataSnapshot snapshot = task.Result;
-                    Dictionary<string, Object> objectsData = (Dictionary<string, Object>)snapshot.GetValue(true);
-                    foreach (var obj in objectsData)
-                    {
-                        Dictionary<string, Object> objData = (Dictionary<string, Object>)obj.Value;
-                        //ObjectInfo objectInfo = new ObjectInfo(obj.Key, objData["prefab_name"].ToString(), objData["position"].ToString(), objData["rotation"].ToString(), objData["scale"].ToString());
-                        //objectList.Add(objectInfo);
-                    }
-
-                    UIManager.instance.EnqueueAction(() => {
-                        MainScreen.instance.InitObjects(objectList);
-                    });
-                }
-
-            });
+        List<ObjectInfo> objectList = JsonConvert.DeserializeObject<List<ObjectInfo>>(jsonData);       
+        MainScreen.instance.InitObjects(objectList);
     }
-    /*public void WriteUserData(string username, string email)
-    {        
-        string key = mDatabase.Push().Key;
-        UserInfo user = new UserInfo(username, email);
-
-        Dictionary<string, Object> entryValues = user.ToDictionary();
-        Dictionary<string, Object> childUpdates = new Dictionary<string, Object>();
-        childUpdates["users/" + key] = entryValues;
-        mDatabase.UpdateChildrenAsync(childUpdates);
-    }*/
-
-   /* public void RetrieveUserData()
-    {
-        List<UserInfo> userList = new List<UserInfo>();
-        mFireBaseDatabase
-            .GetReference("users")
-            .GetValueAsync().ContinueWith(task => {
-                if (task.IsFaulted)
-                {
-                        
-                }else if (task.IsCompleted)
-                {
-                    DataSnapshot snapshot = task.Result;
-                    Dictionary<string, Object> usersData = (Dictionary<string, Object>)snapshot.GetValue(true);                    
-                    foreach (var user in usersData)
-                    {
-                        Dictionary<string, Object> userData = (Dictionary<string, Object>)user.Value;
-                        UserInfo tmpUser = new UserInfo(userData["username"].ToString(), userData["email"].ToString());
-                        userList.Add(tmpUser);
-                    }
-                }
-
-            });
-    }*/
 }

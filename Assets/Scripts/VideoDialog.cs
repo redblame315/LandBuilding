@@ -37,12 +37,12 @@ public class VideoDialog : MonoBehaviour
     //appy and save settings to the object in the scene
     public void Apply()
     {
-        VideoObjectInfo videoObjectInfo = new VideoObjectInfo();
+        ObjectInfo videoObjectInfo = new ObjectInfo();
         videoObjectInfo.name = nameInput.value;
         videoObjectInfo.description = descriptionInput.value;        
         videoObjectInfo.price = float.Parse(priceInput.value == "" ? "0" : priceInput.value);
         videoObjectInfo.webSiteUrl = webSiteInput.value;
-        videoObjectInfo.videoUrl = videoInput.value;
+        videoObjectInfo.dataUrl = videoInput.value;
         videoObject.InitVideoObject(videoObjectInfo);
     }
 }
