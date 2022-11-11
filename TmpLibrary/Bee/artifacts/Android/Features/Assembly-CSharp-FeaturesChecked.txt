@@ -1,3 +1,0 @@
-UnityEngine.WWW
-UnityEngine.Input::GetTouch
-UnityEngine.Input::get_touchCount

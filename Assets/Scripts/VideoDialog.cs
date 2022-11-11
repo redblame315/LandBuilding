@@ -9,7 +9,6 @@ public class VideoDialog : MonoBehaviour
     public UIInput priceInput;
     public UIInput webSiteInput;
     public UIInput videoInput;
-
     VideoObject videoObject;
     // Start is called before the first frame update
     void Start()
@@ -32,6 +31,7 @@ public class VideoDialog : MonoBehaviour
         priceInput.value = _videoObject.price.ToString();
         webSiteInput.value = _videoObject.webSiteUrl;
         videoInput.value = _videoObject.videoUrl;
+
     }
 
     //appy and save settings to the object in the scene

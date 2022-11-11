@@ -47,7 +47,7 @@ public class UIDragDropItem : MonoBehaviour
 	/// <summary>
 	/// Cache the transform.
 	/// </summary>
-
+	public static bool bDraggingNow = false;
 	protected virtual void Start ()
 	{
 		mTrans = transform;
@@ -116,7 +116,8 @@ public class UIDragDropItem : MonoBehaviour
 
 	void OnDrag (Vector2 delta)
 	{
-		if (!enabled || mTouchID != UICamera.currentTouchID) return;
+		bDraggingNow = true;
+		if (!enabled || mTouchID != UICamera.currentTouchID) return;		
 		OnDragDropMove((Vector3)delta * mRoot.pixelSizeAdjustment);
 	}
 
@@ -126,7 +127,8 @@ public class UIDragDropItem : MonoBehaviour
 
 	void OnDragEnd ()
 	{
-		if (!enabled || mTouchID != UICamera.currentTouchID) return;
+		bDraggingNow = false;
+		if (!enabled || mTouchID != UICamera.currentTouchID) return;		
 		OnDragDropRelease(UICamera.hoveredObject);
 	}
 

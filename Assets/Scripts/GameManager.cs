@@ -7,7 +7,13 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null;
     DBManager dbManager = null;
     public bool bStart = false;
+    [HideInInspector]
     public GameObject curPrefabObject = null;
+
+    public bool forAdmin = true;
+    public string adminUserId = "aman";
+    public string adminUserName = "aman";
+
     private void Awake()
     {
         dbManager = new DBManager();

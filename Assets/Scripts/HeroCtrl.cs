@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum HeroPosState { Front, Interior}
 public class HeroCtrl : MonoBehaviour
 {
     public static HeroCtrl instance = null;
     public VariableJoystick joystick;
     public float fMoveSpeed = 3f;
     public CharacterController characterController;
+    public HeroPosState heroPosState = HeroPosState.Front;
     Vector3 direction;
     Vector3 oldPosition;
 

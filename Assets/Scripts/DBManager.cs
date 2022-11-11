@@ -47,7 +47,7 @@ public class ObjectInfo
     public string position;
     public string rotation;
     public string scale;
-
+    public int posState;
     public string name = "";
     public string description = "";
     public float price = 0;
@@ -88,7 +88,7 @@ public class DBManager : MonoBehaviour
         dbManager = this;
 
 #if !UNITY_WEBGL || UNITY_EDITOR
-        mFireBaseDatabase = FirebaseDatabase.GetInstance("https://landbuilding-5644c-default-rtdb.firebaseio.com");
+        //mFireBaseDatabase = FirebaseDatabase.GetInstance("https://landbuilding-5644c-default-rtdb.firebaseio.com");
         mFirebaseFireStore = FirebaseFirestore.DefaultInstance;
         mDatabase = mFireBaseDatabase.RootReference;
 #endif
@@ -170,6 +170,7 @@ public class DBManager : MonoBehaviour
         entryValues["position"] = objectInfo.position;
         entryValues["rotation"] = objectInfo.rotation;
         entryValues["scale"] = objectInfo.scale;
+        entryValues["posState"] = objectInfo.posState;
         entryValues["name"] = objectInfo.name;
         entryValues["description"] = objectInfo.description;
         entryValues["price"] = objectInfo.price;
@@ -247,6 +248,7 @@ public class DBManager : MonoBehaviour
                     objectInfo.position = objData["position"].ToString();
                     objectInfo.rotation = objData["rotation"].ToString();
                     objectInfo.scale = objData["scale"].ToString();
+                    objectInfo.posState = int.Parse(objData["posState"].ToString());
 
                     objectList.Add(objectInfo);
                 }

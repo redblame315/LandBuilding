@@ -42,6 +42,7 @@ public class HeroCamera : MonoBehaviour
     float finalDist;
 
 	public VariableJoystick joystick;
+	public VariableJoystick moveJoystick;
 	public CamInput camInput;
 	float fHeadBoneInitHeight = 0;
 	bool bCanRotate = false;
@@ -112,14 +113,17 @@ public class HeroCamera : MonoBehaviour
     	}		*/
 
 		bCanRotate = false;
-		if (Input.GetMouseButton(1) || joystick.Horizontal != 0 || joystick.Vertical != 0)
+		if (moveJoystick.Horizontal != 0 || moveJoystick.Vertical != 0)
+			UIManager.instance.bBusy = true;
+
+		if ((!UIDragDropItem.bDraggingNow && !UIManager.instance.bBusy && Input.GetMouseButton(0)) || Input.GetMouseButton(1) || joystick.Horizontal != 0 || joystick.Vertical != 0)
 		{
-			if (joystick.Horizontal != 0)
+			/*if (joystick.Horizontal != 0)
 				camInput.mX = joystick.Horizontal;
 
 			if (joystick.Vertical != 0)
 				camInput.mY = joystick.Vertical;
-
+			*/
 			bCanRotate = true;
 		}
 		// Camera states
@@ -135,7 +139,8 @@ public class HeroCamera : MonoBehaviour
 				Orbit();
 				break;
 		}
-		
+
+		UIManager.instance.bBusy = false;
 	}
 
 	//FPS Camera of Hero

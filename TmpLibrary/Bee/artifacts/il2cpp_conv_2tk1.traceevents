@@ -1,8 +1,0 @@
-{ "pid": "il2cpp_in_graph", "ph":"M", "name": "process_name", "args": {"name": "il2cpp_in_graph"} },
-{ "pid": "il2cpp_in_graph", "ph":"M", "name": "process_sort_index", "args": {"sort_index": 2} },
-{ "pid": "il2cpp_in_graph", "tid": 1, "ph":"M", "name": "thread_name", "args": {"name": "Main thread"} },
-{ "pid": "il2cpp_in_graph", "tid": 1,"ts": 1667655846021463,"dur": 408823, "ph":"X", "name": "il2cpp.exe"},
-{ "pid": "il2cpp_in_graph", "tid": 1,"ts": 1667655846047084,"dur": 84486, "ph":"X", "name": "ConvertAssemblies"},
-{ "pid": "il2cpp_in_graph", "tid": 1,"ts": 1667655846080985,"dur": 45695, "ph":"X", "name": "InitializePhase"},
-{ "pid": "il2cpp_in_graph", "tid": 1,"ts": 1667655846098219,"dur": 26149, "ph":"X", "name": "LoadDeferred"},
-{ "pid": "il2cpp_in_graph", "tid": 1,"ts": 1667655846131584,"dur": 55773, "ph":"X", "name": "Write Analytics"},

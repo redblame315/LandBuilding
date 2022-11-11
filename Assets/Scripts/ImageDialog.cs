@@ -10,7 +10,6 @@ public class ImageDialog : MonoBehaviour
     public UIInput priceInput;
     public UIInput webSiteInput;
     public UIInput imageInput;
-
     ImageObject imageObject;
     // Start is called before the first frame update
     void Start()

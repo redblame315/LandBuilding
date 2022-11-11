@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     public UIScreen signupScreen;
     public UIScreen loginScreen;
     public UIScreen mainUIScreen;
+    public bool bBusy = false;
     private UserInfo userInfo;
     private GameManager gameManager;
     private Queue<Action> _actionQueue = new Queue<Action>();
@@ -21,7 +22,16 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        loginScreen.Focus();
+        if (GameManager.instance.forAdmin)
+            loginScreen.Focus();
+        else
+        {
+            UserInfo userInfo = DBManager.Instance().userInfo;
+            userInfo.userId = GameManager.instance.adminUserId;
+            userInfo.username = GameManager.instance.adminUserName;
+            mainUIScreen.Focus();
+        }
+            
     }
 
     // Update is called once per frame

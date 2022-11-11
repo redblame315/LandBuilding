@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id,@string/default_web_client_id">
-  <string name="gcm_defaultSenderId" translatable="false">1098306921307</string>
-  <string name="google_storage_bucket" translatable="false">landbuilding-5644c.appspot.com</string>
-  <string name="project_id" translatable="false">landbuilding-5644c</string>
-  <string name="google_api_key" translatable="false">AIzaSyDTiTf3wNmpWYMBfAAUNw6ZWgK1FHNh9fI</string>
-  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDTiTf3wNmpWYMBfAAUNw6ZWgK1FHNh9fI</string>
-  <string name="google_app_id" translatable="false">1:1098306921307:android:b72e9e8a0d16a89e23f07e</string>
-  <string name="default_web_client_id" translatable="false">1098306921307-68si9usvs5l1oreh1qmbbaen7qk9qbm1.apps.googleusercontent.com</string>
+  <string name="gcm_defaultSenderId" translatable="false">25921162608</string>
+  <string name="google_storage_bucket" translatable="false">landbuilding-30282.appspot.com</string>
+  <string name="project_id" translatable="false">landbuilding-30282</string>
+  <string name="google_api_key" translatable="false">AIzaSyBS4m_LFe2uDYyhd1v8ki3FV1IFSaZKS2M</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBS4m_LFe2uDYyhd1v8ki3FV1IFSaZKS2M</string>
+  <string name="google_app_id" translatable="false">1:25921162608:android:b3da431d9ba59587bd53b5</string>
+  <string name="default_web_client_id" translatable="false">25921162608-q3cdclq4gqe0tv54d1n86p7sqh4df7bn.apps.googleusercontent.com</string>
 </resources>

@@ -20,6 +20,7 @@ public class TransformDialog : MonoBehaviour
     public UIInput scaleZInput;
 
     public bool isBusy = false;
+    public GameObject applyButton;
 
     Transform targetTransform;
     string prefabName;
@@ -73,6 +74,7 @@ public class TransformDialog : MonoBehaviour
             videoDialog.Init(videoObject);
         }
 
+        applyButton.SetActive(GameManager.instance.forAdmin);
         SetVisible(true);
 
         isBusy = false;
@@ -134,7 +136,7 @@ public class TransformDialog : MonoBehaviour
         objectInfo.position = JsonUtility.ToJson(targetTransform.localPosition);
         objectInfo.rotation = JsonUtility.ToJson(targetTransform.localEulerAngles);
         objectInfo.scale = JsonUtility.ToJson(targetTransform.localScale);
-
+        objectInfo.posState = (int)HeroCtrl.instance.heroPosState;
         //save setting info into firestore
         DBManager.Instance().SaveObjectByFireStore(objectInfo);
         SetVisible(false);
