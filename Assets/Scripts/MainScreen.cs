@@ -36,11 +36,6 @@ public class MainScreen : UIScreen
     {
         //Show the user's info
         landTitleLabel.text = DBManager.Instance().userInfo.username + "'s Land";
-        
-            
-
-
-
         //Load objects from firestore databse
         DBManager.Instance().LoadCSettingInfo();
     }
@@ -76,6 +71,7 @@ public class MainScreen : UIScreen
 
         if (GameManager.instance.forAdmin)
         {
+            headBoneHeightSlider.gameObject.SetActive(true);
             prefabScrollBar.SetActive(true);
             userInfoObj.SetActive(true);
         }
@@ -124,6 +120,8 @@ public class MainScreen : UIScreen
         if(HeroCamera.instance)
         {
             HeroCamera.instance.ChangeHeadBonePosition(headBoneHeightSlider.value);
+            UILabel heightLabel = headBoneHeightSlider.gameObject.GetComponentInChildren<UILabel>();
+            heightLabel.text = string.Format("{0:0.00}", headBoneHeightSlider.value);
             UIManager.instance.bBusy = true;
         }
             
@@ -145,5 +143,4 @@ public class MainScreen : UIScreen
         SoundManager.instance.SetBackgroundVolume(DBManager.Instance().cSettingInfo.bgvolume);
         SoundManager.instance.PlayBackgroundSound(backgroundAudioClip);
     }
-
 }
