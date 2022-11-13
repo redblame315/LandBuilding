@@ -21,6 +21,7 @@ public class SoundManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        backgroundAudioSource = gameObject.GetComponent<AudioSource>();
         effectAudioSourceArray = new AudioSource[effectAudioClipArray.Length];
         for (int i = 0; i < effectAudioClipArray.Length; i++)
         {
@@ -30,12 +31,7 @@ public class SoundManager : MonoBehaviour
             audioSource.playOnAwake = false;
 
             effectAudioSourceArray[i] = audioSource;
-        }
-
-        backgroundAudioSource = gameObject.AddComponent<AudioSource>();
-        backgroundAudioSource.loop = true;
-        backgroundAudioSource.volume = 1;
-        backgroundAudioSource.playOnAwake = false;
+        }       
     }
 
     // Update is called once per frame
@@ -53,5 +49,10 @@ public class SoundManager : MonoBehaviour
     {
         backgroundAudioSource.clip = clip;
         backgroundAudioSource.Play();
+    }
+
+    public void SetBackgroundVolume(float volume)
+    {
+        backgroundAudioSource.volume = volume;
     }
 }

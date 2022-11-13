@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //Transfrom Dialog related to the object transform
-public class TransformDialog : MonoBehaviour
+public class TransformDialog : Dialog
 {
     public static TransformDialog instance = null;
     public UIInput positionXInput;

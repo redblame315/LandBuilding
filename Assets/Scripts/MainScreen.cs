@@ -36,14 +36,10 @@ public class MainScreen : UIScreen
     {
         //Show the user's info
         landTitleLabel.text = DBManager.Instance().userInfo.username + "'s Land";
-        //Show JoySticks for mobile
-        joyStickCanvas.SetActive(true);
+        
+            
 
-        if (GameManager.instance.forAdmin)
-        {
-            prefabScrollBar.SetActive(true);
-            userInfoObj.SetActive(true);
-        }
+
 
         //Load objects from firestore databse
         DBManager.Instance().LoadCSettingInfo();
@@ -78,8 +74,13 @@ public class MainScreen : UIScreen
         heroCtrl.gameObject.SetActive(true);
         HeroCamera.instance.InitHeroCam();        
 
-        AudioClip backgroundAudioClip = Resources.Load("Audio/" + cSettingInfo.bgsong) as AudioClip;
-        SoundManager.instance.PlayBackgroundSound(backgroundAudioClip);
+        if (GameManager.instance.forAdmin)
+        {
+            prefabScrollBar.SetActive(true);
+            userInfoObj.SetActive(true);
+        }
+        else
+            joyStickCanvas.SetActive(true); //Show JoySticks for mobile
 
         DBManager.Instance().LoadObjectsByFirestore();
     }
@@ -138,7 +139,11 @@ public class MainScreen : UIScreen
         HeroCtrl.instance.heroPosState = HeroPosState.Interior;
         HeroCamera.instance.InitHeroCam();
         interiorParentTransform.gameObject.SetActive(true);
-        frontParentTransform.gameObject.SetActive(false);       
+        frontParentTransform.gameObject.SetActive(false);
+
+        AudioClip backgroundAudioClip = Resources.Load("Audio/" + DBManager.Instance().cSettingInfo.bgsong) as AudioClip;
+        SoundManager.instance.SetBackgroundVolume(DBManager.Instance().cSettingInfo.bgvolume);
+        SoundManager.instance.PlayBackgroundSound(backgroundAudioClip);
     }
 
 }

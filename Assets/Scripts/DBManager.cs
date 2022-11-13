@@ -62,6 +62,7 @@ public class ObjectInfo
 
 public class CSettingInfo
 {
+    public float bgvolume = 1f;
     public string bgsong = "";
     public string sfront = "";
     public string sinterior = "";
@@ -81,6 +82,7 @@ public class DBManager : MonoBehaviour
     FirebaseFirestore mFirebaseFireStore;
 #endif
     public UserInfo userInfo = new UserInfo();
+    public CSettingInfo cSettingInfo = new CSettingInfo();
 
     string curUserId;
     private void Awake()
@@ -90,7 +92,7 @@ public class DBManager : MonoBehaviour
 #if !UNITY_WEBGL || UNITY_EDITOR
         //mFireBaseDatabase = FirebaseDatabase.GetInstance("https://landbuilding-5644c-default-rtdb.firebaseio.com");
         mFirebaseFireStore = FirebaseFirestore.DefaultInstance;
-        mDatabase = mFireBaseDatabase.RootReference;
+        //mDatabase = mFireBaseDatabase.RootReference;
 #endif
     }
 
@@ -200,13 +202,13 @@ public class DBManager : MonoBehaviour
             .Collection("csettings")
             .Document("csettings_doc")
             .GetSnapshotAsync().ContinueWithOnMainThread(task => {
-                CSettingInfo cSettingInfo = new CSettingInfo();
                 DocumentSnapshot documentSnapshot = task.Result;
                 Dictionary<string, System.Object> csettingsDocument = documentSnapshot.ToDictionary();
+                if(csettingsDocument.ContainsKey("bgvolume"))
+                    cSettingInfo.bgvolume = float.Parse(csettingsDocument["bgvolume"].ToString());
                 cSettingInfo.bgsong = csettingsDocument["bgsong"].ToString();
                 cSettingInfo.sfront = csettingsDocument["sfront"].ToString();
                 cSettingInfo.sinterior = csettingsDocument["sinterior"].ToString();
-
                 MainScreen.instance.InitCSettingObjects(cSettingInfo);
 
             });

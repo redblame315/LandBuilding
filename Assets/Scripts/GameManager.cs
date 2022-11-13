@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public bool bStart = false;
     [HideInInspector]
     public GameObject curPrefabObject = null;
-
+      
     public bool forAdmin = true;
     public string adminUserId = "aman";
     public string adminUserName = "aman";
@@ -67,12 +67,28 @@ public class GameManager : MonoBehaviour
                 string prefabName = "";
                 if (subNameList.Length > 0)
                     prefabName = subNameList[0];
-                if(hitObj.tag == "NormalObject")
-                    MainScreen.instance.normalObjectInfoDialog.SetTarget(hitObj.transform, prefabName);
-                else if(hitObj.tag == "ImageObject")
-                    MainScreen.instance.imageObjectInfoDialog.SetTarget(hitObj.transform, prefabName);
-                else if(hitObj.tag == "VideoObject")
-                    MainScreen.instance.videoObjectInfoDialog.SetTarget(hitObj.transform, prefabName);
+                if(forAdmin)
+                {
+                    if (hitObj.tag == "NormalObject")
+                        MainScreen.instance.normalObjectInfoDialog.SetTarget(hitObj.transform, prefabName);
+                    else if (hitObj.tag == "ImageObject")
+                        MainScreen.instance.imageObjectInfoDialog.SetTarget(hitObj.transform, prefabName);
+                    else if (hitObj.tag == "VideoObject")
+                        MainScreen.instance.videoObjectInfoDialog.SetTarget(hitObj.transform, prefabName);
+                }else
+                {
+                    if (hitObj.tag == "ImageObject")
+                    {
+                        ImageObject imageObject = hitObj.GetComponent<ImageObject>();
+                        GuestImageDIalog.instance.Init(imageObject);
+                    }
+                    else if (hitObj.tag == "VideoObject")
+                    {
+                        VideoObject videoObject = hitObj.GetComponent<VideoObject>();
+                        GuestVideoDIalog.instance.Init(videoObject);
+                    }
+                }
+                
             }
             curPrefabObject = null;
         }
