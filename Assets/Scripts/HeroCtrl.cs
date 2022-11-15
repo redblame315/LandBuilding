@@ -27,7 +27,7 @@ public class HeroCtrl : MonoBehaviour
     void Update()
     {
         //Determine move direction
-        if (TransformDialog.instance && TransformDialog.instance.GetVisible())
+        if (MainScreen.instance.curTransformDialog != null && MainScreen.instance.curTransformDialog.GetVisible())
             return;
 
         float horizontal = Input.GetAxis("Horizontal");
@@ -60,7 +60,7 @@ public class HeroCtrl : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (TransformDialog.instance.GetVisible())
+        if (MainScreen.instance.curTransformDialog != null && MainScreen.instance.curTransformDialog.GetVisible())
             return;
 
         Vector3 dir = transform.position - oldPosition;

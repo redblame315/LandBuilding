@@ -18,12 +18,12 @@ public class Dialog : MonoBehaviour
 
     public virtual void SetVisible(bool visible)
     {
-        transform.localScale = visible ? Vector3.one : Vector3.zero;
+        gameObject.SetActive(visible);
     }
 
     public bool GetVisible()
     {
-        return transform.localScale.x == 1;
+        return gameObject.activeSelf;
     }
 
     public void CloseButtonClicked()

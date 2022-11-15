@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 //Image Info Dialog
 public class ImageDialog : MonoBehaviour
 {
-    public UIInput nameInput;
-    public UIInput descriptionInput;
-    public UIInput priceInput;
-    public UIInput webSiteInput;
-    public UIInput imageInput;
+    public InputField nameInput;
+    public InputField descriptionInput;
+    public InputField priceInput;
+    public InputField webSiteInput;
+    public InputField imageInput;
     ImageObject imageObject;
     // Start is called before the first frame update
     void Start()
@@ -27,22 +28,22 @@ public class ImageDialog : MonoBehaviour
     public void Init(ImageObject _imageObject)
     {
         imageObject = _imageObject;
-        nameInput.value = _imageObject.name;
-        descriptionInput.value = _imageObject.description;
-        priceInput.value = _imageObject.price.ToString();
-        webSiteInput.value = _imageObject.webSiteUrl;
-        imageInput.value = _imageObject.imageUrl;
+        nameInput.text = _imageObject.name;
+        descriptionInput.text = _imageObject.description;
+        priceInput.text = _imageObject.price;
+        webSiteInput.text = _imageObject.webSiteUrl;
+        imageInput.text = _imageObject.imageUrl;
     }
 
     //Save and apply the settings into image object
     public void Apply()
     {
         ObjectInfo imageObjectInfo = new ObjectInfo();
-        imageObjectInfo.name = nameInput.value;
-        imageObjectInfo.description = descriptionInput.value;
-        imageObjectInfo.price = float.Parse(priceInput.value);
-        imageObjectInfo.webSiteUrl = webSiteInput.value;
-        imageObjectInfo.dataUrl = imageInput.value;
+        imageObjectInfo.name = nameInput.text;
+        imageObjectInfo.description = descriptionInput.text;
+        imageObjectInfo.price = priceInput.text;
+        imageObjectInfo.webSiteUrl = webSiteInput.text;
+        imageObjectInfo.dataUrl = imageInput.text;
         imageObject.InitImageObject(imageObjectInfo);
     }
 }

@@ -16,12 +16,12 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        dbManager = new DBManager();
         instance = this;
     }
     // Start is called before the first frame update
     void Start()
     {
+        dbManager = DBManager.Instance();
     }
 
     // Update is called once per frame
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0) && !NGUIMousePoint.bGrabMouse)
         {
-            if (TransformDialog.instance == null || TransformDialog.instance.GetVisible())
+            if (MainScreen.instance.curTransformDialog != null && MainScreen.instance.curTransformDialog.GetVisible())
                 return;
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -70,7 +70,9 @@ public class GameManager : MonoBehaviour
                 if(forAdmin)
                 {
                     if (hitObj.tag == "NormalObject")
+                    {
                         MainScreen.instance.normalObjectInfoDialog.SetTarget(hitObj.transform, prefabName);
+                    }
                     else if (hitObj.tag == "ImageObject")
                         MainScreen.instance.imageObjectInfoDialog.SetTarget(hitObj.transform, prefabName);
                     else if (hitObj.tag == "VideoObject")
@@ -80,12 +82,12 @@ public class GameManager : MonoBehaviour
                     if (hitObj.tag == "ImageObject")
                     {
                         ImageObject imageObject = hitObj.GetComponent<ImageObject>();
-                        GuestImageDIalog.instance.Init(imageObject);
+                        MainScreen.instance.guestImageDialog.Init(imageObject);
                     }
                     else if (hitObj.tag == "VideoObject")
                     {
                         VideoObject videoObject = hitObj.GetComponent<VideoObject>();
-                        GuestVideoDIalog.instance.Init(videoObject);
+                        MainScreen.instance.guestVideoDialog.Init(videoObject);
                     }
                 }
                 

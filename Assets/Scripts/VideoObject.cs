@@ -7,7 +7,7 @@ public class VideoObject : MonoBehaviour
 {
     public string name { get; set; }
     public string description { get; set; }
-    public float price { get; set; }
+    public string price { get; set; }
     public string webSiteUrl { get; set; }
     public string videoUrl { get; set; }
 

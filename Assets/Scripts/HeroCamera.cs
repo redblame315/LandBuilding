@@ -86,7 +86,7 @@ public class HeroCamera : MonoBehaviour
 		if (headBone == null || hero == null)
 			return;
 
-		if (TransformDialog.instance.GetVisible())
+		if (MainScreen.instance.curTransformDialog != null && MainScreen.instance.curTransformDialog.GetVisible())
 			return;
 
 		// Cached Input

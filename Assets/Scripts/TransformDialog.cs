@@ -2,32 +2,30 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 //Transfrom Dialog related to the object transform
 public class TransformDialog : Dialog
 {
-    public static TransformDialog instance = null;
-    public UIInput positionXInput;
-    public UIInput positionYInput;
-    public UIInput positionZInput;
+    public InputField positionXInput;
+    public InputField positionYInput;
+    public InputField positionZInput;
 
-    public UIInput rotationXInput;
-    public UIInput rotationYInput;
-    public UIInput rotationZInput;
+    public InputField rotationXInput;
+    public InputField rotationYInput;
+    public InputField rotationZInput;
 
-    public UIInput scaleXInput;
-    public UIInput scaleYInput;
-    public UIInput scaleZInput;
+    public InputField scaleXInput;
+    public InputField scaleYInput;
+    public InputField scaleZInput;
 
     public bool isBusy = false;
-    public GameObject applyButton;
 
     Transform targetTransform;
     string prefabName;
 
     private void Awake()
     {
-        instance = this;
     }
     // Start is called before the first frame update
     void Start()
@@ -45,6 +43,7 @@ public class TransformDialog : Dialog
     public void SetTarget(Transform _target, string _prefabName)
     {
         isBusy = true;
+        MainScreen.instance.curTransformDialog = this;
         targetTransform = _target;
         prefabName = _prefabName;
 
@@ -74,21 +73,8 @@ public class TransformDialog : Dialog
             videoDialog.Init(videoObject);
         }
 
-        applyButton.SetActive(GameManager.instance.forAdmin);
         SetVisible(true);
-
         isBusy = false;
-    }
-
-    public void SetVisible(bool visible)
-    {
-        instance = this;
-        transform.localScale = visible ? Vector3.one : Vector3.zero;
-    }
-
-    public bool GetVisible()
-    {
-        return transform.localScale.x == 1;
     }
 
     //save button action; apply settings to the object in the scene and save info into firestore
@@ -147,9 +133,9 @@ public class TransformDialog : Dialog
         if (isBusy)
             return;
 
-        float x = float.Parse(positionXInput.value);
-        float y = float.Parse(positionYInput.value);
-        float z = float.Parse(positionZInput.value);
+        float x = float.Parse(String.IsNullOrEmpty(positionXInput.text) ? "0" : positionXInput.text);
+        float y = float.Parse(String.IsNullOrEmpty(positionYInput.text) ? "0" : positionYInput.text);
+        float z = float.Parse(String.IsNullOrEmpty(positionZInput.text) ? "0" : positionZInput.text);
         targetTransform.localPosition = new Vector3(x, y, z);
     }
 
@@ -159,10 +145,10 @@ public class TransformDialog : Dialog
             return;
 
         try
-        {
-            float x = float.Parse(rotationXInput.value);
-            float y = float.Parse(rotationYInput.value);
-            float z = float.Parse(rotationZInput.value);
+        {            
+            float x = float.Parse(String.IsNullOrEmpty(rotationXInput.text) ? "0" : rotationXInput.text);
+            float y = float.Parse(String.IsNullOrEmpty(rotationYInput.text) ? "0" : rotationYInput.text);
+            float z = float.Parse(String.IsNullOrEmpty(rotationZInput.text) ? "0" : rotationZInput.text);
             targetTransform.localEulerAngles = new Vector3(x, y, z);
         }
         catch(Exception e)
@@ -176,10 +162,10 @@ public class TransformDialog : Dialog
     {
         if (isBusy)
             return;
-
-        float x = float.Parse(scaleXInput.value);
-        float y = float.Parse(scaleYInput.value);
-        float z = float.Parse(scaleZInput.value);
+                
+        float x = float.Parse(String.IsNullOrEmpty(scaleXInput.text) ? "0" : scaleXInput.text);
+        float y = float.Parse(String.IsNullOrEmpty(scaleYInput.text) ? "0" : scaleYInput.text);
+        float z = float.Parse(String.IsNullOrEmpty(scaleZInput.text) ? "0" : scaleZInput.text);
         targetTransform.localScale = new Vector3(x, y, z);
     }
 }

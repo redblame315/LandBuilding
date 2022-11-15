@@ -50,7 +50,7 @@ public class ObjectInfo
     public int posState;
     public string name = "";
     public string description = "";
-    public float price = 0;
+    public string price = "";
     public string webSiteUrl = "";
     public string dataUrl = "";
 
@@ -70,6 +70,11 @@ public class CSettingInfo
     public CSettingInfo()
     {
 
+    }
+
+    public CSettingInfo(string _bgsong)
+    {
+        bgsong = _bgsong;
     }
 }
 
@@ -167,6 +172,7 @@ public class DBManager : MonoBehaviour
     public void SaveObjectByFireStore(ObjectInfo objectInfo)
     {        
         Dictionary<string, System.Object> entryValues = new Dictionary<string, System.Object>();
+        entryValues["objectId"] = objectInfo.objectId;
         entryValues["prefabName"] = objectInfo.prefabName;
         entryValues["objectType"] = objectInfo.objectType;
         entryValues["position"] = objectInfo.position;
@@ -241,7 +247,7 @@ public class DBManager : MonoBehaviour
                     ObjectInfo objectInfo = new ObjectInfo();
                     objectInfo.name = objData["name"].ToString();
                     objectInfo.description = objData["description"].ToString();
-                    objectInfo.price = float.Parse(objData["price"].ToString());
+                    objectInfo.price = objData["price"].ToString();
                     objectInfo.webSiteUrl = objData["webSiteUrl"].ToString();
                     objectInfo.dataUrl = objData["dataUrl"].ToString();                    
                     objectInfo.objectId = documentSnapshot.Id;

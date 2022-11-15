@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GuestVideoDIalog : Dialog
 {
-    public static GuestVideoDIalog instance = null;
     public UILabel nameLabel;
     public UILabel descriptionLabel;
     public UILabel priceLabel;
@@ -13,7 +12,6 @@ public class GuestVideoDIalog : Dialog
 
     private void Awake()
     {
-        instance = this;
     }
     // Start is called before the first frame update
     void Start()
@@ -31,7 +29,7 @@ public class GuestVideoDIalog : Dialog
     {
         nameLabel.text = _VideoObject.name;
         descriptionLabel.text = _VideoObject.description;
-        priceLabel.text = _VideoObject.price.ToString();
+        priceLabel.text = _VideoObject.price;
         webSiteUrlLabel.text = _VideoObject.webSiteUrl;
         videoUrlLabel.text = _VideoObject.videoUrl;
         SetVisible(true);

@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class VideoDialog : MonoBehaviour
 {
-    public UIInput nameInput;
-    public UIInput descriptionInput;
-    public UIInput priceInput;
-    public UIInput webSiteInput;
-    public UIInput videoInput;
+    public InputField nameInput;
+    public InputField descriptionInput;
+    public InputField priceInput;
+    public InputField webSiteInput;
+    public InputField videoInput;
     VideoObject videoObject;
     // Start is called before the first frame update
     void Start()
@@ -26,11 +26,11 @@ public class VideoDialog : MonoBehaviour
     public void Init(VideoObject _videoObject)
     {
         videoObject = _videoObject;
-        nameInput.value = _videoObject.name;
-        descriptionInput.value = _videoObject.description;
-        priceInput.value = _videoObject.price.ToString();
-        webSiteInput.value = _videoObject.webSiteUrl;
-        videoInput.value = _videoObject.videoUrl;
+        nameInput.text = _videoObject.name;
+        descriptionInput.text = _videoObject.description;
+        priceInput.text = _videoObject.price;
+        webSiteInput.text = _videoObject.webSiteUrl;
+        videoInput.text = _videoObject.videoUrl;
 
     }
 
@@ -38,11 +38,11 @@ public class VideoDialog : MonoBehaviour
     public void Apply()
     {
         ObjectInfo videoObjectInfo = new ObjectInfo();
-        videoObjectInfo.name = nameInput.value;
-        videoObjectInfo.description = descriptionInput.value;        
-        videoObjectInfo.price = float.Parse(priceInput.value == "" ? "0" : priceInput.value);
-        videoObjectInfo.webSiteUrl = webSiteInput.value;
-        videoObjectInfo.dataUrl = videoInput.value;
+        videoObjectInfo.name = nameInput.text;
+        videoObjectInfo.description = descriptionInput.text;        
+        videoObjectInfo.price = priceInput.text;
+        videoObjectInfo.webSiteUrl = webSiteInput.text;
+        videoObjectInfo.dataUrl = videoInput.text;
         videoObject.InitVideoObject(videoObjectInfo);
     }
 }
