@@ -31,6 +31,17 @@ public class VideoObject : MonoBehaviour
         price = _videoObjectInfo.price;
         webSiteUrl = _videoObjectInfo.webSiteUrl;
         videoUrl = _videoObjectInfo.dataUrl;
+        
+        AudioSource audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.volume = 1.0f;
+        audioSource.maxDistance = 10;
+        audioSource.minDistance = 1;
+        audioSource.pitch = 1;
+        audioSource.rolloffMode = AudioRolloffMode.Linear;
+        videoPlayer.EnableAudioTrack(0, true);
+        videoPlayer.SetTargetAudioSource(0, audioSource);
+        videoPlayer.controlledAudioTrackCount = 1;
         videoPlayer.url = videoUrl;
+        videoPlayer.Play();
     }
 }

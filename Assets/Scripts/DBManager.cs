@@ -226,7 +226,7 @@ public class DBManager : MonoBehaviour
 
     public void OnLoadCSettingInfoRequestSuccess(string jsonData)
     {
-        CSettingInfo cSettingInfo = JsonConvert.DeserializeObject<CSettingInfo>(jsonData);
+        cSettingInfo = JsonConvert.DeserializeObject<CSettingInfo>(jsonData);
         MainScreen.instance.InitCSettingObjects(cSettingInfo);
     }
 

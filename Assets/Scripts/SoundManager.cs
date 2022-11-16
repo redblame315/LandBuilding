@@ -4,13 +4,13 @@ using UnityEngine;
 
 public enum EffectSound { CheckNavPoint }
 
+
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance = null;
     public AudioClip[] effectAudioClipArray;    
 
     AudioSource[] effectAudioSourceArray;
-
     AudioSource backgroundAudioSource;
 
     private void Awake()
@@ -21,7 +21,13 @@ public class SoundManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        backgroundAudioSource = gameObject.GetComponent<AudioSource>();
+        backgroundAudioSource = gameObject.AddComponent<AudioSource>();
+        backgroundAudioSource.rolloffMode = AudioRolloffMode.Linear;
+        backgroundAudioSource.pitch = 1;
+        backgroundAudioSource.minDistance = 1;
+        backgroundAudioSource.maxDistance = 40;
+        backgroundAudioSource.loop = true;
+
         effectAudioSourceArray = new AudioSource[effectAudioClipArray.Length];
         for (int i = 0; i < effectAudioClipArray.Length; i++)
         {
@@ -48,9 +54,9 @@ public class SoundManager : MonoBehaviour
     public void PlayBackgroundSound(AudioClip clip)
     {
         backgroundAudioSource.clip = clip;
-        backgroundAudioSource.Play();
+        backgroundAudioSource.Play();        
     }
-
+    
     public void StopBackgroundSound()
     {
         backgroundAudioSource.Stop();
