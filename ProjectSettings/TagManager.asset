@@ -9,6 +9,7 @@ TagManager:
   - ImageObject
   - VideoObject
   - Front
+  - Interior
   layers:
   - Default
   - TransparentFX

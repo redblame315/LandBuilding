@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteriorEnterQuestionDialog : Dialog
+public class InteriorExitQuestionDialog : Dialog
 {
     // Start is called before the first frame update
     void Start()
@@ -18,7 +18,7 @@ public class InteriorEnterQuestionDialog : Dialog
 
     public void OkButtonClicked()
     {
-        MainScreen.instance.EnterInterior();
+        MainScreen.instance.ExitInterior();
         gameObject.SetActive(false);
     }
 }

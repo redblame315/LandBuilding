@@ -53,9 +53,14 @@ public class HeroCtrl : MonoBehaviour
         
         if (Physics.Raycast(transform.position + Vector3.up, transform.forward, out hit, 1f))
         {
-            MainScreen.instance.enterQuationDialog.gameObject.SetActive(hit.collider.tag == "Front");
-        }else
-            MainScreen.instance.enterQuationDialog.gameObject.SetActive(false);
+            MainScreen.instance.enterQuationDialog.SetVisible(hit.collider.tag == "Front");
+            MainScreen.instance.exitQuationDialog.SetVisible(hit.collider.tag == "Interior");
+        }
+        else
+        {
+            MainScreen.instance.enterQuationDialog.SetVisible(false);
+            MainScreen.instance.exitQuationDialog.SetVisible(false);
+        }
     }
 
     private void LateUpdate()

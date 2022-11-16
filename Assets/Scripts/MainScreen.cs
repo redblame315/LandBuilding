@@ -9,7 +9,9 @@ public class MainScreen : UIScreen
     [HideInInspector]
     public Transform interiorDropSurface;
     public Transform frontDropSurface;
+    
     [HideInInspector]
+    public Transform frontSpawnPoint;
     public Transform interiorSpawnPoint;
     public Transform frontParentTransform;
     public Transform interiorParentTransform;
@@ -27,6 +29,7 @@ public class MainScreen : UIScreen
     public GameObject userInfoObj;
     public HeroCtrl heroCtrl;
     public InteriorEnterQuestionDialog enterQuationDialog;
+    public InteriorExitQuestionDialog exitQuationDialog;
     public UISlider headBoneHeightSlider;
     
 
@@ -62,6 +65,7 @@ public class MainScreen : UIScreen
         GameObject frontPrefab = Resources.Load("Prefabs/front/" + cSettingInfo.sfront) as GameObject;
         GameObject frontObject = Instantiate(frontPrefab) as GameObject;
         frontObject.transform.parent = frontParentTransform;
+        frontSpawnPoint = frontObject.transform.Find("SpawnPoint");
 
         GameObject interiorPrefab = Resources.Load("Prefabs/interior/" + cSettingInfo.sinterior) as GameObject;
         GameObject interiorObject = Instantiate(interiorPrefab) as GameObject;
@@ -75,7 +79,7 @@ public class MainScreen : UIScreen
 
         if (GameManager.instance.forAdmin)
         {
-            headBoneHeightSlider.gameObject.SetActive(true);
+            //headBoneHeightSlider.gameObject.SetActive(true);
             prefabScrollBar.SetActive(true);
             userInfoObj.SetActive(true);
         }
@@ -146,5 +150,21 @@ public class MainScreen : UIScreen
         AudioClip backgroundAudioClip = Resources.Load("Audio/" + DBManager.Instance().cSettingInfo.bgsong) as AudioClip;
         SoundManager.instance.SetBackgroundVolume(DBManager.Instance().cSettingInfo.bgvolume);
         SoundManager.instance.PlayBackgroundSound(backgroundAudioClip);
+    }
+
+    public void ExitInterior()
+    {
+        Transform heroTransform = HeroCtrl.instance.characterController.transform;
+        HeroCtrl.instance.characterController.enabled = false;
+        heroTransform.position = frontSpawnPoint.position;
+        heroTransform.rotation = frontSpawnPoint.rotation;
+        HeroCtrl.instance.transform.rotation = heroTransform.rotation;
+        HeroCtrl.instance.characterController.enabled = true;
+        HeroCtrl.instance.heroPosState = HeroPosState.Interior;
+        HeroCamera.instance.InitHeroCam();
+        interiorParentTransform.gameObject.SetActive(false);
+        frontParentTransform.gameObject.SetActive(true);
+
+        SoundManager.instance.StopBackgroundSound();
     }
 }

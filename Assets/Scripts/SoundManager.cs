@@ -51,6 +51,11 @@ public class SoundManager : MonoBehaviour
         backgroundAudioSource.Play();
     }
 
+    public void StopBackgroundSound()
+    {
+        backgroundAudioSource.Stop();
+
+    }
     public void SetBackgroundVolume(float volume)
     {
         backgroundAudioSource.volume = volume;
