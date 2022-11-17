@@ -22,6 +22,10 @@ public class TransformDialog : Dialog
     public bool isBusy = false;
 
     Transform targetTransform;
+    Vector3 initPos = Vector3.zero;
+    Vector3 initScale = Vector3.one;
+    Vector3 initRotation = Vector3.zero;
+
     string prefabName;
 
     private void Awake()
@@ -45,6 +49,10 @@ public class TransformDialog : Dialog
         isBusy = true;
         MainScreen.instance.curTransformDialog = this;
         targetTransform = _target;
+        initPos = targetTransform.localPosition;
+        initRotation = targetTransform.localEulerAngles;
+        initScale = targetTransform.localScale;
+
         prefabName = _prefabName;
 
         positionXInput.text = targetTransform.localPosition.x.ToString();
@@ -167,5 +175,13 @@ public class TransformDialog : Dialog
         float y = float.Parse(String.IsNullOrEmpty(scaleYInput.text) ? "0" : scaleYInput.text);
         float z = float.Parse(String.IsNullOrEmpty(scaleZInput.text) ? "0" : scaleZInput.text);
         targetTransform.localScale = new Vector3(x, y, z);
+    }
+
+    public void CancelButtonClicked()
+    {
+        targetTransform.localPosition = initPos;
+        targetTransform.localEulerAngles = initRotation;
+        targetTransform.localScale = initScale;
+        CloseButtonClicked();
     }
 }

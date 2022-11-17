@@ -4527,8 +4527,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 265158438}
-        m_TargetAssemblyTypeName: Dialog, Assembly-CSharp
-        m_MethodName: CloseButtonClicked
+        m_TargetAssemblyTypeName: TransformDialog, Assembly-CSharp
+        m_MethodName: CancelButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13228,8 +13228,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1042475139}
-        m_TargetAssemblyTypeName: Dialog, Assembly-CSharp
-        m_MethodName: CloseButtonClicked
+        m_TargetAssemblyTypeName: TransformDialog, Assembly-CSharp
+        m_MethodName: CancelButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -32202,8 +32202,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 87450623}
-        m_TargetAssemblyTypeName: Dialog, Assembly-CSharp
-        m_MethodName: CloseButtonClicked
+        m_TargetAssemblyTypeName: TransformDialog, Assembly-CSharp
+        m_MethodName: CancelButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -44669,7 +44669,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2602440317523246284, guid: 84b5e24d401e30e4f8aac6badfad288c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3411029227935426166, guid: 84b5e24d401e30e4f8aac6badfad288c, type: 3}
       propertyPath: m_RootOrder

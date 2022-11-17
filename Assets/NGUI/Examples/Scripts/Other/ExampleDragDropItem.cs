@@ -23,6 +23,14 @@ public class ExampleDragDropItem : UIDragDropItem
 		if (surface != null)
 		{
 			ExampleDragDropSurface dds = surface.GetComponent<ExampleDragDropSurface>();
+			if(dds == null)
+            {
+				RaycastHit hit;
+				if(Physics.Raycast(UICamera.lastHit.point, -Vector3.up, out hit, 100, 1 << LayerMask.NameToLayer("Ground") ))
+                {
+					dds = hit.collider.gameObject.GetComponent<ExampleDragDropSurface>();
+                }
+            }
 
 			if (dds != null)
 			{
@@ -36,6 +44,7 @@ public class ExampleDragDropItem : UIDragDropItem
 				if (dds.rotatePlacedObject)
 				{
 					trans.rotation = Quaternion.LookRotation(UICamera.lastHit.normal) * Quaternion.Euler(90f, 0f, 0f);
+
 				}
 
 				if(child.tag == "NormalObject")
