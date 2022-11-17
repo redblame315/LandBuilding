@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class GuestVideoDIalog : Dialog
@@ -9,6 +10,9 @@ public class GuestVideoDIalog : Dialog
     public UILabel priceLabel;
     public UILabel webSiteUrlLabel;
     public UILabel videoUrlLabel;
+
+    [DllImport("__Internal")]
+    private static extern void OpenNewTab(string url);
 
     private void Awake()
     {
@@ -33,5 +37,14 @@ public class GuestVideoDIalog : Dialog
         webSiteUrlLabel.text = _VideoObject.webSiteUrl;
         videoUrlLabel.text = _VideoObject.videoUrl;
         SetVisible(true);
+    }
+
+    public void WebSiteLinkClicked()
+    {
+
+#if !UNITY_EDITOR && UNITY_WEBGL
+        if(!string.IsNullOrEmpty(webSiteUrlLabel.text))
+            OpenNewTab(webSiteUrlLabel.text);        
+#endif
     }
 }

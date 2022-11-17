@@ -22,13 +22,16 @@ public class ExampleDragDropItem : UIDragDropItem
 	{
 		if (surface != null)
 		{
+			RaycastHit hit;
+			float lastHitPosY = -1f;
 			ExampleDragDropSurface dds = surface.GetComponent<ExampleDragDropSurface>();
 			if(dds == null)
-            {
-				RaycastHit hit;
+            {				
 				if(Physics.Raycast(UICamera.lastHit.point, -Vector3.up, out hit, 100, 1 << LayerMask.NameToLayer("Ground") ))
                 {
 					dds = hit.collider.gameObject.GetComponent<ExampleDragDropSurface>();
+					lastHitPosY = UICamera.lastHit.point.y;
+					UICamera.lastHit = hit;
                 }
             }
 
@@ -39,12 +42,20 @@ public class ExampleDragDropItem : UIDragDropItem
 				child.name = prefab.name + "_" + Mathf.RoundToInt(Time.time * 1000);
 				child.layer = LayerMask.NameToLayer("Object");
 				Transform trans = child.transform;
-				trans.position = UICamera.lastHit.point;
+				Vector3 lastHitPos = UICamera.lastHit.point;
+				if (lastHitPosY == -1)
+					trans.position = lastHitPos;
+				else
+					trans.position = new Vector3(lastHitPos.x, lastHitPosY, lastHitPos.z);
 
 				if (dds.rotatePlacedObject)
 				{
-					trans.rotation = Quaternion.LookRotation(UICamera.lastHit.normal) * Quaternion.Euler(90f, 0f, 0f);
-
+					if(HeroCtrl.instance)
+                    {
+						Quaternion heroLookRotation = Quaternion.LookRotation(-HeroCtrl.instance.transform.forward);
+						trans.rotation = Quaternion.LookRotation(UICamera.lastHit.normal) * Quaternion.Euler(90f, 0f, 0f) * heroLookRotation;
+					}else
+						trans.rotation = Quaternion.LookRotation(UICamera.lastHit.normal) * Quaternion.Euler(90f, 0f, 0f);
 				}
 
 				if(MainScreen.instance)

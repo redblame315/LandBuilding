@@ -25,8 +25,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2287030057788716870}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.004, y: 0.26, z: 0}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0.004, y: 0.26, z: 0.008}
   m_LocalScale: {x: 0.001, y: 0.46, z: 0.86}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -130,7 +130,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.02, y: 0.5, z: 0.9}
+  m_Size: {x: 0.9, y: 0.5, z: 0.02}
   m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!328 &281906395876532794
 VideoPlayer:
@@ -205,7 +205,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 99202d07f09af2d47bc45a8dadce1999, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 99202d07f09af2d47bc45a8dadce1999, type: 3}
       propertyPath: m_LocalRotation.x
@@ -213,7 +213,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 99202d07f09af2d47bc45a8dadce1999, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 99202d07f09af2d47bc45a8dadce1999, type: 3}
       propertyPath: m_LocalRotation.z

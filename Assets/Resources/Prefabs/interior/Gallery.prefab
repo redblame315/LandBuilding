@@ -1230,4 +1230,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c645c85ed4826348b5000ddccd0f936, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotatePlacedObject: 0
+  rotatePlacedObject: 1
