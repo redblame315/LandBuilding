@@ -47,14 +47,18 @@ public class ExampleDragDropItem : UIDragDropItem
 
 				}
 
-				if(child.tag == "NormalObject")
-				{
-					MainScreen.instance.normalObjectInfoDialog.SetTarget(trans, prefab.name);
+				if(MainScreen.instance)
+                {
+					if (child.tag == "NormalObject")
+					{
+						MainScreen.instance.normalObjectInfoDialog.SetTarget(trans, prefab.name);
+					}
+					else if (child.tag == "ImageObject")
+						MainScreen.instance.imageObjectInfoDialog.SetTarget(trans, prefab.name);
+					else if (child.tag == "VideoObject")
+						MainScreen.instance.videoObjectInfoDialog.SetTarget(trans, prefab.name);
 				}
-				else if(child.tag == "ImageObject")
-					MainScreen.instance.imageObjectInfoDialog.SetTarget(trans, prefab.name);
-				else if(child.tag == "VideoObject")
-					MainScreen.instance.videoObjectInfoDialog.SetTarget(trans, prefab.name);
+				
 				// Destroy this icon as it's no longer needed
 				NGUITools.Destroy(gameObject);
 

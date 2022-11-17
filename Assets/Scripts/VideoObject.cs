@@ -31,7 +31,10 @@ public class VideoObject : MonoBehaviour
         price = _videoObjectInfo.price;
         webSiteUrl = _videoObjectInfo.webSiteUrl;
         videoUrl = _videoObjectInfo.dataUrl;
-        
+
+        if (string.IsNullOrEmpty(videoUrl))
+            return;
+
         AudioSource audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.volume = 1.0f;
         audioSource.maxDistance = 10;

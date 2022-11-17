@@ -33,6 +33,10 @@ public class ImageObject : MonoBehaviour
         price = _imageObjectInfo.price;
         webSiteUrl = _imageObjectInfo.webSiteUrl;
         imageUrl = _imageObjectInfo.dataUrl;
+
+        if (string.IsNullOrEmpty(imageUrl))
+            return;
+
         StartCoroutine(DownloadImage(imageUrl));
     }
 
