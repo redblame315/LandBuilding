@@ -44,6 +44,7 @@ public class VideoObject : MonoBehaviour
         videoPlayer.EnableAudioTrack(0, true);
         videoPlayer.SetTargetAudioSource(0, audioSource);
         videoPlayer.controlledAudioTrackCount = 1;
+        videoPlayer.isLooping = true;
         videoPlayer.url = videoUrl;
         videoPlayer.Play();
     }
