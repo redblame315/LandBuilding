@@ -86,8 +86,8 @@ public class HeroCamera : MonoBehaviour
 		if (headBone == null || hero == null)
 			return;
 
-		if (MainScreen.instance.curTransformDialog != null && MainScreen.instance.curTransformDialog.GetVisible())
-			return;
+		//if (MainScreen.instance.curTransformDialog != null && MainScreen.instance.curTransformDialog.GetVisible())
+		//	return;
 
 		// Cached Input
 		camInput.doFPS = Input.GetKeyDown ("1");

@@ -120,8 +120,12 @@ public class DBManager : MonoBehaviour
             .GetSnapshotAsync()
             .ContinueWithOnMainThread(task => {
                 DocumentSnapshot snapshot = task.Result;
-                Dictionary<string, object> userData = snapshot.ToDictionary();                
-                if (password == userData["password"].ToString())
+                Dictionary<string, object> userData = snapshot.ToDictionary();    
+                if(string.IsNullOrEmpty(password))
+                {
+                    UIManager.instance.mainUIScreen.Focus();
+                }
+                else if (password == userData["password"].ToString())
                 {
                     userInfo.username = userData["username"].ToString();
                     UIManager.instance.mainUIScreen.Focus();
@@ -137,7 +141,9 @@ public class DBManager : MonoBehaviour
     {
         Debug.LogError("LoginSuccess : " + jsonData);
         UserInfo respUserInfo = JsonUtility.FromJson<UserInfo>(jsonData);
-        if(userInfo.password == respUserInfo.password)
+        if (string.IsNullOrEmpty(userInfo.password))
+            UIManager.instance.mainUIScreen.Focus();
+        else if(userInfo.password == respUserInfo.password)
         {
             userInfo.username = respUserInfo.username;
             UIManager.instance.mainUIScreen.Focus();
@@ -184,16 +190,34 @@ public class DBManager : MonoBehaviour
         entryValues["price"] = objectInfo.price;
         entryValues["webSiteUrl"] = objectInfo.webSiteUrl;
         entryValues["dataUrl"] = objectInfo.dataUrl;
-        
+
+        bool isDelete = false;
+        if (string.IsNullOrEmpty(objectInfo.prefabName))
+            isDelete = true;
+
 #if !UNITY_WEBGL || UNITY_EDITOR
-        mFirebaseFireStore.Collection("Users")
+        if(isDelete)
+        {
+            mFirebaseFireStore.Collection("Users")
+            .Document(userInfo.userId)
+            .Collection("Objects")
+            .Document(objectInfo.objectId)
+            .DeleteAsync();
+        }else
+        {
+            mFirebaseFireStore.Collection("Users")
             .Document(userInfo.userId)
             .Collection("Objects")
             .Document(objectInfo.objectId)
             .SetAsync(entryValues);
+        }
+
 #else
         string jsonData = UnityEngine.JsonUtility.ToJson(objectInfo);
-        FirebaseWebGL.Scripts.FirebaseBridge.FirebaseFirestore.SetDocument("Users/" + userInfo.userId + "/Objects", objectInfo.objectId, jsonData, gameObject.name, "", "");        
+        if(isDelete)
+            FirebaseWebGL.Scripts.FirebaseBridge.FirebaseFirestore.DeleteDocument("Users/" + userInfo.userId + "/Objects", objectInfo.objectId, gameObject.name, "", "");
+        else
+            FirebaseWebGL.Scripts.FirebaseBridge.FirebaseFirestore.SetDocument("Users/" + userInfo.userId + "/Objects", objectInfo.objectId, isDelete ? null : jsonData, gameObject.name, "", "");
 #endif
 
     }

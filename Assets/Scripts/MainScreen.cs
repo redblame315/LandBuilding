@@ -41,6 +41,12 @@ public class MainScreen : UIScreen
     //Init actions when the mainscreen is loaded
     public override void Init()
     {
+        if(!GameManager.instance.forAdmin)
+        {
+            UserInfo userInfo = DBManager.Instance().userInfo;
+            userInfo.userId = GameManager.instance.adminUserId;
+            userInfo.username = GameManager.instance.adminUserName;
+        }
         //Show the user's info
         landTitleLabel.text = DBManager.Instance().userInfo.username + "'s Land";
         //Load objects from firestore databse

@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     public static UIManager instance = null;
     public UIScreen signupScreen;
     public UIScreen loginScreen;
+    public UIScreen accountScreen;
     public UIScreen mainUIScreen;
     public bool bBusy = false;
     private UserInfo userInfo;
@@ -26,10 +27,10 @@ public class UIManager : MonoBehaviour
             loginScreen.Focus();
         else
         {
-            UserInfo userInfo = DBManager.Instance().userInfo;
-            userInfo.userId = GameManager.instance.adminUserId;
-            userInfo.username = GameManager.instance.adminUserName;
-            mainUIScreen.Focus();
+            if (GameManager.instance.forAskAccountName)
+                accountScreen.Focus();
+            else
+                mainUIScreen.Focus();
         }
             
     }

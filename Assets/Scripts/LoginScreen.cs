@@ -33,6 +33,8 @@ public class LoginScreen : UIScreen
     {
         string userId = userIdInput.value;
         string password = passwordInput.value;
+        if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(password))
+            return;
         //dbManger.LoginUser(userId, password);
         dbManger.LoginUserByFireStore(userId, password);
     }

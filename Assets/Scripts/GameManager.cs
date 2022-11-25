@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public GameObject curPrefabObject = null;
       
     public bool forAdmin = true;
+    public bool forAskAccountName = true;
     public string adminUserId = "aman";
     public string adminUserName = "aman";
 

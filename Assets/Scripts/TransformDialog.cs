@@ -133,7 +133,7 @@ public class TransformDialog : Dialog
         objectInfo.posState = (int)HeroCtrl.instance.heroPosState;
         //save setting info into firestore
         DBManager.Instance().SaveObjectByFireStore(objectInfo);
-        SetVisible(false);
+        CloseButtonClicked();
     }
 
     public void PositionValueChanged()
@@ -182,6 +182,17 @@ public class TransformDialog : Dialog
         targetTransform.localPosition = initPos;
         targetTransform.localEulerAngles = initRotation;
         targetTransform.localScale = initScale;
+        CloseButtonClicked();
+    }
+
+    public void DeleteButtonClicked()
+    {
+        ObjectInfo objectInfo = new ObjectInfo();
+        objectInfo.objectId = targetTransform.name;
+        objectInfo.prefabName = "";
+
+        DBManager.Instance().SaveObjectByFireStore(objectInfo);
+        Destroy(targetTransform.gameObject);
         CloseButtonClicked();
     }
 }
