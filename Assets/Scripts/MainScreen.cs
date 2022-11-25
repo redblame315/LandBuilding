@@ -44,11 +44,14 @@ public class MainScreen : UIScreen
         if(!GameManager.instance.forAdmin)
         {
             UserInfo userInfo = DBManager.Instance().userInfo;
-            userInfo.userId = GameManager.instance.adminUserId;
-            userInfo.username = GameManager.instance.adminUserName;
+            if(string.IsNullOrEmpty(userInfo.userId))
+            {
+                userInfo.userId = GameManager.instance.adminUserId;
+                userInfo.username = GameManager.instance.adminUserName;
+            }
         }
         //Show the user's info
-        landTitleLabel.text = DBManager.Instance().userInfo.username + "'s Land";
+        landTitleLabel.text = DBManager.Instance().userInfo.username;
         //Load objects from firestore databse
         DBManager.Instance().LoadCSettingInfo();
     }
@@ -69,11 +72,21 @@ public class MainScreen : UIScreen
     public void InitCSettingObjects(CSettingInfo cSettingInfo)
     {
         GameObject frontPrefab = Resources.Load("Prefabs/front/" + cSettingInfo.sfront) as GameObject;
+        if (frontPrefab == null)
+        {
+            LogOutButtonClicked();
+            return;
+        }            
         GameObject frontObject = Instantiate(frontPrefab) as GameObject;
         frontObject.transform.parent = frontParentTransform;
         frontSpawnPoint = frontObject.transform.Find("SpawnPoint");
 
         GameObject interiorPrefab = Resources.Load("Prefabs/interior/" + cSettingInfo.sinterior) as GameObject;
+        if(interiorPrefab == null)
+        {
+            LogOutButtonClicked();
+            return;
+        }
         GameObject interiorObject = Instantiate(interiorPrefab) as GameObject;
         interiorObject.transform.parent = interiorParentTransform;
         interiorDropSurface = interiorObject.transform.Find("DropSurface");
@@ -90,7 +103,12 @@ public class MainScreen : UIScreen
             userInfoObj.SetActive(true);
         }
         else
+        {
             joyStickCanvas.SetActive(true); //Show JoySticks for mobile
+            if(GameManager.instance.forAskAccountName)
+                userInfoObj.SetActive(true);
+        }
+            
 
         DBManager.Instance().LoadObjectsByFirestore();
     }

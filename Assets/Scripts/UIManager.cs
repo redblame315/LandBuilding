@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     public UIScreen signupScreen;
     public UIScreen loginScreen;
     public UIScreen accountScreen;
+    public UIScreen accountWebScreen;
     public UIScreen mainUIScreen;
     public bool bBusy = false;
     private UserInfo userInfo;
@@ -28,7 +29,14 @@ public class UIManager : MonoBehaviour
         else
         {
             if (GameManager.instance.forAskAccountName)
+            {
+#if !UNITY_WEBGL || UNITY_EDITOR
                 accountScreen.Focus();
+                //accountWebScreen.Focus();
+#else
+                accountWebScreen.Focus();
+#endif
+            }
             else
                 mainUIScreen.Focus();
         }

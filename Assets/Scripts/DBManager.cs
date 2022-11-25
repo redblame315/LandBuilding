@@ -123,6 +123,7 @@ public class DBManager : MonoBehaviour
                 Dictionary<string, object> userData = snapshot.ToDictionary();    
                 if(string.IsNullOrEmpty(password))
                 {
+                    userInfo.username = userData["username"].ToString();
                     UIManager.instance.mainUIScreen.Focus();
                 }
                 else if (password == userData["password"].ToString())
@@ -142,7 +143,10 @@ public class DBManager : MonoBehaviour
         Debug.LogError("LoginSuccess : " + jsonData);
         UserInfo respUserInfo = JsonUtility.FromJson<UserInfo>(jsonData);
         if (string.IsNullOrEmpty(userInfo.password))
+        {
+            userInfo.username = respUserInfo.username;
             UIManager.instance.mainUIScreen.Focus();
+        }
         else if(userInfo.password == respUserInfo.password)
         {
             userInfo.username = respUserInfo.username;
@@ -234,6 +238,12 @@ public class DBManager : MonoBehaviour
             .GetSnapshotAsync().ContinueWithOnMainThread(task => {
                 DocumentSnapshot documentSnapshot = task.Result;
                 Dictionary<string, System.Object> csettingsDocument = documentSnapshot.ToDictionary();
+                if (csettingsDocument == null)
+                {
+                    MainScreen.instance.LogOutButtonClicked();
+                    return;
+                }
+                    
                 if(csettingsDocument.ContainsKey("bgvolume"))
                     cSettingInfo.bgvolume = float.Parse(csettingsDocument["bgvolume"].ToString());
                 cSettingInfo.bgsong = csettingsDocument["bgsong"].ToString();
@@ -243,17 +253,29 @@ public class DBManager : MonoBehaviour
 
             });
 #else
-        FirebaseWebGL.Scripts.FirebaseBridge.FirebaseFirestore.GetDocument("Users/" + userInfo.userId + "/csettings", "csettings_doc", gameObject.name, "OnLoadCSettingInfoRequestSuccess", "");
+        FirebaseWebGL.Scripts.FirebaseBridge.FirebaseFirestore.GetDocument("Users/" + userInfo.userId + "/csettings", "csettings_doc", gameObject.name, "OnLoadCSettingInfoRequestSuccess", "OnLoadCSettingInfoRequestFail");
 #endif
+
 
     }
 
     public void OnLoadCSettingInfoRequestSuccess(string jsonData)
     {
-        cSettingInfo = JsonConvert.DeserializeObject<CSettingInfo>(jsonData);
-        MainScreen.instance.InitCSettingObjects(cSettingInfo);
+        if (jsonData == "null")
+        {
+            MainScreen.instance.LogOutButtonClicked();
+        }
+        else
+        {
+            cSettingInfo = JsonUtility.FromJson<CSettingInfo>(jsonData);
+            MainScreen.instance.InitCSettingObjects(cSettingInfo);            
+        }
     }
 
+    public void OnLoadCSettingInfoRequestFail(string jsonData)
+    {
+        MainScreen.instance.LogOutButtonClicked();
+    }
     //Load All Objects related to user in firestore
     public void LoadObjectsByFirestore()
     {
@@ -298,5 +320,36 @@ public class DBManager : MonoBehaviour
     {
         List<ObjectInfo> objectList = JsonConvert.DeserializeObject<List<ObjectInfo>>(jsonData);       
         MainScreen.instance.InitObjects(objectList);
+    }
+
+    public void LoadAccountNameListByFireStore()
+    {
+        List<string> accountNameList = new List<string>();
+#if !UNITY_WEBGL || UNITY_EDITOR
+        mFirebaseFireStore.Collection("Users")
+            .GetSnapshotAsync().ContinueWithOnMainThread(task => {
+                QuerySnapshot querySnapShot = task.Result;
+                foreach(DocumentSnapshot documentSpnapShot in querySnapShot.Documents)
+                {
+                    accountNameList.Add(documentSpnapShot.Id);
+                }
+
+                AccountScreenForWeb.Instance.DisplayAccountNameList(accountNameList);
+            });
+#else
+        FirebaseWebGL.Scripts.FirebaseBridge.FirebaseFirestore.GetDocumentsInCollection("Users", gameObject.name, "OnLoadAccountNameListRequestSuccess", "");
+#endif
+
+    }
+
+    public void OnLoadAccountNameListRequestSuccess(string jsonData)
+    {
+        List<UserInfo> userList = JsonConvert.DeserializeObject<List<UserInfo>>(jsonData);
+        List<string> accountNameList = new List<string>();
+        foreach(UserInfo userInfo in userList)
+        {
+            accountNameList.Add(userInfo.userId);
+        }
+        AccountScreenForWeb.Instance.DisplayAccountNameList(accountNameList);
     }
 }
