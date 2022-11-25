@@ -74,7 +74,9 @@ public class MainScreen : UIScreen
         GameObject frontPrefab = Resources.Load("Prefabs/front/" + cSettingInfo.sfront) as GameObject;
         if (frontPrefab == null)
         {
+#if !UNITY_WEBGL || UNITY_EDITOR
             LogOutButtonClicked();
+#endif
             return;
         }            
         GameObject frontObject = Instantiate(frontPrefab) as GameObject;
@@ -84,7 +86,9 @@ public class MainScreen : UIScreen
         GameObject interiorPrefab = Resources.Load("Prefabs/interior/" + cSettingInfo.sinterior) as GameObject;
         if(interiorPrefab == null)
         {
+#if !UNITY_WEBGL || UNITY_EDITOR
             LogOutButtonClicked();
+#endif
             return;
         }
         GameObject interiorObject = Instantiate(interiorPrefab) as GameObject;

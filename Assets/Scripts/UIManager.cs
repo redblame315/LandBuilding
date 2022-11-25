@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -16,6 +17,8 @@ public class UIManager : MonoBehaviour
     private GameManager gameManager;
     private Queue<Action> _actionQueue = new Queue<Action>();
 
+    [DllImport("__Internal")]
+    private static extern string GetURLFromPage();
     private void Awake()
     {
         instance = this;
@@ -30,11 +33,15 @@ public class UIManager : MonoBehaviour
         {
             if (GameManager.instance.forAskAccountName)
             {
+
 #if !UNITY_WEBGL || UNITY_EDITOR
                 accountScreen.Focus();
                 //accountWebScreen.Focus();
 #else
-                accountWebScreen.Focus();
+                //accountWebScreen.Focus();
+                string url = GetURLFromPage();
+                string userId = url.Substring(url.LastIndexOf("/") + 1);
+                DBManager.Instance().LoginUserByFireStore(userId, "");
 #endif
             }
             else

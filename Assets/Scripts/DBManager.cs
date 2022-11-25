@@ -120,7 +120,10 @@ public class DBManager : MonoBehaviour
             .GetSnapshotAsync()
             .ContinueWithOnMainThread(task => {
                 DocumentSnapshot snapshot = task.Result;
-                Dictionary<string, object> userData = snapshot.ToDictionary();    
+                Dictionary<string, object> userData = snapshot.ToDictionary();
+                if (userData == null)
+                    return;
+
                 if(string.IsNullOrEmpty(password))
                 {
                     userInfo.username = userData["username"].ToString();
@@ -141,6 +144,9 @@ public class DBManager : MonoBehaviour
     void OnLoginRequestSuccess(string jsonData)
     {
         Debug.LogError("LoginSuccess : " + jsonData);
+        if (jsonData == "null")
+            return;
+
         UserInfo respUserInfo = JsonUtility.FromJson<UserInfo>(jsonData);
         if (string.IsNullOrEmpty(userInfo.password))
         {
@@ -261,11 +267,7 @@ public class DBManager : MonoBehaviour
 
     public void OnLoadCSettingInfoRequestSuccess(string jsonData)
     {
-        if (jsonData == "null")
-        {
-            MainScreen.instance.LogOutButtonClicked();
-        }
-        else
+        if (jsonData != "null")
         {
             cSettingInfo = JsonUtility.FromJson<CSettingInfo>(jsonData);
             MainScreen.instance.InitCSettingObjects(cSettingInfo);            
