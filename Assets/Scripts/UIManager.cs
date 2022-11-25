@@ -32,16 +32,20 @@ public class UIManager : MonoBehaviour
         else
         {
             if (GameManager.instance.forAskAccountName)
-            {
-
+            {               
+                
 #if !UNITY_WEBGL || UNITY_EDITOR
                 accountScreen.Focus();
                 //accountWebScreen.Focus();
 #else
                 //accountWebScreen.Focus();
                 string url = GetURLFromPage();
-                string userId = url.Substring(url.LastIndexOf("/") + 1);
-                DBManager.Instance().LoginUserByFireStore(userId, "");
+                int startIndex = url.LastIndexOf("/") + 2;
+                if(startIndex < url.Length)
+                {
+                    string userId = url.Substring(startIndex);
+                    DBManager.Instance().LoginUserByFireStore(userId, "");
+                }   
 #endif
             }
             else
