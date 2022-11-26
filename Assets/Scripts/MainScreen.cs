@@ -109,8 +109,10 @@ public class MainScreen : UIScreen
         else
         {
             joyStickCanvas.SetActive(true); //Show JoySticks for mobile
-            if(GameManager.instance.forAskAccountName)
+#if !UNITY_WEBGL || UNITY_EDITOR
+            if (GameManager.instance.forAskAccountName)
                 userInfoObj.SetActive(true);
+#endif
         }
             
 
