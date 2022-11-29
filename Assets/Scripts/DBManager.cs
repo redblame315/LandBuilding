@@ -96,7 +96,19 @@ public class DBManager : MonoBehaviour
 
 #if !UNITY_WEBGL || UNITY_EDITOR
         //mFireBaseDatabase = FirebaseDatabase.GetInstance("https://landbuilding-5644c-default-rtdb.firebaseio.com");
-        mFirebaseFireStore = FirebaseFirestore.DefaultInstance;
+        try
+        {
+            mFirebaseFireStore = FirebaseFirestore.DefaultInstance;
+        }
+        catch(Exception exception)
+        {
+            Debug.LogError("Firestore Init Error" + exception.Message);
+            mFirebaseFireStore.TerminateAsync();
+        }
+        
+        
+        //mFirebaseFireStore.DisableNetworkAsync();
+        //mFirebaseFireStore.EnableNetworkAsync();
         //mDatabase = mFireBaseDatabase.RootReference;
 #endif
     }
@@ -353,5 +365,16 @@ public class DBManager : MonoBehaviour
             accountNameList.Add(userInfo.userId);
         }
         AccountScreenForWeb.Instance.DisplayAccountNameList(accountNameList);
+    }
+
+    public void OnDestroy()
+    {
+        mFirebaseFireStore.TerminateAsync();
+    }
+
+    public void OnDisable()
+    {
+        //Debug.LogError("OnDisable");
+        //mFirebaseFireStore.TerminateAsync();
     }
 }

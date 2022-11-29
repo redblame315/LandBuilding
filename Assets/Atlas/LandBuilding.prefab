@@ -48,7 +48,7 @@ MonoBehaviour:
   mSprites:
   - name: ImageObject
     x: 0
-    y: 621
+    y: 969
     width: 526
     height: 403
     borderLeft: 0
@@ -59,11 +59,37 @@ MonoBehaviour:
     paddingRight: 0
     paddingTop: 0
     paddingBottom: 0
+  - name: ImageObject1
+    x: 0
+    y: 1377
+    width: 531
+    height: 671
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 0
+    paddingRight: 0
+    paddingTop: 0
+    paddingBottom: 0
   - name: VideoObject
     x: 0
-    y: 276
+    y: 620
     width: 595
     height: 344
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 0
+    paddingRight: 0
+    paddingTop: 0
+    paddingBottom: 0
+  - name: VideoObject1
+    x: 536
+    y: 1793
+    width: 395
+    height: 255
     borderLeft: 0
     borderRight: 0
     borderTop: 0

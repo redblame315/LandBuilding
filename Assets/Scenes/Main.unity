@@ -1081,10 +1081,10 @@ MonoBehaviour:
   startingRenderQueue: 3001
   mAlpha: 1
   mClipping: 3
-  mClipRange: {x: 2250.9895, y: -208.98006, z: 307, w: 594}
+  mClipRange: {x: 2494.9895, y: -208.97281, z: 307, w: 594.00006}
   mClipSoftness: {x: 1, y: 10}
   mDepth: 3
-  mClipOffset: {x: -2098.9895, y: -8.019943}
+  mClipOffset: {x: -2342.9895, y: -8.027191}
 --- !u!114 &120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1231,8 +1231,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bStart: 0
   curPrefabObject: {fileID: 0}
-  forAdmin: 0
-  forAskAccountName: 1
+  forAdmin: 1
+  forAskAccountName: 0
   adminUserId: aman
   adminUserName: aman
 --- !u!114 &129
@@ -3027,7 +3027,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -6.7000732, y: 0}
+  m_AnchoredPosition: {x: -6.7001953, y: 0}
   m_SizeDelta: {x: 739.8, y: 991.3}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &87450623
@@ -6100,7 +6100,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -6.7000732, y: 0}
+  m_AnchoredPosition: {x: -6.7001953, y: 0}
   m_SizeDelta: {x: 739.8, y: 991.3}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &265158438
@@ -19146,7 +19146,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 848388262}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -639.68756, y: -50, z: 0}
+  m_LocalPosition: {x: -639.9719, y: -50, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -22990,7 +22990,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -6.7000732, y: 0}
+  m_AnchoredPosition: {x: -6.7001953, y: 0}
   m_SizeDelta: {x: 739.8, y: 378.2}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1042475139
@@ -25754,7 +25754,7 @@ GameObject:
   - component: {fileID: 1137972617}
   - component: {fileID: 1137972616}
   m_Layer: 8
-  m_Name: ItemImageNew
+  m_Name: ItemImage1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25768,7 +25768,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1137972614}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 100, y: 0, z: 0}
+  m_LocalPosition: {x: 100, y: -312.92, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -26011,8 +26011,8 @@ MonoBehaviour:
   hideIfOffScreen: 0
   keepAspectRatio: 0
   aspectRatio: 1
-  mAtlas: {fileID: 11400000, guid: f95e07e3d350bf748b0c42b453a69d2e, type: 3}
-  mSpriteName: Beveled Outline
+  mAtlas: {fileID: 7048129458306602277, guid: a86176994a63b3a49b9d2fba3e1c9216, type: 3}
+  mSpriteName: ImageObject1
   mType: 1
   mFillDirection: 4
   mFillAmount: 1
@@ -28633,7 +28633,7 @@ GameObject:
   - component: {fileID: 1321559158}
   - component: {fileID: 1321559157}
   m_Layer: 8
-  m_Name: ItemOldVideo
+  m_Name: ItemVideo1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28647,7 +28647,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1321559155}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 100, y: -99.9, z: 0}
+  m_LocalPosition: {x: 100, y: -199.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -33447,12 +33447,12 @@ MonoBehaviour:
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
   mWidth: 80
-  mHeight: 80
+  mHeight: 60
   mDepth: 1
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 1
+  aspectRatio: 1.3333334
   mAtlas: {fileID: 7048129458306602277, guid: a86176994a63b3a49b9d2fba3e1c9216, type: 3}
   mSpriteName: VideoObject
   mType: 1
@@ -43861,14 +43861,14 @@ MonoBehaviour:
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 4
   mWidth: 80
-  mHeight: 80
+  mHeight: 60
   mDepth: 1
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 1
-  mAtlas: {fileID: 11400000, guid: f95e07e3d350bf748b0c42b453a69d2e, type: 3}
-  mSpriteName: Dark
+  aspectRatio: 1.3333334
+  mAtlas: {fileID: 7048129458306602277, guid: a86176994a63b3a49b9d2fba3e1c9216, type: 3}
+  mSpriteName: VideoObject1
   mType: 1
   mFillDirection: 4
   mFillAmount: 1

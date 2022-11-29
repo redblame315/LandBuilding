@@ -104,6 +104,8 @@ public class MainScreen : UIScreen
         {
             //headBoneHeightSlider.gameObject.SetActive(true);
             prefabScrollBar.SetActive(true);
+            UIScrollView scrollView = prefabScrollBar.GetComponentInChildren<UIScrollView>();
+            scrollView.ResetPosition();
             userInfoObj.SetActive(true);
         }
         else
@@ -174,9 +176,13 @@ public class MainScreen : UIScreen
         HeroCtrl.instance.characterController.enabled = true;
         HeroCtrl.instance.heroPosState = HeroPosState.Interior;
         HeroCamera.instance.InitHeroCam();
-        interiorParentTransform.gameObject.SetActive(true);
-        frontParentTransform.gameObject.SetActive(false);
 
+        interiorParentTransform.gameObject.SetActive(true);
+        PlayVideo(interiorParentTransform);
+
+        PlayVideo(frontParentTransform, false);
+        frontParentTransform.gameObject.SetActive(false);      
+        
         AudioClip backgroundAudioClip = Resources.Load("Audio/" + DBManager.Instance().cSettingInfo.bgsong) as AudioClip;
         SoundManager.instance.SetBackgroundVolume(DBManager.Instance().cSettingInfo.bgvolume);
         SoundManager.instance.PlayBackgroundSound(backgroundAudioClip);
@@ -192,9 +198,23 @@ public class MainScreen : UIScreen
         HeroCtrl.instance.characterController.enabled = true;
         HeroCtrl.instance.heroPosState = HeroPosState.Interior;
         HeroCamera.instance.InitHeroCam();
+
+        PlayVideo(interiorParentTransform, false);
         interiorParentTransform.gameObject.SetActive(false);
+
         frontParentTransform.gameObject.SetActive(true);
+        PlayVideo(frontParentTransform);
 
         SoundManager.instance.StopBackgroundSound();
+    }
+
+    public void PlayVideo(Transform parentTrans, bool isPlay = true)
+    {
+        VideoObject[] videoObjectArray = parentTrans.GetComponentsInChildren<VideoObject>();
+        for (int i = 0; i < videoObjectArray.Length; i++)
+            if(isPlay)
+                videoObjectArray[i].videoPlayer.Play();
+            else
+                videoObjectArray[i].videoPlayer.Stop();
     }
 }

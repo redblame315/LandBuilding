@@ -48,4 +48,5 @@ public class VideoObject : MonoBehaviour
         videoPlayer.url = videoUrl;
         videoPlayer.Play();
     }
+
 }
