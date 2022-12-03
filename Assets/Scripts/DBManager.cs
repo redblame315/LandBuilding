@@ -369,7 +369,9 @@ public class DBManager : MonoBehaviour
 
     public void OnDestroy()
     {
+#if !UNITY_WEBGL || UNITY_EDITOR
         mFirebaseFireStore.TerminateAsync();
+#endif
     }
 
     public void OnDisable()
