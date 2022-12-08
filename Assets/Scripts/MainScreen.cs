@@ -20,8 +20,11 @@ public class MainScreen : UIScreen
     public TransformDialog normalObjectInfoDialog;
     public TransformDialog imageObjectInfoDialog;
     public TransformDialog videoObjectInfoDialog;
+    
     public GuestImageDIalog guestImageDialog;
-    public GuestVideoDIalog guestVideoDialog;
+    public GuestVideoDialog guestVideoDialog;
+    public DescriptionDialog descriptionDialog;
+
     [HideInInspector]
     public TransformDialog curTransformDialog = null;
     public GameObject joyStickCanvas;

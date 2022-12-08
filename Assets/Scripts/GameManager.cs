@@ -12,8 +12,11 @@ public class GameManager : MonoBehaviour
       
     public bool forAdmin = true;
     public bool forAskAccountName = true;
+    public bool ecom = true;
+    public bool ecomClick = true;
     public string adminUserId = "aman";
     public string adminUserName = "aman";
+    
 
     private void Awake()
     {
@@ -78,7 +81,7 @@ public class GameManager : MonoBehaviour
                         MainScreen.instance.imageObjectInfoDialog.SetTarget(hitObj.transform, prefabName);
                     else if (hitObj.tag == "VideoObject")
                         MainScreen.instance.videoObjectInfoDialog.SetTarget(hitObj.transform, prefabName);
-                }else
+                }else if(ecomClick)
                 {
                     if (hitObj.tag == "ImageObject")
                     {
@@ -95,5 +98,39 @@ public class GameManager : MonoBehaviour
             }
             curPrefabObject = null;
         }
+
+        if(ecom && !MainScreen.instance.guestImageDialog.GetVisible() && !MainScreen.instance.guestVideoDialog.GetVisible())
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+
+            if (Physics.Raycast(ray, out hit, float.PositiveInfinity))
+            {
+                string tag = hit.collider.tag;
+                string name = "";
+                string description = "";
+                if (tag == "ImageObject")
+                {
+                    ImageObject imageObject = hit.collider.GetComponent<ImageObject>();
+                    name = imageObject.name;
+                    description = imageObject.description;
+                }else if(tag == "VideoObject")
+                {
+                    VideoObject imageObject = hit.collider.GetComponent<VideoObject>();
+                    name = imageObject.name;
+                    description = imageObject.description;
+                }
+
+                if(!string.IsNullOrEmpty(name))
+                    MainScreen.instance.descriptionDialog.Init(name,description);
+                else
+                    MainScreen.instance.descriptionDialog.SetVisible(false);
+            }
+            else
+                MainScreen.instance.descriptionDialog.SetVisible(false);
+        }else
+            MainScreen.instance.descriptionDialog.SetVisible(false);
+
     }
 }

@@ -54,4 +54,14 @@ public class ImageObject : MonoBehaviour
             imageRenderer.sharedMaterial = material;
         }
     }
+
+    private void OnMouseEnter()
+    {
+        MainScreen.instance.descriptionDialog.Init(name, description);
+    }
+
+    private void OnMouseExit()
+    {
+        MainScreen.instance.descriptionDialog.SetVisible(false);
+    }
 }

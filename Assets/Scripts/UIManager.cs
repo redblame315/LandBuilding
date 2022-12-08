@@ -77,5 +77,18 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    
+    public static Vector3 convertMousePos2NGUIPos(Vector3 mousePos)
+    {
+        float nguiWidth = 1080f * Screen.width / Screen.height;
+        float nguiHeight = 1080f;
+
+        float wRate = nguiWidth / Screen.width;
+        float hRate = nguiHeight / Screen.height;
+
+        float nguiY = (mousePos.y - Screen.height / 2) * hRate;
+        float nguiX = (mousePos.x - Screen.width / 2) * wRate;
+
+        Vector3 nguiPos = new Vector3(nguiX, nguiY, 0);
+        return nguiPos;
+    }
 }

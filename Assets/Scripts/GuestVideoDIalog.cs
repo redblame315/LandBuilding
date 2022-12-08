@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-public class GuestVideoDIalog : Dialog
+public class GuestVideoDialog : Dialog
 {
     public UILabel nameLabel;
     public UILabel descriptionLabel;
