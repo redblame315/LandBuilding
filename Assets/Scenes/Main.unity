@@ -1232,7 +1232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bStart: 0
   curPrefabObject: {fileID: 0}
-  forAdmin: 1
+  forAdmin: 0
   forAskAccountName: 0
   ecom: 1
   ecomClick: 1
@@ -3995,7 +3995,7 @@ MonoBehaviour:
   disabledSprite: 
   pixelSnap: 0
   onClick:
-  - mTarget: {fileID: 0}
+  - mTarget: {fileID: 2132765919}
     mMethodName: CloseButtonClicked
     oneShot: 0
 --- !u!65 &152587476
@@ -4330,7 +4330,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &156971961
 Transform:
   m_ObjectHideFlags: 0
@@ -5342,7 +5342,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 248414568}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1119.4282, y: 590, z: 0}
+  m_LocalPosition: {x: 1120.2223, y: 590, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7098,6 +7098,7 @@ MonoBehaviour:
   guestVideoDialog: {fileID: 2132765919}
   descriptionDialog: {fileID: 390913604}
   curTransformDialog: {fileID: 0}
+  curGuestTransformDialog: {fileID: 0}
   joyStickCanvas: {fileID: 805030175}
   prefabScrollBar: {fileID: 848388262}
   userInfoObj: {fileID: 457041139}
@@ -8800,12 +8801,12 @@ MonoBehaviour:
   mColor: {r: 0, g: 0, b: 0, a: 1}
   mPivot: 0
   mWidth: 320
-  mHeight: 26
+  mHeight: 95
   mDepth: 3
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 12.307693
+  aspectRatio: 3.368421
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 0}
   mFont: {fileID: 11400000, guid: 800fce3d977b52d4cadf1a0790a413f0, type: 3}
@@ -8819,7 +8820,7 @@ MonoBehaviour:
   mEffectColor: {r: 0, g: 0, b: 0, a: 1}
   mSymbols: 1
   mEffectDistance: {x: 1, y: 1}
-  mOverflow: 3
+  mOverflow: 1
   mMaterial: {fileID: 0}
   mApplyGradient: 0
   mGradientTop: {r: 1, g: 1, b: 1, a: 1}
@@ -8913,7 +8914,7 @@ MonoBehaviour:
   mEffectColor: {r: 0, g: 0, b: 0, a: 1}
   mSymbols: 1
   mEffectDistance: {x: 1, y: 1}
-  mOverflow: 3
+  mOverflow: 1
   mMaterial: {fileID: 0}
   mApplyGradient: 0
   mGradientTop: {r: 1, g: 1, b: 1, a: 1}
@@ -10600,10 +10601,7 @@ MonoBehaviour:
   pressedSprite: 
   disabledSprite: 
   pixelSnap: 0
-  onClick:
-  - mTarget: {fileID: 0}
-    mMethodName: WebSiteLinkClicked
-    oneShot: 0
+  onClick: []
 --- !u!65 &459384819
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15285,7 +15283,7 @@ MonoBehaviour:
   alwaysOnScreen: 0
   anchorOffset: 0
   renderQueue: 0
-  startingRenderQueue: 3005
+  startingRenderQueue: 3000
   mAlpha: 1
   mClipping: 0
   mClipRange: {x: 0, y: 0, z: 300, w: 200}
@@ -32468,7 +32466,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1437805638
 Transform:
   m_ObjectHideFlags: 0
@@ -34166,6 +34164,7 @@ MonoBehaviour:
   fMoveSpeed: 2.2
   characterController: {fileID: 1659393417}
   heroPosState: 0
+  moveTargetTransform: {fileID: 0}
 --- !u!1 &1520505079
 GameObject:
   m_ObjectHideFlags: 0
@@ -36813,7 +36812,7 @@ CharacterController:
   m_Radius: 0.2
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.08
+  m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &1659452979
@@ -42193,7 +42192,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1888066325}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1119.4282, y: 590, z: 0}
+  m_LocalPosition: {x: 1120.2223, y: 590, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -47850,7 +47849,7 @@ MonoBehaviour:
   mEffectColor: {r: 0, g: 0, b: 0, a: 1}
   mSymbols: 1
   mEffectDistance: {x: 1, y: 1}
-  mOverflow: 3
+  mOverflow: 1
   mMaterial: {fileID: 0}
   mApplyGradient: 0
   mGradientTop: {r: 1, g: 1, b: 1, a: 1}
@@ -48022,12 +48021,12 @@ MonoBehaviour:
   mColor: {r: 0, g: 0, b: 0, a: 1}
   mPivot: 0
   mWidth: 320
-  mHeight: 26
+  mHeight: 95
   mDepth: 3
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 12.307693
+  aspectRatio: 3.368421
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 0}
   mFont: {fileID: 11400000, guid: 800fce3d977b52d4cadf1a0790a413f0, type: 3}
@@ -48041,7 +48040,7 @@ MonoBehaviour:
   mEffectColor: {r: 0, g: 0, b: 0, a: 1}
   mSymbols: 1
   mEffectDistance: {x: 1, y: 1}
-  mOverflow: 3
+  mOverflow: 1
   mMaterial: {fileID: 0}
   mApplyGradient: 0
   mGradientTop: {r: 1, g: 1, b: 1, a: 1}
