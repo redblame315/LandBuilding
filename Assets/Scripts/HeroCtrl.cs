@@ -131,7 +131,8 @@ public class HeroCtrl : MonoBehaviour
         forward.Normalize();
 
         camRotation = Quaternion.LookRotation(forward);
-        HeroCamera.instance.cam.rotation = Quaternion.Slerp(HeroCamera.instance.cam.rotation, camRotation, 2 * Time.deltaTime);
+        HeroCamera.instance.cam.rotation = Quaternion.LerpUnclamped(HeroCamera.instance.cam.rotation, camRotation, 50 * Time.deltaTime);
+        //HeroCamera.instance.cam.rotation = camRotation;
     }
 
     public void OnMoveComplete()
@@ -140,24 +141,24 @@ public class HeroCtrl : MonoBehaviour
         characterController.transform.rotation = transform.rotation;
         characterController.enabled = true;
 
-        //HeroCamera.instance.cam.rotation = camRotation;
-        //HeroCamera.instance.InitAngle();        
 
         GameManager.instance.ShowTransformDialog(moveTargetTransform.gameObject);
 
-        Hashtable args = new Hashtable();
+        /*Hashtable args = new Hashtable();
         args.Add("rotation", camRotation.eulerAngles);
         args.Add("time", 1f);
+        args.Add("easetype", iTween.EaseType.linear);
         args.Add("islocal", false);
-        iTween.RotateTo(HeroCamera.instance.cam.gameObject, args);
-
+        iTween.RotateTo(HeroCamera.instance.cam.gameObject, args);*/
+        
+        //isMovingTarget = false;
         StartCoroutine(InitCamAngleRoutine());
     }
 
     IEnumerator InitCamAngleRoutine()
     {
-        yield return new WaitForSeconds(1);
-        HeroCamera.instance.InitAngle();
+        yield return new WaitForSeconds(0f);
+        HeroCamera.instance.InitAngle(camRotation.eulerAngles);
         isMovingTarget = false;
     }
 }

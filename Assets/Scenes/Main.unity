@@ -1232,7 +1232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bStart: 0
   curPrefabObject: {fileID: 0}
-  forAdmin: 0
+  forAdmin: 1
   forAskAccountName: 0
   ecom: 1
   ecomClick: 1

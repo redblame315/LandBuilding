@@ -352,10 +352,14 @@ public class HeroCamera : MonoBehaviour
 		xAngl = cam.eulerAngles.y;
 	}
 
-	public void InitAngle()
+	public void InitAngle(Vector3 targetAngle)
     {
-		yAngl = cam.eulerAngles.x;
-		xAngl = cam.eulerAngles.y;
+		if (targetAngle.x > 180)
+			yAngl = targetAngle.x - 360;
+		else
+			yAngl = targetAngle.x;
+		yAngl = ClampAngle(yAngl, minAngleY, maxAngleY);
+		xAngl = targetAngle.y;
 	}
 	//=================================================================================================================o
 }
