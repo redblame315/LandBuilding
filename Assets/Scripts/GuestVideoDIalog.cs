@@ -8,8 +8,10 @@ public class GuestVideoDialog : Dialog
     public UILabel nameLabel;
     public UILabel descriptionLabel;
     public UILabel priceLabel;
-    public UILabel webSiteUrlLabel;
     public UILabel videoUrlLabel;
+    public GameObject webSiteIconObj;
+
+    string webSiteUrl;
 
     [DllImport("__Internal")]
     private static extern void OpenNewTab(string url);
@@ -31,10 +33,16 @@ public class GuestVideoDialog : Dialog
 
     public void Init(VideoObject _VideoObject)
     {
+        if (MainScreen.instance.curGuestTransformDialog != null)
+            MainScreen.instance.curGuestTransformDialog.SetVisible(false);
+
+        MainScreen.instance.curGuestTransformDialog = this;
+
         nameLabel.text = _VideoObject.name;
         descriptionLabel.text = _VideoObject.description;
         priceLabel.text = _VideoObject.price;
-        webSiteUrlLabel.text = _VideoObject.webSiteUrl;
+        webSiteUrl = _VideoObject.webSiteUrl;
+        webSiteIconObj.SetActive(!string.IsNullOrEmpty(webSiteUrl));
         videoUrlLabel.text = _VideoObject.videoUrl;
         SetVisible(true);
     }
@@ -43,8 +51,8 @@ public class GuestVideoDialog : Dialog
     {
 
 #if !UNITY_EDITOR && UNITY_WEBGL
-        if(!string.IsNullOrEmpty(webSiteUrlLabel.text))
-            OpenNewTab(webSiteUrlLabel.text);        
+        if(!string.IsNullOrEmpty(webSiteUrl))
+            OpenNewTab(webSiteUrl);        
 #endif
     }
 }

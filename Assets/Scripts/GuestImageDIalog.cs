@@ -8,8 +8,10 @@ public class GuestImageDIalog : Dialog
     public UILabel nameLabel;
     public UILabel descriptionLabel;
     public UILabel priceLabel;
-    public UILabel webSiteUrlLabel;
     public UILabel imageUrlLabel;
+    public GameObject webSiteIconObj;
+
+    string webSiteUrl;
 
     [DllImport("__Internal")]
     private static extern void OpenNewTab(string url);
@@ -30,10 +32,15 @@ public class GuestImageDIalog : Dialog
 
     public void Init(ImageObject _imageObject)
     {
+        if (MainScreen.instance.curGuestTransformDialog != null)
+            MainScreen.instance.curGuestTransformDialog.SetVisible(false);
+
+        MainScreen.instance.curGuestTransformDialog = this;
         nameLabel.text = _imageObject.name;
         descriptionLabel.text = _imageObject.description;
         priceLabel.text = _imageObject.price;
-        webSiteUrlLabel.text = _imageObject.webSiteUrl;
+        webSiteUrl = _imageObject.webSiteUrl;
+        webSiteIconObj.SetActive(!string.IsNullOrEmpty(webSiteUrl));
         imageUrlLabel.text = _imageObject.imageUrl;
         SetVisible(true);
     }
@@ -42,8 +49,8 @@ public class GuestImageDIalog : Dialog
     {
 
 #if !UNITY_EDITOR && UNITY_WEBGL
-        if(!string.IsNullOrEmpty(webSiteUrlLabel.text))
-            OpenNewTab(webSiteUrlLabel.text);        
+        if(!string.IsNullOrEmpty(webSiteUrl))
+            OpenNewTab(webSiteUrl);        
 #endif
     }
 }

@@ -36,6 +36,9 @@ public class GameManager : MonoBehaviour
             if (MainScreen.instance.curTransformDialog != null && MainScreen.instance.curTransformDialog.GetVisible())
                 return;
 
+            if (HeroCtrl.isMovingTarget)
+                return;
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
@@ -62,39 +65,9 @@ public class GameManager : MonoBehaviour
                 {
                     curPrefabObject = null;
                     return;
-                }
-                    
+                }               
 
-                GameObject hitObj = hit.collider.gameObject;
-                string objName = hitObj.name;
-                string[] subNameList = objName.Split("_");
-                string prefabName = "";
-                if (subNameList.Length > 0)
-                    prefabName = subNameList[0];
-                if(forAdmin)
-                {
-                    if (hitObj.tag == "NormalObject")
-                    {
-                        MainScreen.instance.normalObjectInfoDialog.SetTarget(hitObj.transform, prefabName);
-                    }
-                    else if (hitObj.tag == "ImageObject")
-                        MainScreen.instance.imageObjectInfoDialog.SetTarget(hitObj.transform, prefabName);
-                    else if (hitObj.tag == "VideoObject")
-                        MainScreen.instance.videoObjectInfoDialog.SetTarget(hitObj.transform, prefabName);
-                }else if(ecomClick)
-                {
-                    if (hitObj.tag == "ImageObject")
-                    {
-                        ImageObject imageObject = hitObj.GetComponent<ImageObject>();
-                        MainScreen.instance.guestImageDialog.Init(imageObject);
-                    }
-                    else if (hitObj.tag == "VideoObject")
-                    {
-                        VideoObject videoObject = hitObj.GetComponent<VideoObject>();
-                        MainScreen.instance.guestVideoDialog.Init(videoObject);
-                    }
-                }
-                
+                HeroCtrl.instance.MoveToTarget(hit.collider.transform);
             }
             curPrefabObject = null;
         }
@@ -131,6 +104,40 @@ public class GameManager : MonoBehaviour
                 MainScreen.instance.descriptionDialog.SetVisible(false);
         }else
             MainScreen.instance.descriptionDialog.SetVisible(false);
+
+    }
+
+    public void ShowTransformDialog(GameObject hitObj)
+    {
+        string objName = hitObj.name;
+        string[] subNameList = objName.Split("_");
+        string prefabName = "";
+        if (subNameList.Length > 0)
+            prefabName = subNameList[0];
+        if (forAdmin)
+        {
+            if (hitObj.tag == "NormalObject")
+            {
+                MainScreen.instance.normalObjectInfoDialog.SetTarget(hitObj.transform, prefabName);
+            }
+            else if (hitObj.tag == "ImageObject")
+                MainScreen.instance.imageObjectInfoDialog.SetTarget(hitObj.transform, prefabName);
+            else if (hitObj.tag == "VideoObject")
+                MainScreen.instance.videoObjectInfoDialog.SetTarget(hitObj.transform, prefabName);
+        }
+        else if (ecomClick)
+        {
+            if (hitObj.tag == "ImageObject")
+            {
+                ImageObject imageObject = hitObj.GetComponent<ImageObject>();
+                MainScreen.instance.guestImageDialog.Init(imageObject);
+            }
+            else if (hitObj.tag == "VideoObject")
+            {
+                VideoObject videoObject = hitObj.GetComponent<VideoObject>();
+                MainScreen.instance.guestVideoDialog.Init(videoObject);
+            }
+        }
 
     }
 }

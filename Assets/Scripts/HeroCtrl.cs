@@ -13,6 +13,11 @@ public class HeroCtrl : MonoBehaviour
     Vector3 direction;
     Vector3 oldPosition;
 
+    [HideInInspector]
+    public Transform moveTargetTransform;
+    public static bool isMovingTarget = false;
+    Quaternion camRotation;
+
     private void Awake()
     {
         instance = this;
@@ -21,6 +26,7 @@ public class HeroCtrl : MonoBehaviour
     void Start()
     {
         oldPosition = transform.position;
+        isMovingTarget = false;
     }
 
     // Update is called once per frame
@@ -28,6 +34,9 @@ public class HeroCtrl : MonoBehaviour
     {
         //Determine move direction
         if (MainScreen.instance.curTransformDialog != null && MainScreen.instance.curTransformDialog.GetVisible())
+            return;
+
+        if (isMovingTarget)
             return;
 
         float horizontal = Input.GetAxis("Horizontal");
@@ -66,7 +75,17 @@ public class HeroCtrl : MonoBehaviour
     private void LateUpdate()
     {
         if (MainScreen.instance.curTransformDialog != null && MainScreen.instance.curTransformDialog.GetVisible())
+        {
             return;
+        }
+            
+
+        if (isMovingTarget)
+        {
+            oldPosition = transform.position;
+            return;
+        }
+            
 
         Vector3 dir = transform.position - oldPosition;
         //dir.Normalize();
@@ -75,5 +94,70 @@ public class HeroCtrl : MonoBehaviour
         transform.position = characterController.transform.position;
 
         oldPosition = transform.position;
+    }
+
+    public void MoveToTarget(Transform targetTransform)
+    {
+        moveTargetTransform = targetTransform;
+
+        RaycastHit hit;
+        Vector3 targetPos = targetTransform.position;
+        if(Physics.Raycast(targetPos + targetTransform.forward * 1f + Vector3.up, Vector3.down, out hit, float.PositiveInfinity, 1 << LayerMask.NameToLayer("Ground")))
+        {
+            targetPos = hit.point;
+        }
+
+        this.characterController.enabled = false;
+        isMovingTarget = true;
+
+        MainScreen.instance.CloseCurDialog();
+
+        iTween.Stop();
+
+        Hashtable args = new Hashtable();
+        args.Add("position", targetPos);
+        args.Add("looktarget", targetPos);
+        args.Add("speed", 2f);
+        args.Add("islocal", false);
+        args.Add("onupdate", "OnMoveUpdate");
+        args.Add("oncomplete", "OnMoveComplete");
+        args.Add("easetype", iTween.EaseType.linear);
+        iTween.MoveTo(gameObject, args);
+    }
+
+    public void OnMoveUpdate()
+    {
+        Vector3 forward = moveTargetTransform.position - HeroCamera.instance.cam.transform.position;
+        forward.Normalize();
+
+        camRotation = Quaternion.LookRotation(forward);
+        HeroCamera.instance.cam.rotation = Quaternion.Slerp(HeroCamera.instance.cam.rotation, camRotation, 2 * Time.deltaTime);
+    }
+
+    public void OnMoveComplete()
+    {
+        characterController.transform.position = transform.position;
+        characterController.transform.rotation = transform.rotation;
+        characterController.enabled = true;
+
+        //HeroCamera.instance.cam.rotation = camRotation;
+        //HeroCamera.instance.InitAngle();        
+
+        GameManager.instance.ShowTransformDialog(moveTargetTransform.gameObject);
+
+        Hashtable args = new Hashtable();
+        args.Add("rotation", camRotation.eulerAngles);
+        args.Add("time", 1f);
+        args.Add("islocal", false);
+        iTween.RotateTo(HeroCamera.instance.cam.gameObject, args);
+
+        StartCoroutine(InitCamAngleRoutine());
+    }
+
+    IEnumerator InitCamAngleRoutine()
+    {
+        yield return new WaitForSeconds(1);
+        HeroCamera.instance.InitAngle();
+        isMovingTarget = false;
     }
 }

@@ -27,6 +27,8 @@ public class MainScreen : UIScreen
 
     [HideInInspector]
     public TransformDialog curTransformDialog = null;
+    [HideInInspector]
+    public Dialog curGuestTransformDialog = null;
     public GameObject joyStickCanvas;
     public GameObject prefabScrollBar;
     public GameObject userInfoObj;
@@ -219,5 +221,14 @@ public class MainScreen : UIScreen
                 videoObjectArray[i].videoPlayer.Play();
             else
                 videoObjectArray[i].videoPlayer.Stop();
+    }
+
+    public void CloseCurDialog()
+    {
+        if (curGuestTransformDialog != null)
+            curGuestTransformDialog.SetVisible(false);
+
+        if (curTransformDialog != null) 
+            curTransformDialog.SetVisible(false);
     }
 }

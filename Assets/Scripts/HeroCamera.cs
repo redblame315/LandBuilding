@@ -86,6 +86,15 @@ public class HeroCamera : MonoBehaviour
 		if (headBone == null || hero == null)
 			return;
 
+		/*if(HeroCtrl.instance.isMovingTarget)
+        {
+			Vector3 forward = HeroCtrl.instance.moveTargetTransform.position - cam.transform.position;
+			forward.Normalize();
+
+			Quaternion camRotation = Quaternion.LookRotation(forward);
+			HeroCamera.instance.cam.rotation = camRotation;
+			//HeroCamera.instance.cam.rotation = Quaternion.Slerp(HeroCamera.instance.cam.rotation, camRotation, 5 * Time.deltaTime);
+		}*/
 		//if (MainScreen.instance.curTransformDialog != null && MainScreen.instance.curTransformDialog.GetVisible())
 		//	return;
 
@@ -340,7 +349,13 @@ public class HeroCamera : MonoBehaviour
 		cam.position = camPos;
 
 		yAngl = cam.eulerAngles.x;
-		xAngl = transform.rotation.eulerAngles.y;
+		xAngl = cam.eulerAngles.y;
+	}
+
+	public void InitAngle()
+    {
+		yAngl = cam.eulerAngles.x;
+		xAngl = cam.eulerAngles.y;
 	}
 	//=================================================================================================================o
 }

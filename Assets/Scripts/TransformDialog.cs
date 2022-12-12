@@ -47,6 +47,10 @@ public class TransformDialog : Dialog
     public void SetTarget(Transform _target, string _prefabName)
     {
         isBusy = true;
+
+        if (MainScreen.instance.curTransformDialog != null)
+            MainScreen.instance.curTransformDialog.SetVisible(false);
+
         MainScreen.instance.curTransformDialog = this;
         targetTransform = _target;
         initPos = targetTransform.localPosition;
