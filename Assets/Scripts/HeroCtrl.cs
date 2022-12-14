@@ -127,12 +127,14 @@ public class HeroCtrl : MonoBehaviour
 
     public void OnMoveUpdate()
     {
-        Vector3 forward = moveTargetTransform.position - HeroCamera.instance.cam.transform.position;
+        HeroCamera.instance.cam.LookAt(moveTargetTransform);
+        /*Vector3 forward = moveTargetTransform.position - HeroCamera.instance.cam.transform.position;
         forward.Normalize();
 
         camRotation = Quaternion.LookRotation(forward);
         HeroCamera.instance.cam.rotation = Quaternion.LerpUnclamped(HeroCamera.instance.cam.rotation, camRotation, 50 * Time.deltaTime);
         //HeroCamera.instance.cam.rotation = camRotation;
+        */
     }
 
     public void OnMoveComplete()
@@ -158,7 +160,7 @@ public class HeroCtrl : MonoBehaviour
     IEnumerator InitCamAngleRoutine()
     {
         yield return new WaitForSeconds(0f);
-        HeroCamera.instance.InitAngle(camRotation.eulerAngles);
+        HeroCamera.instance.InitAngle(HeroCamera.instance.cam.eulerAngles);
         isMovingTarget = false;
     }
 }
