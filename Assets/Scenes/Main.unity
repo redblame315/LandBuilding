@@ -7106,6 +7106,7 @@ MonoBehaviour:
   enterQuationDialog: {fileID: 1057993866}
   exitQuationDialog: {fileID: 1386415614}
   headBoneHeightSlider: {fileID: 6587218165662857651}
+  assetBundle: {fileID: 0}
 --- !u!54 &303727134
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -11026,7 +11027,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &471824562
 Transform:
   m_ObjectHideFlags: 0

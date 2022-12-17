@@ -1,0 +1,40 @@
+ManifestFileVersion: 0
+CRC: 3234936447
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 18599d2144eed8cb75cbe3985dc5e462
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 387cf66111870ec95a60eedce7644e97
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 64
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 5c645c85ed4826348b5000ddccd0f936, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Resources/Prefabs/interior/interior.prefab
+- Assets/Models/Gallery/Fbx/gallery.fbx
+Dependencies: []

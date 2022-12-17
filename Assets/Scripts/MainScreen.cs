@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 
 public class MainScreen : UIScreen
 {
@@ -36,8 +38,10 @@ public class MainScreen : UIScreen
     public InteriorEnterQuestionDialog enterQuationDialog;
     public InteriorExitQuestionDialog exitQuationDialog;
     public UISlider headBoneHeightSlider;
-    
+    public AssetBundle assetBundle;
 
+    [DllImport("__Internal")]
+    private static extern string GetURLFromPage();
     private void Awake()
     {
         instance = this;
@@ -57,8 +61,29 @@ public class MainScreen : UIScreen
         }
         //Show the user's info
         landTitleLabel.text = DBManager.Instance().userInfo.username;
+
+        DBManager.Instance().LoadCSettingInfo();        
+    }
+
+    IEnumerator LoadAssetBundle(CSettingInfo cSettingInfo)
+    {
+        string uri = "";        
+#if !UNITY_WEBGL || UNITY_EDITOR
+        uri = "file:///" + Application.dataPath + "/AssetBundles/" + cSettingInfo.sinterior;
+#else
+        uri = GetURLFromPage();
+        if(uri.Contains("#"))
+        {
+            uri = uri.Split("#")[0];
+        }
+        uri += "/AssetBundles/" + cSettingInfo.sinterior;
+#endif
+        UnityWebRequest request = UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(uri);
+        yield return request.SendWebRequest();
+        assetBundle = DownloadHandlerAssetBundle.GetContent(request);
+
         //Load objects from firestore databse
-        DBManager.Instance().LoadCSettingInfo();
+        ProcessCSettingObjects(cSettingInfo);
     }
 
     // Start is called before the first frame update
@@ -76,6 +101,12 @@ public class MainScreen : UIScreen
 
     public void InitCSettingObjects(CSettingInfo cSettingInfo)
     {
+        StartCoroutine(LoadAssetBundle(cSettingInfo));
+        
+    }
+
+    public void ProcessCSettingObjects(CSettingInfo cSettingInfo)
+    {
         GameObject frontPrefab = Resources.Load("Prefabs/front/" + cSettingInfo.sfront) as GameObject;
         if (frontPrefab == null)
         {
@@ -83,13 +114,14 @@ public class MainScreen : UIScreen
             LogOutButtonClicked();
 #endif
             return;
-        }            
+        }
         GameObject frontObject = Instantiate(frontPrefab) as GameObject;
         frontObject.transform.parent = frontParentTransform;
         frontSpawnPoint = frontObject.transform.Find("SpawnPoint");
 
-        GameObject interiorPrefab = Resources.Load("Prefabs/interior/" + cSettingInfo.sinterior) as GameObject;
-        if(interiorPrefab == null)
+        //GameObject interiorPrefab = Resources.Load("Prefabs/interior/" + cSettingInfo.sinterior) as GameObject;
+        GameObject interiorPrefab = assetBundle.LoadAsset<GameObject>("interior");
+        if (interiorPrefab == null)
         {
 #if !UNITY_WEBGL || UNITY_EDITOR
             LogOutButtonClicked();
@@ -103,7 +135,7 @@ public class MainScreen : UIScreen
 
         frontParentTransform.gameObject.SetActive(true);
         heroCtrl.gameObject.SetActive(true);
-        HeroCamera.instance.InitHeroCam();        
+        HeroCamera.instance.InitHeroCam();
 
         if (GameManager.instance.forAdmin)
         {
@@ -121,7 +153,7 @@ public class MainScreen : UIScreen
                 userInfoObj.SetActive(true);
 #endif
         }
-            
+
 
         DBManager.Instance().LoadObjectsByFirestore();
     }
