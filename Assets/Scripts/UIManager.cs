@@ -21,19 +21,26 @@ public class UIManager : MonoBehaviour
     private static extern string GetURLFromPage();
     private void Awake()
     {
-        instance = this;
-
+        if(instance == null)
+            instance = this;
     }
     // Start is called before the first frame update
     void Start()
     {
+        Init();
+    }
+
+    public void Init()
+    {
         if (GameManager.instance.forAdmin)
+        {
             loginScreen.Focus();
+        }
         else
         {
             if (GameManager.instance.forAskAccountName)
-            {               
-                
+            {
+
 #if !UNITY_WEBGL || UNITY_EDITOR
                 accountScreen.Focus();
                 //accountWebScreen.Focus();
@@ -51,7 +58,6 @@ public class UIManager : MonoBehaviour
             else
                 mainUIScreen.Focus();
         }
-            
     }
 
     // Update is called once per frame

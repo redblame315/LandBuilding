@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum GameStartState { None, Logout, ExitInterior}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
@@ -9,7 +11,9 @@ public class GameManager : MonoBehaviour
     public bool bStart = false;
     [HideInInspector]
     public GameObject curPrefabObject = null;
-      
+
+    public GameObject[] dontDestoryOnLoadObjArray;
+    public GameStartState gameStartState = GameStartState.None;
     public bool forAdmin = true;
     public bool forAskAccountName = true;
     public bool ecom = true;
@@ -20,12 +24,41 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        InitDontDestroyOnLoad();
+
+        if (instance == null)
+            instance = this;
     }
     // Start is called before the first frame update
     void Start()
-    {
+    {        
         dbManager = DBManager.Instance();
+    }
+
+    public void InitDontDestroyOnLoad()
+    {        
+        bool destroy = instance != null;
+        for (int i = 0; i < dontDestoryOnLoadObjArray.Length; i++)
+            if (destroy)
+                Destroy(dontDestoryOnLoadObjArray[i]);
+            else
+                DontDestroyOnLoad(dontDestoryOnLoadObjArray[i]);
+
+        if (GameManager.instance)
+        {
+            switch (GameManager.instance.gameStartState)
+            {
+                case GameStartState.Logout:
+                    UIManager.instance.Init();
+                    MainScreen.instance.InitRoad();
+                    break;
+
+                case GameStartState.ExitInterior:
+                    MainScreen.instance.ExitInterior();
+                    break;
+            }
+            GameManager.instance.gameStartState = GameStartState.None;
+        }
     }
 
     // Update is called once per frame

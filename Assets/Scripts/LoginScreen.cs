@@ -7,11 +7,9 @@ public class LoginScreen : UIScreen
     public UIInput userIdInput;
     public UIInput passwordInput;
 
-    private DBManager dbManger = null;
 
     private void Awake()
     {
-        dbManger = DBManager.Instance();
     }
     public override void Init()
     {
@@ -35,8 +33,8 @@ public class LoginScreen : UIScreen
         string password = passwordInput.value;
         if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(password))
             return;
-        //dbManger.LoginUser(userId, password);
-        dbManger.LoginUserByFireStore(userId, password);
+        
+        DBManager.Instance().LoginUserByFireStore(userId, password);
     }
 
     public void SignUpButtonClicked()

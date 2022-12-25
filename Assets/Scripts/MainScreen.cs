@@ -38,13 +38,15 @@ public class MainScreen : UIScreen
     public InteriorEnterQuestionDialog enterQuationDialog;
     public InteriorExitQuestionDialog exitQuationDialog;
     public UISlider headBoneHeightSlider;
-    public AssetBundle assetBundle;
+    [HideInInspector]
+    public AssetBundle assetBundle = null;
 
     [DllImport("__Internal")]
     private static extern string GetURLFromPage();
     private void Awake()
     {
-        instance = this;
+        if(instance == null)
+            instance = this;
     }
 
     //Init actions when the mainscreen is loaded
@@ -52,7 +54,7 @@ public class MainScreen : UIScreen
     {
         if(!GameManager.instance.forAdmin)
         {
-            UserInfo userInfo = DBManager.Instance().userInfo;
+            UserInfo userInfo = DBManager.userInfo;
             if(string.IsNullOrEmpty(userInfo.userId))
             {
                 userInfo.userId = GameManager.instance.adminUserId;
@@ -60,7 +62,7 @@ public class MainScreen : UIScreen
             }
         }
         //Show the user's info
-        landTitleLabel.text = DBManager.Instance().userInfo.username;
+        landTitleLabel.text = DBManager.userInfo.username;
 
         DBManager.Instance().LoadCSettingInfo();        
     }
@@ -78,10 +80,12 @@ public class MainScreen : UIScreen
         }
         uri += "/AssetBundles/" + cSettingInfo.sinterior;
 #endif
+        if (assetBundle != null)
+            assetBundle.Unload(false);
         UnityWebRequest request = UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(uri);
         yield return request.SendWebRequest();
         assetBundle = DownloadHandlerAssetBundle.GetContent(request);
-
+        
         //Load objects from firestore databse
         ProcessCSettingObjects(cSettingInfo);
     }
@@ -101,8 +105,17 @@ public class MainScreen : UIScreen
 
     public void InitCSettingObjects(CSettingInfo cSettingInfo)
     {
-        StartCoroutine(LoadAssetBundle(cSettingInfo));
-        
+        StartCoroutine(LoadAssetBundle(cSettingInfo));        
+    }
+
+    public void InitRoad()
+    {
+        prefabScrollBar.SetActive(false);
+        frontParentTransform.gameObject.SetActive(false);
+        GameObject[] objects = frontParentTransform.GetComponentsInChildren<GameObject>();
+        for (int i = 0; i < objects.Length; i++)
+            if (objects[i] != frontParentTransform.gameObject)
+                Destroy(objects[i]);
     }
 
     public void ProcessCSettingObjects(CSettingInfo cSettingInfo)
@@ -189,6 +202,7 @@ public class MainScreen : UIScreen
 
     public void LogOutButtonClicked()
     {
+        GameManager.instance.gameStartState = GameStartState.Logout;
         SceneManager.LoadSceneAsync(0);        
     }
 
@@ -220,8 +234,8 @@ public class MainScreen : UIScreen
         PlayVideo(frontParentTransform, false);
         frontParentTransform.gameObject.SetActive(false);      
         
-        AudioClip backgroundAudioClip = Resources.Load("Audio/" + DBManager.Instance().cSettingInfo.bgsong) as AudioClip;
-        SoundManager.instance.SetBackgroundVolume(DBManager.Instance().cSettingInfo.bgvolume);
+        AudioClip backgroundAudioClip = Resources.Load("Audio/" + DBManager.cSettingInfo.bgsong) as AudioClip;
+        SoundManager.instance.SetBackgroundVolume(DBManager.cSettingInfo.bgvolume);
         SoundManager.instance.PlayBackgroundSound(backgroundAudioClip);
     }
 
@@ -236,8 +250,8 @@ public class MainScreen : UIScreen
         HeroCtrl.instance.heroPosState = HeroPosState.Interior;
         HeroCamera.instance.InitHeroCam();
 
-        PlayVideo(interiorParentTransform, false);
-        interiorParentTransform.gameObject.SetActive(false);
+        //PlayVideo(interiorParentTransform, false);
+        //interiorParentTransform.gameObject.SetActive(false);
 
         frontParentTransform.gameObject.SetActive(true);
         PlayVideo(frontParentTransform);

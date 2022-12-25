@@ -342,7 +342,7 @@ GameObject:
   - component: {fileID: 129}
   m_Layer: 8
   m_Name: UI Root (2D)
-  m_TagString: Untagged
+  m_TagString: Root
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1219,6 +1219,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bStart: 0
   curPrefabObject: {fileID: 0}
+  dontDestoryOnLoadObjArray:
+  - {fileID: 36}
+  - {fileID: 848942639}
+  - {fileID: 35}
+  - {fileID: 1115705137}
+  - {fileID: 10}
+  gameStartState: 0
   forAdmin: 1
   forAskAccountName: 0
   ecom: 1

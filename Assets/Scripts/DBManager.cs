@@ -86,13 +86,14 @@ public class DBManager : MonoBehaviour
     FirebaseDatabase mFireBaseDatabase;
     FirebaseFirestore mFirebaseFireStore;
 #endif
-    public UserInfo userInfo = new UserInfo();
-    public CSettingInfo cSettingInfo = new CSettingInfo();
+    public static UserInfo userInfo = new UserInfo();
+    public static CSettingInfo cSettingInfo = new CSettingInfo();
 
     string curUserId;
     private void Awake()
     {
-        dbManager = this;
+        if(dbManager == null)
+            dbManager = this;
 
 #if !UNITY_WEBGL || UNITY_EDITOR
         //mFireBaseDatabase = FirebaseDatabase.GetInstance("https://landbuilding-5644c-default-rtdb.firebaseio.com");
@@ -370,7 +371,8 @@ public class DBManager : MonoBehaviour
     public void OnDestroy()
     {
 #if !UNITY_WEBGL || UNITY_EDITOR
-        mFirebaseFireStore.TerminateAsync();
+        if(GameManager.instance.gameStartState == GameStartState.None)
+            mFirebaseFireStore.TerminateAsync();
 #endif
     }
 

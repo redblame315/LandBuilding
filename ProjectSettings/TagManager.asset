@@ -10,6 +10,7 @@ TagManager:
   - VideoObject
   - Front
   - Interior
+  - Root
   layers:
   - Default
   - TransparentFX
