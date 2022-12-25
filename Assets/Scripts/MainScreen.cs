@@ -8,12 +8,12 @@ using UnityEngine.Networking;
 public class MainScreen : UIScreen
 {
     public static MainScreen instance = null;
-    [HideInInspector]
     public Transform interiorDropSurface;
     public Transform frontDropSurface;
     
     [HideInInspector]
     public Transform frontSpawnPoint;
+    public Transform frontInitSpawnPoint;
     public Transform interiorSpawnPoint;
     public Transform frontParentTransform;
     public Transform interiorParentTransform;
@@ -82,9 +82,22 @@ public class MainScreen : UIScreen
 #endif
         if (assetBundle != null)
             assetBundle.Unload(false);
-        UnityWebRequest request = UnityEngine.Networking.UnityWebRequestAssetBundle.GetAssetBundle(uri);
+
+        /*while (!Caching.ready)
+            yield return null;
+
+        WWW www = WWW.LoadFromCacheOrDownload(uri, 1);
+        yield return www;
+
+        if (!string.IsNullOrEmpty(www.error))
+            yield return null;
+
+        assetBundle = www.assetBundle;*/
+        UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(uri);
         yield return request.SendWebRequest();
         assetBundle = DownloadHandlerAssetBundle.GetContent(request);
+        bool isStreamed = assetBundle.isStreamedSceneAssetBundle;
+        //Debug.LogFormat("isStreamed :{0} {1}", uri, isStreamed);        
         
         //Load objects from firestore databse
         ProcessCSettingObjects(cSettingInfo);
@@ -110,12 +123,10 @@ public class MainScreen : UIScreen
 
     public void InitRoad()
     {
-        prefabScrollBar.SetActive(false);
+        //prefabScrollBar.SetActive(false);        
+        prefabScrollBar.transform.localScale = Vector3.zero;
+
         frontParentTransform.gameObject.SetActive(false);
-        GameObject[] objects = frontParentTransform.GetComponentsInChildren<GameObject>();
-        for (int i = 0; i < objects.Length; i++)
-            if (objects[i] != frontParentTransform.gameObject)
-                Destroy(objects[i]);
     }
 
     public void ProcessCSettingObjects(CSettingInfo cSettingInfo)
@@ -128,12 +139,18 @@ public class MainScreen : UIScreen
 #endif
             return;
         }
+
+        GameObject[] frontGameObj = GameObject.FindGameObjectsWithTag("Front");
+        for (int i = 0; i < frontGameObj.Length; i++)
+            Destroy(frontGameObj[i]);
+
         GameObject frontObject = Instantiate(frontPrefab) as GameObject;
         frontObject.transform.parent = frontParentTransform;
         frontSpawnPoint = frontObject.transform.Find("SpawnPoint");
 
+        frontParentTransform.gameObject.SetActive(true);
         //GameObject interiorPrefab = Resources.Load("Prefabs/interior/" + cSettingInfo.sinterior) as GameObject;
-        GameObject interiorPrefab = assetBundle.LoadAsset<GameObject>("interior");
+        /*GameObject interiorPrefab = assetBundle.LoadAsset<GameObject>("interior");
         if (interiorPrefab == null)
         {
 #if !UNITY_WEBGL || UNITY_EDITOR
@@ -144,16 +161,14 @@ public class MainScreen : UIScreen
         GameObject interiorObject = Instantiate(interiorPrefab) as GameObject;
         interiorObject.transform.parent = interiorParentTransform;
         interiorDropSurface = interiorObject.transform.Find("DropSurface");
-        interiorSpawnPoint = interiorObject.transform.Find("SpawnPoint");
+        interiorSpawnPoint = interiorObject.transform.Find("SpawnPoint");*/
 
-        frontParentTransform.gameObject.SetActive(true);
-        heroCtrl.gameObject.SetActive(true);
-        HeroCamera.instance.InitHeroCam();
-
+        HeroCtrl.instance.SpawnAtPoint(frontInitSpawnPoint);
         if (GameManager.instance.forAdmin)
         {
             //headBoneHeightSlider.gameObject.SetActive(true);
-            prefabScrollBar.SetActive(true);
+            //prefabScrollBar.SetActive(true);
+            prefabScrollBar.transform.localScale = Vector3.one;
             UIScrollView scrollView = prefabScrollBar.GetComponentInChildren<UIScrollView>();
             scrollView.ResetPosition();
             userInfoObj.SetActive(true);
@@ -197,12 +212,22 @@ public class MainScreen : UIScreen
             }
         }
 
+        //interiorParentTransform.gameObject.SetActive(false);
         GameManager.instance.bStart = true;
     }
 
     public void LogOutButtonClicked()
     {
         GameManager.instance.gameStartState = GameStartState.Logout;
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            interiorDropSurface.transform.parent = interiorParentTransform;
+            interiorDropSurface.transform.localPosition = new Vector3(0, 1000, 0);            
+        }
+
+        normalObjectInfoDialog.gameObject.SetActive(false);
+        videoObjectInfoDialog.gameObject.SetActive(false);
+        imageObjectInfoDialog.gameObject.SetActive(false);
         SceneManager.LoadSceneAsync(0);        
     }
 
@@ -218,28 +243,43 @@ public class MainScreen : UIScreen
             
     }
     public void EnterInterior()
-    {        
-        Transform heroTransform = HeroCtrl.instance.characterController.transform;
-        HeroCtrl.instance.characterController.enabled = false;        
-        heroTransform.position = interiorSpawnPoint.position;
-        heroTransform.rotation = interiorSpawnPoint.rotation;
-        HeroCtrl.instance.transform.rotation = heroTransform.rotation;
-        HeroCtrl.instance.characterController.enabled = true;
-        HeroCtrl.instance.heroPosState = HeroPosState.Interior;
-        HeroCamera.instance.InitHeroCam();
+    {
+        GameManager.instance.gameStartState = GameStartState.EnterInterior;
+        string[] scenePaths = assetBundle.GetAllScenePaths();
+        string sceneName = System.IO.Path.GetFileNameWithoutExtension(scenePaths[0]);
+        SceneManager.LoadScene(sceneName);
+    }
 
-        interiorParentTransform.gameObject.SetActive(true);
-        PlayVideo(interiorParentTransform);
+    public void InitInterior()
+    {
+        HeroCtrl.instance.SpawnAtPoint(InteriorManager.instance.interiorSpawnPoint);
 
-        PlayVideo(frontParentTransform, false);
-        frontParentTransform.gameObject.SetActive(false);      
-        
+        //interiorParentTransform.gameObject.SetActive(true);
+        PlayVideo(InteriorManager.instance.transform);
+
+        //PlayVideo(frontParentTransform, false);
+        frontParentTransform.gameObject.SetActive(false);
+        interiorDropSurface.parent = InteriorManager.instance.interiorDropSurface;
+        interiorDropSurface.transform.localPosition = Vector3.zero;
+
         AudioClip backgroundAudioClip = Resources.Load("Audio/" + DBManager.cSettingInfo.bgsong) as AudioClip;
         SoundManager.instance.SetBackgroundVolume(DBManager.cSettingInfo.bgvolume);
         SoundManager.instance.PlayBackgroundSound(backgroundAudioClip);
     }
 
     public void ExitInterior()
+    {
+        GameManager.instance.gameStartState = GameStartState.ExitInterior;
+        if(SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            interiorDropSurface.transform.parent = interiorParentTransform;
+            interiorDropSurface.transform.localPosition = new Vector3(0, 1000, 0);
+        }
+            
+        SceneManager.LoadScene(0);
+    }
+
+    public void ResetFrontSettings()
     {
         Transform heroTransform = HeroCtrl.instance.characterController.transform;
         HeroCtrl.instance.characterController.enabled = false;
@@ -256,7 +296,7 @@ public class MainScreen : UIScreen
         frontParentTransform.gameObject.SetActive(true);
         PlayVideo(frontParentTransform);
 
-        SoundManager.instance.StopBackgroundSound();
+        //SoundManager.instance.StopBackgroundSound();
     }
 
     public void PlayVideo(Transform parentTrans, bool isPlay = true)

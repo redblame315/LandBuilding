@@ -1,7 +1,7 @@
 ManifestFileVersion: 0
-CRC: 2702099109
+CRC: 3410354655
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: gallery
+      Name: gallery_aman
       Dependencies: {}

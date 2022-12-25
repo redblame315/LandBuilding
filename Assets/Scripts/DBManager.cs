@@ -373,6 +373,8 @@ public class DBManager : MonoBehaviour
 #if !UNITY_WEBGL || UNITY_EDITOR
         if(GameManager.instance.gameStartState == GameStartState.None)
             mFirebaseFireStore.TerminateAsync();
+
+        GameManager.instance.gameStartState = GameStartState.None;
 #endif
     }
 

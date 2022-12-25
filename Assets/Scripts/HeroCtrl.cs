@@ -164,4 +164,16 @@ public class HeroCtrl : MonoBehaviour
         HeroCamera.instance.InitAngle(HeroCamera.instance.cam.eulerAngles);
         isMovingTarget = false;
     }
+
+    public void SpawnAtPoint(Transform targetPointTrans)
+    {
+        Transform heroTransform = characterController.transform;
+        characterController.enabled = false;
+        heroTransform.position = targetPointTrans.position;
+        heroTransform.rotation = targetPointTrans.rotation;
+        transform.rotation = heroTransform.rotation;
+        characterController.enabled = true;
+        heroPosState = HeroPosState.Interior;
+        HeroCamera.instance.InitHeroCam();
+    }
 }

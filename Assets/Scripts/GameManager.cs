@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameStartState { None, Logout, ExitInterior}
+public enum GameStartState { None, Logout, EnterInterior, ExitInterior}
 
 public class GameManager : MonoBehaviour
 {
@@ -54,10 +54,9 @@ public class GameManager : MonoBehaviour
                     break;
 
                 case GameStartState.ExitInterior:
-                    MainScreen.instance.ExitInterior();
+                    MainScreen.instance.ResetFrontSettings();
                     break;
-            }
-            GameManager.instance.gameStartState = GameStartState.None;
+            }            
         }
     }
 
