@@ -92,6 +92,7 @@ public class DBManager : MonoBehaviour
     string curUserId;
     private void Awake()
     {
+#if !UNITY_WEBGL || UNITY_EDITOR
         if (dbManager == null)
         {
             dbManager = this;
@@ -99,6 +100,9 @@ public class DBManager : MonoBehaviour
         }
         else
             Destroy(gameObject);
+#else
+        dbManager = this;
+#endif
 #if !UNITY_WEBGL || UNITY_EDITOR
         //mFireBaseDatabase = FirebaseDatabase.GetInstance("https://landbuilding-5644c-default-rtdb.firebaseio.com");
         try
@@ -115,7 +119,7 @@ public class DBManager : MonoBehaviour
         //mFirebaseFireStore.DisableNetworkAsync();
         //mFirebaseFireStore.EnableNetworkAsync();
         //mDatabase = mFireBaseDatabase.RootReference;
-#endif        
+#endif
     }
 
     public static DBManager Instance()

@@ -35,7 +35,9 @@ public class UIManager : MonoBehaviour
         {
             if (string.IsNullOrEmpty(DBManager.userInfo.userId))
             {
-                loginScreen.Focus();                
+                Debug.LogError("UIManager Init : Begine");
+                loginScreen.Focus();
+                Debug.LogError("UIManager Init : End");
             }
             else
                 DBManager.Instance().LoginUserByFireStore(DBManager.userInfo.userId, "");

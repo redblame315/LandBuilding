@@ -11,6 +11,7 @@ public class LoginScreen : UIScreen
     private void Awake()
     {
     }
+
     public override void Init()
     {
     }

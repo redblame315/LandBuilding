@@ -226,6 +226,12 @@ public class MainScreen : UIScreen
         videoObjectInfoDialog.gameObject.SetActive(false);
         imageObjectInfoDialog.gameObject.SetActive(false);*/
         DBManager.userInfo.userId = "";
+
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            InteriorManager.instance.ClearDontDestroyOnLoad();
+        }
+
         SceneManager.LoadSceneAsync(0);        
     }
 
@@ -274,8 +280,13 @@ public class MainScreen : UIScreen
         {
             interiorDropSurface.transform.parent = interiorParentTransform;
             interiorDropSurface.transform.localPosition = new Vector3(0, 1000, 0);
-        }*/            
-        SceneManager.LoadScene(0);
+        }*/
+
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            InteriorManager.instance.ClearDontDestroyOnLoad();
+        }
+        SceneManager.LoadSceneAsync(0);
     }
 
     public void ResetFrontSettings()
