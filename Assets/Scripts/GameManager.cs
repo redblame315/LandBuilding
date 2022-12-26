@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public GameObject curPrefabObject = null;
 
     public GameObject[] dontDestoryOnLoadObjArray;
-    public GameStartState gameStartState = GameStartState.None;
+    public static GameStartState gameStartState = GameStartState.None;
     public bool forAdmin = true;
     public bool forAskAccountName = true;
     public bool ecom = true;
@@ -24,27 +24,32 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        InitDontDestroyOnLoad();
-
-        if (instance == null)
-            instance = this;
+        instance = this;
     }
     // Start is called before the first frame update
     void Start()
     {        
         dbManager = DBManager.Instance();
+        ClearDontDestroyOnLoad();
+    }
+
+    public void ClearDontDestroyOnLoad()
+    {
+        var go = new GameObject("go");
+        DontDestroyOnLoad(go);
+
+        foreach (var root in go.scene.GetRootGameObjects())
+            if(!root.name.Contains("DB") && !root.name.Contains("Fire"))
+                Destroy(root);
     }
 
     public void InitDontDestroyOnLoad()
     {        
         bool destroy = instance != null;
         for (int i = 0; i < dontDestoryOnLoadObjArray.Length; i++)
-            if (destroy)
-                Destroy(dontDestoryOnLoadObjArray[i]);
-            else
-                DontDestroyOnLoad(dontDestoryOnLoadObjArray[i]);
+            DontDestroyOnLoad(dontDestoryOnLoadObjArray[i]);
 
-        if (GameManager.instance)
+        /*if (GameManager.instance)
         {
             switch (GameManager.instance.gameStartState)
             {
@@ -57,7 +62,7 @@ public class GameManager : MonoBehaviour
                     MainScreen.instance.ResetFrontSettings();
                     break;
             }            
-        }
+        }*/
     }
 
     // Update is called once per frame

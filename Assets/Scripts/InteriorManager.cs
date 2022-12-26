@@ -16,7 +16,7 @@ public class InteriorManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameManager.instance.gameStartState = GameStartState.None;
+        GameManager.gameStartState = GameStartState.None;
         interiorSpawnPoint = transform.Find("SpawnPoint");
         interiorDropSurface = transform.Find("DropSurface");
 

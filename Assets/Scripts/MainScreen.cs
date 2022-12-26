@@ -39,14 +39,13 @@ public class MainScreen : UIScreen
     public InteriorExitQuestionDialog exitQuationDialog;
     public UISlider headBoneHeightSlider;
     [HideInInspector]
-    public AssetBundle assetBundle = null;
+    public static AssetBundle assetBundle = null;
 
     [DllImport("__Internal")]
     private static extern string GetURLFromPage();
     private void Awake()
     {
-        if(instance == null)
-            instance = this;
+        instance = this;
     }
 
     //Init actions when the mainscreen is loaded
@@ -81,7 +80,7 @@ public class MainScreen : UIScreen
         uri += "/AssetBundles/" + cSettingInfo.sinterior;
 #endif
         if (assetBundle != null)
-            assetBundle.Unload(false);
+            assetBundle.Unload(true);
 
         /*while (!Caching.ready)
             yield return null;
@@ -123,8 +122,7 @@ public class MainScreen : UIScreen
 
     public void InitRoad()
     {
-        //prefabScrollBar.SetActive(false);        
-        prefabScrollBar.transform.localScale = Vector3.zero;
+        prefabScrollBar.SetActive(false);        
 
         frontParentTransform.gameObject.SetActive(false);
     }
@@ -163,12 +161,11 @@ public class MainScreen : UIScreen
         interiorDropSurface = interiorObject.transform.Find("DropSurface");
         interiorSpawnPoint = interiorObject.transform.Find("SpawnPoint");*/
 
-        HeroCtrl.instance.SpawnAtPoint(frontInitSpawnPoint);
+        HeroCtrl.instance.SpawnAtPoint(GameManager.gameStartState == GameStartState.ExitInterior ? frontSpawnPoint : frontInitSpawnPoint);
         if (GameManager.instance.forAdmin)
         {
             //headBoneHeightSlider.gameObject.SetActive(true);
-            //prefabScrollBar.SetActive(true);
-            prefabScrollBar.transform.localScale = Vector3.one;
+            prefabScrollBar.SetActive(true);
             UIScrollView scrollView = prefabScrollBar.GetComponentInChildren<UIScrollView>();
             scrollView.ResetPosition();
             userInfoObj.SetActive(true);
@@ -182,8 +179,8 @@ public class MainScreen : UIScreen
 #endif
         }
 
-
         DBManager.Instance().LoadObjectsByFirestore();
+        GameManager.gameStartState = GameStartState.None;
     }
 
     //Load all objects with objectlist info from firestore.
@@ -218,8 +215,8 @@ public class MainScreen : UIScreen
 
     public void LogOutButtonClicked()
     {
-        GameManager.instance.gameStartState = GameStartState.Logout;
-        if (SceneManager.GetActiveScene().buildIndex != 0)
+        GameManager.gameStartState = GameStartState.Logout;
+        /*if (SceneManager.GetActiveScene().buildIndex != 0)
         {
             interiorDropSurface.transform.parent = interiorParentTransform;
             interiorDropSurface.transform.localPosition = new Vector3(0, 1000, 0);            
@@ -227,7 +224,8 @@ public class MainScreen : UIScreen
 
         normalObjectInfoDialog.gameObject.SetActive(false);
         videoObjectInfoDialog.gameObject.SetActive(false);
-        imageObjectInfoDialog.gameObject.SetActive(false);
+        imageObjectInfoDialog.gameObject.SetActive(false);*/
+        DBManager.userInfo.userId = "";
         SceneManager.LoadSceneAsync(0);        
     }
 
@@ -244,7 +242,8 @@ public class MainScreen : UIScreen
     }
     public void EnterInterior()
     {
-        GameManager.instance.gameStartState = GameStartState.EnterInterior;
+        GameManager.instance.InitDontDestroyOnLoad();
+        GameManager.gameStartState = GameStartState.EnterInterior;
         string[] scenePaths = assetBundle.GetAllScenePaths();
         string sceneName = System.IO.Path.GetFileNameWithoutExtension(scenePaths[0]);
         SceneManager.LoadScene(sceneName);
@@ -252,6 +251,7 @@ public class MainScreen : UIScreen
 
     public void InitInterior()
     {
+        HeroCtrl.instance.heroPosState = HeroPosState.Interior;
         HeroCtrl.instance.SpawnAtPoint(InteriorManager.instance.interiorSpawnPoint);
 
         //interiorParentTransform.gameObject.SetActive(true);
@@ -269,13 +269,12 @@ public class MainScreen : UIScreen
 
     public void ExitInterior()
     {
-        GameManager.instance.gameStartState = GameStartState.ExitInterior;
-        if(SceneManager.GetActiveScene().buildIndex != 0)
+        GameManager.gameStartState = GameStartState.ExitInterior;
+        /*if(SceneManager.GetActiveScene().buildIndex != 0)
         {
             interiorDropSurface.transform.parent = interiorParentTransform;
             interiorDropSurface.transform.localPosition = new Vector3(0, 1000, 0);
-        }
-            
+        }*/            
         SceneManager.LoadScene(0);
     }
 

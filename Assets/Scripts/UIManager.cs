@@ -21,8 +21,7 @@ public class UIManager : MonoBehaviour
     private static extern string GetURLFromPage();
     private void Awake()
     {
-        if(instance == null)
-            instance = this;
+        instance = this;
     }
     // Start is called before the first frame update
     void Start()
@@ -34,7 +33,12 @@ public class UIManager : MonoBehaviour
     {
         if (GameManager.instance.forAdmin)
         {
-            loginScreen.Focus();
+            if (string.IsNullOrEmpty(DBManager.userInfo.userId))
+            {
+                loginScreen.Focus();                
+            }
+            else
+                DBManager.Instance().LoginUserByFireStore(DBManager.userInfo.userId, "");
         }
         else
         {

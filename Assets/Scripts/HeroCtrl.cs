@@ -20,8 +20,7 @@ public class HeroCtrl : MonoBehaviour
 
     private void Awake()
     {
-        if(instance == null)
-            instance = this;
+        instance = this;
     }
     // Start is called before the first frame update
     void Start()
@@ -173,7 +172,6 @@ public class HeroCtrl : MonoBehaviour
         heroTransform.rotation = targetPointTrans.rotation;
         transform.rotation = heroTransform.rotation;
         characterController.enabled = true;
-        heroPosState = HeroPosState.Interior;
         HeroCamera.instance.InitHeroCam();
     }
 }

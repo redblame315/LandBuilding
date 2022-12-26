@@ -92,9 +92,13 @@ public class DBManager : MonoBehaviour
     string curUserId;
     private void Awake()
     {
-        if(dbManager == null)
+        if (dbManager == null)
+        {
             dbManager = this;
-
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+            Destroy(gameObject);
 #if !UNITY_WEBGL || UNITY_EDITOR
         //mFireBaseDatabase = FirebaseDatabase.GetInstance("https://landbuilding-5644c-default-rtdb.firebaseio.com");
         try
@@ -106,12 +110,12 @@ public class DBManager : MonoBehaviour
             Debug.LogError("Firestore Init Error" + exception.Message);
             mFirebaseFireStore.TerminateAsync();
         }
-        
-        
+
+
         //mFirebaseFireStore.DisableNetworkAsync();
         //mFirebaseFireStore.EnableNetworkAsync();
         //mDatabase = mFireBaseDatabase.RootReference;
-#endif
+#endif        
     }
 
     public static DBManager Instance()
@@ -371,10 +375,10 @@ public class DBManager : MonoBehaviour
     public void OnDestroy()
     {
 #if !UNITY_WEBGL || UNITY_EDITOR
-        if(GameManager.instance.gameStartState == GameStartState.None)
+        if(GameManager.gameStartState == GameStartState.None)
             mFirebaseFireStore.TerminateAsync();
-
-        GameManager.instance.gameStartState = GameStartState.None;
+        else if(GameManager.gameStartState == GameStartState.Logout)
+            GameManager.gameStartState = GameStartState.None;
 #endif
     }
 

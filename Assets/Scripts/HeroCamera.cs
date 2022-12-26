@@ -60,8 +60,7 @@ public class HeroCamera : MonoBehaviour
 
     private void Awake()
     {
-		if(instance == null)
-			instance = this;
+		instance = this;
     }
 
     //=================================================================================================================o
