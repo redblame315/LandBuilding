@@ -38,6 +38,7 @@ public class MainScreen : UIScreen
     public InteriorEnterQuestionDialog enterQuationDialog;
     public InteriorExitQuestionDialog exitQuationDialog;
     public UISlider headBoneHeightSlider;
+    public GameObject loadingDialogObj;
     [HideInInspector]
     public static AssetBundle assetBundle = null;
 
@@ -68,17 +69,26 @@ public class MainScreen : UIScreen
 
     IEnumerator LoadAssetBundle(CSettingInfo cSettingInfo)
     {
-        string uri = "";        
-#if !UNITY_WEBGL || UNITY_EDITOR
-        uri = "file:///" + Application.dataPath + "/AssetBundles/" + cSettingInfo.sinterior;
-#else
-        uri = GetURLFromPage();
+        loadingDialogObj.SetActive(true);
+        string uri = cSettingInfo.sinterior;
+
+#if UNITY_STANDALONE || UNITY_EDITOR
+        //uri = "file:///" + Application.dataPath + "/AssetBundles/" + cSettingInfo.sinterior;
+        uri = uri.Replace("/AssetBundles/", "/AssetBundles_PC/");
+#elif UNITY_ANDROID
+        uri = uri.Replace("/AssetBundles/", "/AssetBundles_Android/");
+#elif UNITY_WEBGL
+        /*uri = GetURLFromPage();
         if(uri.Contains("#"))
         {
             uri = uri.Split("#")[0];
         }
-        uri += "/AssetBundles/" + cSettingInfo.sinterior;
+        uri += "/AssetBundles/" + cSettingInfo.sinterior;*/
+        if (!GameManager.instance.forAdmin)
+            uri = uri.Replace("admin", "guest");
 #endif
+
+
         if (assetBundle != null)
             assetBundle.Unload(true);
 
@@ -100,6 +110,7 @@ public class MainScreen : UIScreen
         
         //Load objects from firestore databse
         ProcessCSettingObjects(cSettingInfo);
+        loadingDialogObj.SetActive(false);
     }
 
     // Start is called before the first frame update
