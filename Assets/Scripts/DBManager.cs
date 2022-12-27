@@ -102,6 +102,7 @@ public class DBManager : MonoBehaviour
             Destroy(gameObject);
 #else
         dbManager = this;
+        DontDestroyOnLoad(gameObject);
 #endif
 #if !UNITY_WEBGL || UNITY_EDITOR
         //mFireBaseDatabase = FirebaseDatabase.GetInstance("https://landbuilding-5644c-default-rtdb.firebaseio.com");

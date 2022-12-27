@@ -11,7 +11,7 @@ public class ImageObject : MonoBehaviour
     public string description { get; set; }
     public string price { get; set; }
     public string webSiteUrl { get; set; }
-    public string imageUrl { get; set; }
+    public string imageUrl;
 
     // Start is called before the first frame update
     void Start()
