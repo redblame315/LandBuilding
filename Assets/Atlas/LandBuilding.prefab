@@ -47,8 +47,8 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 50246e2fd6361e04f91d77270844c59e, type: 2}
   mSprites:
   - name: icon_site
-    x: 532
-    y: 111
+    x: 536
+    y: 107
     width: 448
     height: 448
     borderLeft: 0
@@ -60,7 +60,7 @@ MonoBehaviour:
     paddingTop: 32
     paddingBottom: 32
   - name: ImageObject
-    x: 1013
+    x: 1021
     y: 621
     width: 526
     height: 403
@@ -86,7 +86,7 @@ MonoBehaviour:
     paddingTop: 0
     paddingBottom: 0
   - name: load
-    x: 532
+    x: 536
     y: 560
     width: 480
     height: 464
@@ -99,8 +99,8 @@ MonoBehaviour:
     paddingTop: 11
     paddingBottom: 25
   - name: VideoObject
-    x: 1013
-    y: 276
+    x: 1021
+    y: 272
     width: 595
     height: 344
     borderLeft: 0
@@ -113,7 +113,7 @@ MonoBehaviour:
     paddingBottom: 0
   - name: VideoObject1
     x: 0
-    y: 97
+    y: 93
     width: 395
     height: 255
     borderLeft: 0

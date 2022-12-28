@@ -24,7 +24,7 @@ public class MainScreen : UIScreen
     public TransformDialog videoObjectInfoDialog;
     
     public GuestImageDIalog guestImageDialog;
-    public GuestVideoDialog guestVideoDialog;
+    public GuestVideoDIalog guestVideoDialog;
     public DescriptionDialog descriptionDialog;
 
     [HideInInspector]
@@ -38,9 +38,13 @@ public class MainScreen : UIScreen
     public InteriorEnterQuestionDialog enterQuationDialog;
     public InteriorExitQuestionDialog exitQuationDialog;
     public UISlider headBoneHeightSlider;
-    public GameObject loadingDialogObj;
+    public LoadingScript loadingAssetBundleUI;    
     [HideInInspector]
     public static AssetBundle assetBundle = null;
+    [HideInInspector]
+    public static string lastAssetBundleURI;
+    [HideInInspector]
+    public static bool bAssetBundleLoad = false;
 
     [DllImport("__Internal")]
     private static extern string GetURLFromPage();
@@ -68,8 +72,7 @@ public class MainScreen : UIScreen
     }
 
     IEnumerator LoadAssetBundle(CSettingInfo cSettingInfo)
-    {
-        loadingDialogObj.SetActive(true);
+    {        
         string uri = cSettingInfo.sinterior;
 
 #if UNITY_STANDALONE || UNITY_EDITOR
@@ -87,30 +90,23 @@ public class MainScreen : UIScreen
         if (!GameManager.instance.forAdmin)
             uri = uri.Replace("admin", "guest");
 #endif
+        if(uri != lastAssetBundleURI)
+        {
+            bAssetBundleLoad = false;
+            loadingAssetBundleUI.StartProgress();
+            if (assetBundle != null)
+                assetBundle.Unload(true);
 
+            UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(uri);
+            yield return request.SendWebRequest();
+            assetBundle = DownloadHandlerAssetBundle.GetContent(request);
+            loadingAssetBundleUI.EndProgress();
+            bAssetBundleLoad = true;
 
-        if (assetBundle != null)
-            assetBundle.Unload(true);
+            lastAssetBundleURI = uri;
+        }
 
-        /*while (!Caching.ready)
-            yield return null;
-
-        WWW www = WWW.LoadFromCacheOrDownload(uri, 1);
-        yield return www;
-
-        if (!string.IsNullOrEmpty(www.error))
-            yield return null;
-
-        assetBundle = www.assetBundle;*/
-        UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(uri);
-        yield return request.SendWebRequest();
-        assetBundle = DownloadHandlerAssetBundle.GetContent(request);
-        bool isStreamed = assetBundle.isStreamedSceneAssetBundle;
-        //Debug.LogFormat("isStreamed :{0} {1}", uri, isStreamed);        
-        
-        //Load objects from firestore databse
-        ProcessCSettingObjects(cSettingInfo);
-        loadingDialogObj.SetActive(false);
+        yield return null;
     }
 
     // Start is called before the first frame update
@@ -128,7 +124,10 @@ public class MainScreen : UIScreen
 
     public void InitCSettingObjects(CSettingInfo cSettingInfo)
     {
-        StartCoroutine(LoadAssetBundle(cSettingInfo));        
+        StartCoroutine(LoadAssetBundle(cSettingInfo));
+
+        //Load objects from firestore databse
+        ProcessCSettingObjects(cSettingInfo);
     }
 
     public void InitRoad()
@@ -259,6 +258,9 @@ public class MainScreen : UIScreen
     }
     public void EnterInterior()
     {
+        if (!bAssetBundleLoad)
+            return;
+
         GameManager.instance.InitDontDestroyOnLoad();
         GameManager.gameStartState = GameStartState.EnterInterior;
         string[] scenePaths = assetBundle.GetAllScenePaths();
