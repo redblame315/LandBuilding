@@ -1,5 +1,5 @@
-You should remove the following directories in the old project, and copy from git pull.
-
+How to install project
+1.You should remove the following directories in "Assets" Folder the old project.
 -Atlas
 -Editor
 -Materials
@@ -10,3 +10,6 @@ You should remove the following directories in the old project, and copy from gi
 -Scenes
 -Scripts
 -Textures
+
+2.git pull
+3.Copy all directories in the git project and replace them with the old one.
