@@ -1224,7 +1224,7 @@ MonoBehaviour:
   - {fileID: 35}
   - {fileID: 1115705137}
   - {fileID: 10}
-  forAdmin: 1
+  forAdmin: 0
   forAskAccountName: 0
   ecom: 1
   ecomClick: 1
@@ -6430,7 +6430,6 @@ MonoBehaviour:
   exitQuationDialog: {fileID: 1386415614}
   headBoneHeightSlider: {fileID: 6587218165662857651}
   loadingAssetBundleUI: {fileID: 848871830}
-  bAssetBundleLoad: 0
 --- !u!54 &303727134
 Rigidbody:
   m_ObjectHideFlags: 0

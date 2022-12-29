@@ -5,7 +5,7 @@ public class CreateAssetBundles
     [MenuItem("Assets/Build AssetBundles(PC)")]
     static void BuildAllAssetBundlesPC()
     {
-        string assetBundleDirectory = "Assets/AssetBundles";
+        string assetBundleDirectory = "Assets/AssetBundles_PC";
         if (!Directory.Exists(assetBundleDirectory))
         {
             Directory.CreateDirectory(assetBundleDirectory);
@@ -29,7 +29,7 @@ public class CreateAssetBundles
     [MenuItem("Assets/Build AssetBundles(Android)")]
     static void BuildAllAssetBundlesAndroid()
     {
-        string assetBundleDirectory = "Assets/AssetBundles";
+        string assetBundleDirectory = "Assets/AssetBundles_Android";
         if (!Directory.Exists(assetBundleDirectory))
         {
             Directory.CreateDirectory(assetBundleDirectory);
