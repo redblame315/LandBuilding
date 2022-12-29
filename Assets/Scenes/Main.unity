@@ -1224,10 +1224,11 @@ MonoBehaviour:
   - {fileID: 35}
   - {fileID: 1115705137}
   - {fileID: 10}
-  forAdmin: 0
+  forAdmin: 1
   forAskAccountName: 0
   ecom: 1
   ecomClick: 1
+  ecomCameraMove: 0
   adminUserId: aman
   adminUserName: aman
 --- !u!65 &130

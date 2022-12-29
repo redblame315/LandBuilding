@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public enum EffectSound { CheckNavPoint }
 
@@ -57,6 +58,26 @@ public class SoundManager : MonoBehaviour
         backgroundAudioSource.Play();        
     }
     
+    public void PlayBackgroundSound(string uri)
+    {
+        StartCoroutine(PlayBackgroundSoundRoutine(uri));
+    }
+
+    IEnumerator PlayBackgroundSoundRoutine(string uri)
+    {
+        UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(uri, AudioType.UNKNOWN);
+        yield return request.SendWebRequest();
+        if(request.result == UnityWebRequest.Result.ConnectionError)
+        {
+            Debug.LogError(request.error);
+        }else
+        {
+            backgroundAudioSource.clip = DownloadHandlerAudioClip.GetContent(request);
+            backgroundAudioSource.Play();
+        }
+            
+    }
+
     public void StopBackgroundSound()
     {
         backgroundAudioSource.Stop();

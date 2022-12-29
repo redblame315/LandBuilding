@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public bool forAskAccountName = true;
     public bool ecom = true;
     public bool ecomClick = true;
+    public bool ecomCameraMove = true;
     public string adminUserId = "aman";
     public string adminUserName = "aman";
     
@@ -112,9 +113,12 @@ public class GameManager : MonoBehaviour
                 {
                     curPrefabObject = null;
                     return;
-                }               
+                }
 
-                HeroCtrl.instance.MoveToTarget(hit.collider.transform);
+                if (ecomCameraMove)
+                    HeroCtrl.instance.MoveToTarget(hit.collider.transform);
+                else
+                    ShowTransformDialog(hit.collider.gameObject);
             }
             curPrefabObject = null;
         }
