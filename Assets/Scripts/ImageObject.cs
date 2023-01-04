@@ -49,17 +49,17 @@ public class ImageObject : MonoBehaviour
             Debug.Log(request.error);
         else
         {
-            Material standardShaderMaterial = new Material(Shader.Find("Standard"));
+            Material standardShaderMaterial = new Material(Shader.Find("Legacy Shaders/Transparent/Diffuse"));
             standardShaderMaterial.mainTexture = ((DownloadHandlerTexture)request.downloadHandler).texture;
 
             //Set Rendering Mode to Transparent
-            standardShaderMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+            /*standardShaderMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
             standardShaderMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
             standardShaderMaterial.SetInt("_ZWrite", 0);
             standardShaderMaterial.DisableKeyword("_ALPHATEST_ON");
             standardShaderMaterial.DisableKeyword("_ALPHABLEND_ON");
             standardShaderMaterial.EnableKeyword("_ALPHAPREMULTIPLY_ON");
-            standardShaderMaterial.renderQueue = 3000;
+            standardShaderMaterial.renderQueue = 3000;*/
             
             imageRenderer.sharedMaterial = standardShaderMaterial;
         }
