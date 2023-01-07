@@ -286,8 +286,8 @@ public class MainScreen : UIScreen
         if (!GameManager.instance.forAdmin)
             auidoURI = auidoURI.Replace("admin", "guest");
 
-        SoundManager.instance.SetBackgroundVolume(DBManager.cSettingInfo.bgvolume);
         SoundManager.instance.PlayBackgroundSound(auidoURI);
+        SoundManager.instance.SetBackgroundVolume(DBManager.cSettingInfo.bgvolume);
     }
 
     public void ExitInterior()

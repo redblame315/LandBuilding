@@ -20,17 +20,7 @@ public class SoundManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        backgroundAudioSource = gameObject.AddComponent<AudioSource>();
-        backgroundAudioSource.rolloffMode = AudioRolloffMode.Linear;
-        backgroundAudioSource.pitch = 1;
-        backgroundAudioSource.minDistance = 1;
-        backgroundAudioSource.maxDistance = 40;
-        backgroundAudioSource.loop = true;
+        
 
         effectAudioSourceArray = new AudioSource[effectAudioClipArray.Length];
         for (int i = 0; i < effectAudioClipArray.Length; i++)
@@ -41,7 +31,13 @@ public class SoundManager : MonoBehaviour
             audioSource.playOnAwake = false;
 
             effectAudioSourceArray[i] = audioSource;
-        }       
+        }
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+           
     }
 
     // Update is called once per frame
@@ -63,6 +59,12 @@ public class SoundManager : MonoBehaviour
     
     public void PlayBackgroundSound(string uri)
     {
+        backgroundAudioSource = gameObject.AddComponent<AudioSource>();
+        backgroundAudioSource.rolloffMode = AudioRolloffMode.Linear;
+        backgroundAudioSource.pitch = 1;
+        backgroundAudioSource.minDistance = 1;
+        backgroundAudioSource.maxDistance = 40;
+        backgroundAudioSource.loop = true;
         StartCoroutine(PlayBackgroundSoundRoutine(uri));
     }
 
@@ -85,8 +87,11 @@ public class SoundManager : MonoBehaviour
 
         if(assetClip != null)
         {
+            Debug.LogError("AssetClipName--->" + assetClip.name);           
             backgroundAudioSource.clip = assetClip;
+            Debug.LogError("AssetClipName1--->" + assetClip.name);
             backgroundAudioSource.Play();
+            Debug.LogError("AssetClipName2--->" + assetClip.name);
         }
         
     }

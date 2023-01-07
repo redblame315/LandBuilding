@@ -31,13 +31,13 @@ public class InteriorManager : MonoBehaviour
 
     public void ClearDontDestroyOnLoad()
     {
-        Debug.LogError("ClearDontDestroyOnLoad : Begin");
+        //Debug.LogError("ClearDontDestroyOnLoad : Begin");
         var go = new GameObject("go");
         DontDestroyOnLoad(go);
 
         foreach (var root in go.scene.GetRootGameObjects())
         {
-            Debug.LogError("DonDestroyObjects Name : " + root.name);
+            //Debug.LogError("DonDestroyObjects Name : " + root.name);
 #if !UNITY_WEBGL || UNITY_EDITOR
             if (!root.name.Contains("DB") && !root.name.Contains("Fire") && !root.name.Contains("RealTime"))
                 Destroy(root);
@@ -46,6 +46,6 @@ public class InteriorManager : MonoBehaviour
 #endif
         }
 
-        Debug.LogError("ClearDontDestroyOnLoad : End");
+        //Debug.LogError("ClearDontDestroyOnLoad : End");
     }
 }

@@ -49,7 +49,7 @@ public class ImageObject : MonoBehaviour
             Debug.Log(request.error);
         else
         {
-            Material standardShaderMaterial = new Material(Shader.Find("Unlit/Transparent"));
+            Material standardShaderMaterial = new Material(Shader.Find("Standard"));
             standardShaderMaterial.mainTexture = ((DownloadHandlerTexture)request.downloadHandler).texture;
 
             //Set Rendering Mode to Transparent
@@ -60,7 +60,16 @@ public class ImageObject : MonoBehaviour
             standardShaderMaterial.DisableKeyword("_ALPHABLEND_ON");
             standardShaderMaterial.EnableKeyword("_ALPHAPREMULTIPLY_ON");
             standardShaderMaterial.renderQueue = 3000;*/
-            
+
+            //Set Rendering Mode to Cutout
+            standardShaderMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+            standardShaderMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+            standardShaderMaterial.SetInt("_ZWrite", 1);
+            standardShaderMaterial.EnableKeyword("_ALPHATEST_ON");
+            standardShaderMaterial.DisableKeyword("_ALPHABLEND_ON");
+            standardShaderMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            standardShaderMaterial.renderQueue = 2450;
+
             imageRenderer.sharedMaterial = standardShaderMaterial;
         }
     }
