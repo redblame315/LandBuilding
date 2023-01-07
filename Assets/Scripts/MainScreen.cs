@@ -281,13 +281,7 @@ public class MainScreen : UIScreen
         interiorDropSurface.parent = InteriorManager.instance.interiorDropSurface;
         interiorDropSurface.transform.localPosition = Vector3.zero;
 
-        //AudioClip backgroundAudioClip = Resources.Load("Audio/" + DBManager.cSettingInfo.bgsong) as AudioClip;
-        string auidoURI = DBManager.cSettingInfo.bgsong;
-        if (!GameManager.instance.forAdmin)
-            auidoURI = auidoURI.Replace("admin", "guest");
-
-        SoundManager.instance.PlayBackgroundSound(auidoURI);
-        SoundManager.instance.SetBackgroundVolume(DBManager.cSettingInfo.bgvolume);
+        
     }
 
     public void ExitInterior()

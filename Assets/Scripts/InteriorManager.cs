@@ -21,6 +21,22 @@ public class InteriorManager : MonoBehaviour
         interiorDropSurface = transform.Find("DropSurface");
 
         MainScreen.instance.InitInterior();
+
+        //AudioClip backgroundAudioClip = Resources.Load("Audio/" + DBManager.cSettingInfo.bgsong) as AudioClip;
+        string auidoURI = DBManager.cSettingInfo.bgsong;
+        if (!GameManager.instance.forAdmin)
+            auidoURI = auidoURI.Replace("admin", "guest");
+
+
+        GameObject soundmanagerObj = Instantiate(Resources.Load("Prefabs/SoundManager")) as GameObject;        
+        soundmanagerObj.transform.parent = transform;
+
+        Transform soundManagerSpawnTrans = transform.Find("SoundManager");
+        soundmanagerObj.transform.localPosition = soundManagerSpawnTrans != null ? soundManagerSpawnTrans.localPosition : Vector3.zero;
+        SoundManager soundManager = soundmanagerObj.GetComponent<SoundManager>();
+        soundManager.Init();
+        soundManager.PlayBackgroundSound(auidoURI);
+        soundManager.SetBackgroundVolume(DBManager.cSettingInfo.bgvolume);
     }
 
     // Update is called once per frame

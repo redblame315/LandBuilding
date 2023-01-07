@@ -19,8 +19,17 @@ public class SoundManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
-        
+        instance = this;        
+    }
+
+    public void Init()
+    {
+        backgroundAudioSource = gameObject.AddComponent<AudioSource>();
+        backgroundAudioSource.rolloffMode = AudioRolloffMode.Linear;
+        backgroundAudioSource.pitch = 1;
+        backgroundAudioSource.minDistance = 1;
+        backgroundAudioSource.maxDistance = 40;
+        backgroundAudioSource.loop = true;
 
         effectAudioSourceArray = new AudioSource[effectAudioClipArray.Length];
         for (int i = 0; i < effectAudioClipArray.Length; i++)
@@ -58,13 +67,7 @@ public class SoundManager : MonoBehaviour
     }
     
     public void PlayBackgroundSound(string uri)
-    {
-        backgroundAudioSource = gameObject.AddComponent<AudioSource>();
-        backgroundAudioSource.rolloffMode = AudioRolloffMode.Linear;
-        backgroundAudioSource.pitch = 1;
-        backgroundAudioSource.minDistance = 1;
-        backgroundAudioSource.maxDistance = 40;
-        backgroundAudioSource.loop = true;
+    {        
         StartCoroutine(PlayBackgroundSoundRoutine(uri));
     }
 
@@ -81,17 +84,15 @@ public class SoundManager : MonoBehaviour
             else
             {
                 assetClip = DownloadHandlerAudioClip.GetContent(request);
+                assetClip.name = "interior_sound";
                 preURI = uri;
             }
         }
 
         if(assetClip != null)
         {
-            Debug.LogError("AssetClipName--->" + assetClip.name);           
             backgroundAudioSource.clip = assetClip;
-            Debug.LogError("AssetClipName1--->" + assetClip.name);
             backgroundAudioSource.Play();
-            Debug.LogError("AssetClipName2--->" + assetClip.name);
         }
         
     }
