@@ -49,7 +49,7 @@ public class ImageObject : MonoBehaviour
             Debug.Log(request.error);
         else
         {
-            Material standardShaderMaterial = new Material(Shader.Find("Legacy Shaders/Transparent/Diffuse"));
+            Material standardShaderMaterial = new Material(Shader.Find("Unlit/Transparent"));
             standardShaderMaterial.mainTexture = ((DownloadHandlerTexture)request.downloadHandler).texture;
 
             //Set Rendering Mode to Transparent

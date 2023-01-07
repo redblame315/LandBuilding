@@ -14,6 +14,9 @@ public class SoundManager : MonoBehaviour
     AudioSource[] effectAudioSourceArray;
     AudioSource backgroundAudioSource;
 
+    static AudioClip assetClip = null;
+    static string preURI = "";
+
     private void Awake()
     {
         instance = this;
@@ -65,17 +68,27 @@ public class SoundManager : MonoBehaviour
 
     IEnumerator PlayBackgroundSoundRoutine(string uri)
     {
-        UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(uri, AudioType.UNKNOWN);
-        yield return request.SendWebRequest();
-        if(request.result == UnityWebRequest.Result.ConnectionError)
+        if(uri != preURI)
         {
-            Debug.LogError(request.error);
-        }else
+            UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(uri, AudioType.UNKNOWN);
+            yield return request.SendWebRequest();
+            if (request.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debug.LogError(request.error);
+            }
+            else
+            {
+                assetClip = DownloadHandlerAudioClip.GetContent(request);
+                preURI = uri;
+            }
+        }
+
+        if(assetClip != null)
         {
-            backgroundAudioSource.clip = DownloadHandlerAudioClip.GetContent(request);
+            backgroundAudioSource.clip = assetClip;
             backgroundAudioSource.Play();
         }
-            
+        
     }
 
     public void StopBackgroundSound()
