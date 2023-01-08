@@ -157,19 +157,6 @@ public class MainScreen : UIScreen
         frontSpawnPoint = frontObject.transform.Find("SpawnPoint");
 
         frontParentTransform.gameObject.SetActive(true);
-        //GameObject interiorPrefab = Resources.Load("Prefabs/interior/" + cSettingInfo.sinterior) as GameObject;
-        /*GameObject interiorPrefab = assetBundle.LoadAsset<GameObject>("interior");
-        if (interiorPrefab == null)
-        {
-#if !UNITY_WEBGL || UNITY_EDITOR
-            LogOutButtonClicked();
-#endif
-            return;
-        }
-        GameObject interiorObject = Instantiate(interiorPrefab) as GameObject;
-        interiorObject.transform.parent = interiorParentTransform;
-        interiorDropSurface = interiorObject.transform.Find("DropSurface");
-        interiorSpawnPoint = interiorObject.transform.Find("SpawnPoint");*/
 
         HeroCtrl.instance.SpawnAtPoint(GameManager.gameStartState == GameStartState.ExitInterior ? frontSpawnPoint : frontInitSpawnPoint);
         if (GameManager.instance.forAdmin)
@@ -226,15 +213,7 @@ public class MainScreen : UIScreen
     public void LogOutButtonClicked()
     {
         GameManager.gameStartState = GameStartState.Logout;
-        /*if (SceneManager.GetActiveScene().buildIndex != 0)
-        {
-            interiorDropSurface.transform.parent = interiorParentTransform;
-            interiorDropSurface.transform.localPosition = new Vector3(0, 1000, 0);            
-        }
-
-        normalObjectInfoDialog.gameObject.SetActive(false);
-        videoObjectInfoDialog.gameObject.SetActive(false);
-        imageObjectInfoDialog.gameObject.SetActive(false);*/
+       
         DBManager.userInfo.userId = "";
 
         if (SceneManager.GetActiveScene().buildIndex != 0)

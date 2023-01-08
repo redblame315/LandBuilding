@@ -37,6 +37,9 @@ public class ImageObject : MonoBehaviour
         if (string.IsNullOrEmpty(imageUrl))
             return;
 
+        if (!GameManager.instance.forAdmin)
+            imageUrl = imageUrl.Replace("admin", "guest");
+
         StartCoroutine(DownloadImage(imageUrl));
     }
 
@@ -51,15 +54,6 @@ public class ImageObject : MonoBehaviour
         {
             Material standardShaderMaterial = new Material(Shader.Find("Standard"));
             standardShaderMaterial.mainTexture = ((DownloadHandlerTexture)request.downloadHandler).texture;
-
-            //Set Rendering Mode to Transparent
-            /*standardShaderMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-            standardShaderMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-            standardShaderMaterial.SetInt("_ZWrite", 0);
-            standardShaderMaterial.DisableKeyword("_ALPHATEST_ON");
-            standardShaderMaterial.DisableKeyword("_ALPHABLEND_ON");
-            standardShaderMaterial.EnableKeyword("_ALPHAPREMULTIPLY_ON");
-            standardShaderMaterial.renderQueue = 3000;*/
 
             //Set Rendering Mode to Cutout
             standardShaderMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
