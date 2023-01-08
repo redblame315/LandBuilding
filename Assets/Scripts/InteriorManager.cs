@@ -23,12 +23,11 @@ public class InteriorManager : MonoBehaviour
         MainScreen.instance.InitInterior();
 
         //AudioClip backgroundAudioClip = Resources.Load("Audio/" + DBManager.cSettingInfo.bgsong) as AudioClip;
-        string auidoURI = DBManager.cSettingInfo.bgsong;
+        string audioURI = DBManager.cSettingInfo.bgsong;
         if (!GameManager.instance.forAdmin)
-            auidoURI = auidoURI.Replace("admin", "guest");
+            audioURI = audioURI.Replace("admin", "guest");
 
-
-        GameObject soundmanagerObj = Instantiate(Resources.Load("Prefabs/SoundManager")) as GameObject;        
+        /*GameObject soundmanagerObj = Instantiate(Resources.Load("Prefabs/SoundManager")) as GameObject;        
         soundmanagerObj.transform.parent = transform;
 
         Transform soundManagerSpawnTrans = transform.Find("SoundManager");
@@ -36,7 +35,9 @@ public class InteriorManager : MonoBehaviour
         SoundManager soundManager = soundmanagerObj.GetComponent<SoundManager>();
         soundManager.Init();
         soundManager.PlayBackgroundSound(auidoURI);
-        soundManager.SetBackgroundVolume(DBManager.cSettingInfo.bgvolume);
+        Debug.LogError("Volume: " + DBManager.cSettingInfo.bgvolume.ToString());*/
+        SoundManager.instance.PlayBackgroundSound(audioURI);
+        SoundManager.instance.SetBackgroundVolume(DBManager.cSettingInfo.bgvolume);
     }
 
     // Update is called once per frame

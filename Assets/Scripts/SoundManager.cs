@@ -19,7 +19,8 @@ public class SoundManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;        
+        instance = this;
+        Init();
     }
 
     public void Init()
@@ -73,10 +74,18 @@ public class SoundManager : MonoBehaviour
 
     IEnumerator PlayBackgroundSoundRoutine(string uri)
     {
-        if(uri != preURI)
+        //if(uri != preURI)
         {
-            UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(uri, AudioType.UNKNOWN);
-            yield return request.SendWebRequest();
+            Debug.LogError("AudioDownLoad: ");
+            UnityWebRequest request = UnityWebRequestMultimedia.GetAudioClip(uri, AudioType.MPEG);
+            DownloadHandlerAudioClip dHA = new DownloadHandlerAudioClip(string.Empty, AudioType.MPEG);
+            dHA.streamAudio = true;
+            request.downloadHandler = dHA;
+            request.SendWebRequest();
+
+            while (request.downloadProgress < 1)
+                yield return new WaitForSeconds(.1f);
+                    
             if (request.result == UnityWebRequest.Result.ConnectionError)
             {
                 Debug.LogError(request.error);
@@ -92,7 +101,9 @@ public class SoundManager : MonoBehaviour
         if(assetClip != null)
         {
             backgroundAudioSource.clip = assetClip;
+            Debug.LogError("AudioPlayStart: ");
             backgroundAudioSource.Play();
+            Debug.LogError("AudioPlayEnd: ");
         }
         
     }
