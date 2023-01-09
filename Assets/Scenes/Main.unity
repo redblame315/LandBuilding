@@ -3482,7 +3482,7 @@ MonoBehaviour:
   disabledSprite: 
   pixelSnap: 0
   onClick:
-  - mTarget: {fileID: 0}
+  - mTarget: {fileID: 2132765922}
     mMethodName: CloseButtonClicked
     oneShot: 0
 --- !u!65 &152587476
